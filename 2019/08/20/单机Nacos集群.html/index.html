@@ -1,160 +1,4 @@
-<!DOCTYPE html>
-<html>
-
-<head><meta name="generator" content="Hexo 3.9.0">
-  
-  <title>单机Nacos集群 - OneJane</title>
-  <meta charset="UTF-8">
-  <meta name="description" content>
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  
-  
-
-  <link rel="shortcut icon" href="/images/a.ico" type="image/png">
-  <meta name="description" content="基于docker的单机nacos集群安装配置">
-<meta name="keywords" content="Spring Cloud Alibaba,Docker">
-<meta property="og:type" content="article">
-<meta property="og:title" content="单机Nacos集群">
-<meta property="og:url" content="https://onejane.github.io/2019/08/20/单机Nacos集群.html/index.html">
-<meta property="og:site_name" content="OneJane">
-<meta property="og:description" content="基于docker的单机nacos集群安装配置">
-<meta property="og:locale" content="zh-CN">
-<meta property="og:updated_time" content="2019-08-20T03:08:37.111Z">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="单机Nacos集群">
-<meta name="twitter:description" content="基于docker的单机nacos集群安装配置">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/css/mdui.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.15.8/styles/atom-one-dark.css">
-   
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
-  
-  <link rel="stylesheet" href="//at.alicdn.com/t/font_1038733_0xvrvpg9c0r.css">
-  <link rel="stylesheet" href="/css/style.css?v=1566272039119">
-</head>
-
-<body class="mdui-drawer-body-left">
-  
-  <div id="nexmoe-background">
-    <div class="nexmoe-bg" style="background-image: url(https://i.loli.net/2019/01/13/5c3aec85a4343.jpg)"></div>
-    <div class="mdui-appbar mdui-shadow-0">
-      <div class="mdui-toolbar">
-        <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a>
-        <div class="mdui-toolbar-spacer"></div>
-        <!--<a href="javascript:;" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">search</i></a>-->
-        <a href="/" title="OneJane" class="mdui-btn mdui-btn-icon"><img src="https://i.loli.net/2019/08/20/UIhTqdQiPasxLtr.jpg"></a>
-       </div>
-    </div>
-  </div>
-  <div id="nexmoe-header">
-      <div class="nexmoe-drawer mdui-drawer" id="drawer">
-    <div class="nexmoe-avatar mdui-ripple">
-        <a href="/" title="OneJane">
-            <img src="https://i.loli.net/2019/08/20/UIhTqdQiPasxLtr.jpg" alt="OneJane">
-        </a>
-    </div>
-    <div class="nexmoe-count">
-        <div><span>文章</span>1</div>
-        <div><span>标签</span>2</div>
-        <div><span>分类</span>1</div>
-    </div>
-    <ul class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}">
-        
-        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页">
-            <i class="mdui-list-item-icon nexmoefont icon-home"></i>
-            <div class="mdui-list-item-content">
-                回到首页
-            </div>
-        </a>
-        
-        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="关于博客">
-            <i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
-            <div class="mdui-list-item-content">
-                关于博客
-            </div>
-        </a>
-        
-        <a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/PY.html" title="我的朋友">
-            <i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i>
-            <div class="mdui-list-item-content">
-                我的朋友
-            </div>
-        </a>
-        
-    </ul>
-    <aside id="nexmoe-sidebar">
-  
-  <div class="nexmoe-widget-wrap">
-    <h3 class="nexmoe-widget-title">社交按钮</h3>
-    <div class="nexmoe-widget nexmoe-social">
-        <a class="mdui-ripple" href="https://space.bilibili.com/20238211" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color: rgb(231, 106, 141);background-color: rgba(231, 106, 141, .15);">
-            <i class="nexmoefont icon-bilibili"></i>
-        </a><a class="mdui-ripple" href="https://github.com/OneJane" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color: rgb(25, 23, 23);background-color: rgba(25, 23, 23, .15);">
-            <i class="nexmoefont icon-github"></i>
-        </a>
-    </div>
-</div>
-  
-  
-  <div class="nexmoe-widget-wrap">
-    <h3 class="nexmoe-widget-title">文章分类</h3>
-    <div class="nexmoe-widget">
-      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Nacos/">Nacos</a><span class="category-list-count">1</span></li></ul>
-    </div>
-  </div>
-
-
-  
-  
-  <div class="nexmoe-widget-wrap">
-    <h3 class="nexmoe-widget-title">标签云</h3>
-    <div class="nexmoe-widget tagcloud">
-      <a href="/tags/Docker/" style="font-size: 10px;">Docker</a> <a href="/tags/Spring-Cloud-Alibaba/" style="font-size: 10px;">Spring Cloud Alibaba</a>
-    </div>
-  </div>
-
-  
-  
-  <div class="nexmoe-widget-wrap">
-    <h3 class="nexmoe-widget-title">文章归档</h3>
-    <div class="nexmoe-widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul>
-    </div>
-  </div>
-
-
-  
-</aside>
-    <div class="nexmoe-copyright">
-        &copy; 2019 OneJane
-        Powered by <a href="http://hexo.io/" target="_blank">Hexo</a>
-        & <a href="https://nexmoe.com/hexo-theme-nexmoe.html" target="_blank">Nexmoe</a>
-    </div>
-</div><!-- .nexmoe-drawer -->
-  </div>
-  <div id="nexmoe-content">
-    <div class="nexmoe-primary">
-        <div class="nexmoe-post">
-    <div class="nexmoe-post-cover"> 
-        
-        <img src="https://i.loli.net/2019/08/20/B8oHvuF6yhTeacV.jpg">
-        
-        <h1>单机Nacos集群</h1>
-    </div>
-  <div class="nexmoe-post-meta">
-    <a><i class="nexmoefont icon-calendar-fill"></i>2019年08月20日</a>
-    <a><i class="nexmoefont icon-areachart"></i>951 字</a>
-    <a><i class="nexmoefont icon-time-circle-fill"></i>大概 5 分钟</a>
-    
-      <a class="nexmoefont icon-appstore-fill -link" href="/categories/Nacos/">Nacos</a>
-    
-    
-      <a class="nexmoefont icon-tag-fill -link" href="/tags/Docker/">Docker</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/Spring-Cloud-Alibaba/">Spring Cloud Alibaba</a>
-    
-  </div>
-  <article>
-    <p>基于docker的单机nacos集群安装配置</p>
-<a id="more"></a>
-<h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><pre><code>yum update -y nss curl libcurl
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.9.0"><title>单机Nacos集群 - OneJane</title><meta charset="UTF-8"><meta name="description" content><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><link rel="shortcut icon" href="/images/a.ico" type="image/png"><meta name="description" content="基于docker的单机nacos集群安装配置"><meta name="keywords" content="Spring Cloud Alibaba,Docker"><meta property="og:type" content="article"><meta property="og:title" content="单机Nacos集群"><meta property="og:url" content="https://onejane.github.io/2019/08/20/单机Nacos集群.html/index.html"><meta property="og:site_name" content="OneJane"><meta property="og:description" content="基于docker的单机nacos集群安装配置"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2019-08-20T03:08:37.111Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="单机Nacos集群"><meta name="twitter:description" content="基于docker的单机nacos集群安装配置"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/css/mdui.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.15.8/styles/atom-one-dark.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1038733_0xvrvpg9c0r.css"><link rel="stylesheet" href="/css/style.css?v=1566273731606"></head><body class="mdui-drawer-body-left"><div id="nexmoe-background"><div class="nexmoe-bg" style="background-image:url(https://i.loli.net/2019/01/13/5c3aec85a4343.jpg)"></div><div class="mdui-appbar mdui-shadow-0"><div class="mdui-toolbar"> <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a><div class="mdui-toolbar-spacer"></div> <a href="/" title="OneJane" class="mdui-btn mdui-btn-icon"><img src="https://i.loli.net/2019/08/20/UIhTqdQiPasxLtr.jpg"></a></div></div></div><div id="nexmoe-header"><div class="nexmoe-drawer mdui-drawer" id="drawer"><div class="nexmoe-avatar mdui-ripple"> <a href="/" title="OneJane"><img src="https://i.loli.net/2019/08/20/UIhTqdQiPasxLtr.jpg" alt="OneJane"></a></div><div class="nexmoe-count"><div><span>文章</span>1</div><div><span>标签</span>2</div><div><span>分类</span>1</div></div><ul class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}"><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页"><i class="mdui-list-item-icon nexmoefont icon-home"></i><div class="mdui-list-item-content"> 回到首页</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="关于博客"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i><div class="mdui-list-item-content"> 关于博客</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/PY.html" title="我的朋友"><i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i><div class="mdui-list-item-content"> 我的朋友</div></a></ul><aside id="nexmoe-sidebar"><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">社交按钮</h3><div class="nexmoe-widget nexmoe-social"><a class="mdui-ripple" href="https://space.bilibili.com/20238211" target="_blank" mdui-tooltip="{content: '哔哩哔哩'}" style="color:#e76a8d;background-color:rgba(231,106,141,.15)"><i class="nexmoefont icon-bilibili"></i></a><a class="mdui-ripple" href="https://github.com/OneJane" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color:#191717;background-color:rgba(25,23,23,.15)"><i class="nexmoefont icon-github"></i></a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章分类</h3><div class="nexmoe-widget"><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Nacos/">Nacos</a><span class="category-list-count">1</span></li></ul></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">标签云</h3><div class="nexmoe-widget tagcloud"> <a href="/tags/Docker/" style="font-size:10px">Docker</a> <a href="/tags/Spring-Cloud-Alibaba/" style="font-size:10px">Spring Cloud Alibaba</a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章归档</h3><div class="nexmoe-widget"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul></div></div></aside><div class="nexmoe-copyright"> &copy; 2019 OneJane Powered by <a href="http://hexo.io/" target="_blank">Hexo</a> & <a href="https://nexmoe.com/hexo-theme-nexmoe.html" target="_blank">Nexmoe</a></div></div></div><div id="nexmoe-content"><div class="nexmoe-primary"><div class="nexmoe-post"><div class="nexmoe-post-cover"> <img src="https://i.loli.net/2019/08/20/B8oHvuF6yhTeacV.jpg"><h1>单机Nacos集群</h1></div><div class="nexmoe-post-meta"><a><i class="nexmoefont icon-calendar-fill"></i> 2019年08月20日</a><a><i class="nexmoefont icon-areachart"></i> 951 字</a><a><i class="nexmoefont icon-time-circle-fill"></i> 大概 5 分钟</a> <a class="nexmoefont icon-appstore-fill -link" href="/categories/Nacos/">Nacos</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/Docker/">Docker</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/Spring-Cloud-Alibaba/">Spring Cloud Alibaba</a></div><article><p>基于docker的单机nacos集群安装配置</p><a id="more"></a><h1 id="环境搭建"><a href="#环境搭建" class="headerlink" title="环境搭建"></a>环境搭建</h1><pre><code>yum update -y nss curl libcurl
 curl -L https://github.com/docker/compose/releases/download/1.20.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
 docker-compose --version
@@ -174,8 +18,7 @@ docker stop nacos1 nacos2 nacos3
 docker start nacos1
 docker start nacos2
 docker start nacos3
-docker-compose -f example/cluster-hostname.yaml down</code></pre><p><a href="http://192.168.2.5:8848/nacos" target="_blank" rel="noopener">http://192.168.2.5:8848/nacos</a>  <a href="http://192.168.2.5:8849/nacos" target="_blank" rel="noopener">http://192.168.2.5:8849/nacos</a>  <a href="http://192.168.2.5:8850/nacos" target="_blank" rel="noopener">http://192.168.2.5:8850/nacos</a>           nacos/nacos</p>
-<h1 id="Nginx负载均衡"><a href="#Nginx负载均衡" class="headerlink" title="Nginx负载均衡"></a>Nginx负载均衡</h1><pre><code>mkdir /usr/local/docker/nginx/nacos -p
+docker-compose -f example/cluster-hostname.yaml down</code></pre><p><a href="http://192.168.2.5:8848/nacos" target="_blank" rel="noopener">http://192.168.2.5:8848/nacos</a> <a href="http://192.168.2.5:8849/nacos" target="_blank" rel="noopener">http://192.168.2.5:8849/nacos</a> <a href="http://192.168.2.5:8850/nacos" target="_blank" rel="noopener">http://192.168.2.5:8850/nacos</a> nacos/nacos</p><h1 id="Nginx负载均衡"><a href="#Nginx负载均衡" class="headerlink" title="Nginx负载均衡"></a>Nginx负载均衡</h1><pre><code>mkdir /usr/local/docker/nginx/nacos -p
 vim n1.conf
         upstream nacos { # 配置负载均衡
                 server 192.168.2.5:8848;
@@ -202,11 +45,7 @@ vim n2.conf
         location / {
             proxy_pass   http://nacos;
             index  index.html index.htm;
-        }</code></pre><blockquote>
-<p>docker run -it -d –name nginx2 -v /usr/local/docker/nginx/nacos/n2.conf:/etc/nginx/nginx.conf –net=host –privileged nginx<br>docker run -it -d –name nginx1 -v /usr/local/docker/nginx/nacos/n1.conf:/etc/nginx/nginx.conf –net=host –privileged nginx</p>
-</blockquote>
-<p><a href="http://192.168.2.5:8841/nacos/#/login" target="_blank" rel="noopener">http://192.168.2.5:8841/nacos/#/login</a>   <a href="http://192.168.2.5:8842/nacos/#/login" target="_blank" rel="noopener">http://192.168.2.5:8842/nacos/#/login</a>  docker pause nacos1 测试页面维持访问</p>
-<h1 id="Keepalive双机热备"><a href="#Keepalive双机热备" class="headerlink" title="Keepalive双机热备"></a>Keepalive双机热备</h1><pre><code>docker exec -it nginx1 bash
+        }</code></pre><blockquote><p>docker run -it -d –name nginx2 -v /usr/local/docker/nginx/nacos/n2.conf:/etc/nginx/nginx.conf –net=host –privileged nginx<br>docker run -it -d –name nginx1 -v /usr/local/docker/nginx/nacos/n1.conf:/etc/nginx/nginx.conf –net=host –privileged nginx</p></blockquote><p><a href="http://192.168.2.5:8841/nacos/#/login" target="_blank" rel="noopener">http://192.168.2.5:8841/nacos/#/login</a> <a href="http://192.168.2.5:8842/nacos/#/login" target="_blank" rel="noopener">http://192.168.2.5:8842/nacos/#/login</a> docker pause nacos1 测试页面维持访问</p><h1 id="Keepalive双机热备"><a href="#Keepalive双机热备" class="headerlink" title="Keepalive双机热备"></a>Keepalive双机热备</h1><pre><code>docker exec -it nginx1 bash
 mv /etc/apt/sources.list sources.list.bak
 echo &quot;deb http://mirrors.ustc.edu.cn/ubuntu/ xenial main restricted universe multiverse&quot;&gt;&gt;/etc/apt/sources.list
 echo &quot;deb http://mirrors.ustc.edu.cn/ubuntu/ xenial-security main restricted universe multiverse&quot;&gt;&gt;/etc/apt/sources.list
@@ -261,8 +100,7 @@ vrrp_instance VI_1 {
     }
 } 
 service keepalived start
-</code></pre><p>由于docker内的虚拟ip不能被外界访问借助宿主机keepalived映射外网可以访问的虚拟ip，</p>
-<pre><code>exit
+</code></pre><p>由于docker内的虚拟ip不能被外界访问借助宿主机keepalived映射外网可以访问的虚拟ip，</p><pre><code>exit
 yum install keepalived -y
 mv /etc/keepalived/keepalived.conf /etc/keepalived/keepalived.conf.bak
 vim /etc/keepalived/keepalived.conf
@@ -315,73 +153,4 @@ virtual_server 192.168.2.155 183 {
 
 #apt-get --purge remove keepalived -y
 #/sbin/ip addr del 192.168.12.100/32 dev enp1s0f0        删除虚拟ip
-</code></pre><blockquote>
-<p>如docker0没有则重启docker，再次检查创建<br>systemctl daemon-reload<br>systemctl restart docker</p>
-</blockquote>
-<p>访问 <a href="http://192.168.2.155:183/nacos/#/login" target="_blank" rel="noopener">http://192.168.2.155:183/nacos/#/login</a> nacos nacos</p>
-
-  </article>
-  
-    
-<div class="nexmoe-post-copyright">
-<i class="mdui-list-item-icon nexmoefont icon-info-circle"></i>
-<strong>本文作者：</strong>OneJane<br>
-<strong>本文链接：</strong><a href="https://onejane.github.io/2019/08/20/单机Nacos集群.html/" title="https://onejane.github.io/2019/08/20/单机Nacos集群.html/" target="_blank" rel="noopener">https://onejane.github.io/2019/08/20/单机Nacos集群.html/</a><br>
-
-  <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可
-
-</div>
-
-
-  
-  <section class="nexmoe-comment">
-    <div id="gitment"></div>
-<link rel="stylesheet" href="https://imsun.github.io/gitment/style/default.css">
-<script src="https://imsun.github.io/gitment/dist/gitment.browser.js"></script>
-<script>
-var gitment = new Gitment({
-    owner: 'onejane', // 你的 GitHub ID
-    repo: 'onejane.github.io', // 存储评论的 repo
-    oauth: {
-        client_id: 'e677e59382e1c7a468fd', // 你的 client ID
-        client_secret: '717d041bc4ab749f069314862232cfb6ec8adc15' // 你的 client secret
-    },
-})
-gitment.render('gitment')
-</script>
-</section>
-</div>
-    </div>
-  </div>
-  <script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
- 
-    <script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
-
-
- 
-    <script src="https://cdn.jsdelivr.net/npm/smoothscroll-for-websites@1.4.9/SmoothScroll.min.js"></script>
-
-
-<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js"></script>
-<script>hljs.initHighlightingOnLoad();</script>
-
-<script src="/js/app.js?v=1566272039127"></script>
-<script src="https://cdn.jsdelivr.net/npm/lazysizes@5.1.0/lazysizes.min.js"></script>
-
-  
-
-
-
-
-    <!-- 51.La Analytics -->
-<div hidden>
-  <script type="text/javascript" src="https://js.users.51.la/20279757.js"></script>
-</div>
-
-
-<!-- 添加打赏功能 只在文章详情中显示-->
-
-</body>
-
-</html>
+</code></pre><blockquote><p>如docker0没有则重启docker，再次检查创建<br>systemctl daemon-reload<br>systemctl restart docker</p></blockquote><p>访问 <a href="http://192.168.2.155:183/nacos/#/login" target="_blank" rel="noopener">http://192.168.2.155:183/nacos/#/login</a> nacos nacos</p></article><div class="nexmoe-post-copyright"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i> <strong>本文作者：</strong>OneJane<br> <strong>本文链接：</strong><a href="https://onejane.github.io/2019/08/20/单机Nacos集群.html/" title="https://onejane.github.io/2019/08/20/单机Nacos集群.html/" target="_blank" rel="noopener">https://onejane.github.io/2019/08/20/单机Nacos集群.html/</a><br> <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可</div><section class="nexmoe-comment"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css"><div id="gitalk"></div><script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script><script type="text/javascript">var gitalk=new Gitalk({clientID:"e677e59382e1c7a468fd",clientSecret:"717d041bc4ab749f069314862232cfb6ec8adc15",id:window.location.pathname,repo:"onejane.github.io",owner:"onejane",admin:"onejane"});gitalk.render("gitalk")</script></section></div></div></div><script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/smoothscroll-for-websites@1.4.9/SmoothScroll.min.js"></script><script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js"></script><script>hljs.initHighlightingOnLoad()</script><script src="/js/app.js?v=1566273731614"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.1.0/lazysizes.min.js"></script><div hidden><script type="text/javascript" src="https://js.users.51.la/20279757.js"></script></div></body></html>
