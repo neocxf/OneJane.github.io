@@ -1,0 +1,277 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.9.0"><title>springboot2-multi-druid - OneJane</title><meta charset="UTF-8"><meta name="description" content><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><link rel="shortcut icon" href="/images/a.ico" type="image/png"><meta name="description" content="基于springboot2+druid实现多数据源"><meta name="keywords" content="springboot,mybatis"><meta property="og:type" content="article"><meta property="og:title" content="springboot2-multi-druid"><meta property="og:url" content="https://onejane.github.io/2019/08/20/springboot2-multi-druid/index.html"><meta property="og:site_name" content="OneJane"><meta property="og:description" content="基于springboot2+druid实现多数据源"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2019-08-20T10:20:01.980Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="springboot2-multi-druid"><meta name="twitter:description" content="基于springboot2+druid实现多数据源"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/css/mdui.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.15.8/styles/atom-one-dark.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1038733_0xvrvpg9c0r.css"><link rel="stylesheet" href="/css/style.css?v=1566316803719"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script></head><body class="mdui-drawer-body-left"><div id="nexmoe-background"><div class="nexmoe-bg" style="background-image:url(https://i.loli.net/2019/01/13/5c3aec85a4343.jpg)"></div><div class="mdui-appbar mdui-shadow-0"><div class="mdui-toolbar"> <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a><div class="mdui-toolbar-spacer"></div> <a href="/" title="OneJane" class="mdui-btn mdui-btn-icon"><img src="https://i.loli.net/2019/08/20/UIhTqdQiPasxLtr.jpg"></a></div></div></div><div id="nexmoe-header"><div class="nexmoe-drawer mdui-drawer" id="drawer"><div class="nexmoe-avatar mdui-ripple"> <a href="/" title="OneJane"><img src="https://i.loli.net/2019/08/20/UIhTqdQiPasxLtr.jpg" alt="OneJane"></a></div><div class="nexmoe-count"><div><span>文章</span>15</div><div><span>标签</span>24</div><div><span>分类</span>8</div></div><ul class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}"><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页"><i class="mdui-list-item-icon nexmoefont icon-home"></i><div class="mdui-list-item-content"> 回到首页</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="关于博客"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i><div class="mdui-list-item-content"> 关于博客</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/py.html" title="我的朋友"><i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i><div class="mdui-list-item-content"> 我的朋友</div></a></ul><aside id="nexmoe-sidebar"><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">社交按钮</h3><div class="nexmoe-widget nexmoe-social"><a class="mdui-ripple" href="https://www.zhihu.com/people/codewj/activities" target="_blank" mdui-tooltip="{content: 'zhihu'}" style="color:#e76a8d;background-color:rgba(231,106,141,.15)"><i class="nexmoefont icon-zhihu"></i></a><a class="mdui-ripple" href="https://github.com/OneJane" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color:#191717;background-color:rgba(25,23,23,.15)"><i class="nexmoefont icon-github"></i></a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章分类</h3><div class="nexmoe-widget"><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/定时器/">定时器</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/持续集成/">持续集成</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/注册中心/">注册中心</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高可用/">高可用</a><span class="category-list-count">4</span></li></ul></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">标签云</h3><div class="nexmoe-widget tagcloud"> <a href="/tags/Docker/" style="font-size:10px">Docker</a> <a href="/tags/GitLab/" style="font-size:10px">GitLab</a> <a href="/tags/Haproxy/" style="font-size:10px">Haproxy</a> <a href="/tags/Keepalived/" style="font-size:10px">Keepalived</a> <a href="/tags/Replication/" style="font-size:10px">Replication</a> <a href="/tags/RocketMQ/" style="font-size:10px">RocketMQ</a> <a href="/tags/Spring-Cloud-Alibaba/" style="font-size:10px">Spring Cloud Alibaba</a> <a href="/tags/docker/" style="font-size:20px">docker</a> <a href="/tags/elastisearch/" style="font-size:10px">elastisearch</a> <a href="/tags/gitlab/" style="font-size:10px">gitlab</a> <a href="/tags/jenkins/" style="font-size:12.5px">jenkins</a> <a href="/tags/linux/" style="font-size:10px">linux</a> <a href="/tags/maven/" style="font-size:12.5px">maven</a> <a href="/tags/mybatis/" style="font-size:10px">mybatis</a> <a href="/tags/nexmoe/" style="font-size:10px">nexmoe</a> <a href="/tags/partition/" style="font-size:10px">partition</a> <a href="/tags/pxc/" style="font-size:10px">pxc</a> <a href="/tags/rabbitmq/" style="font-size:10px">rabbitmq</a> <a href="/tags/redis/" style="font-size:10px">redis</a> <a href="/tags/redis-cluster/" style="font-size:10px">redis-cluster</a> <a href="/tags/replication/" style="font-size:10px">replication</a> <a href="/tags/sentinel/" style="font-size:15px">sentinel</a> <a href="/tags/springboot/" style="font-size:17.5px">springboot</a> <a href="/tags/xxl-job/" style="font-size:10px">xxl-job</a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章归档</h3><div class="nexmoe-widget"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul></div></div></aside><div class="nexmoe-copyright"> &copy; 2019 OneJane</div></div></div><div id="nexmoe-content"><div class="nexmoe-primary"><div class="nexmoe-post"><div class="nexmoe-post-cover"> <img src="https://i.loli.net/2019/08/20/2pCj3hBA5gcvFWt.jpg"><h1>springboot2-multi-druid</h1></div><div class="nexmoe-post-meta"><a><i class="nexmoefont icon-calendar-fill"></i> 2019年08月20日</a><a><i class="nexmoefont icon-areachart"></i> 1.5k 字</a><a><i class="nexmoefont icon-time-circle-fill"></i> 大概 8 分钟</a> <a class="nexmoefont icon-appstore-fill -link" href="/categories/数据库/">数据库</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/mybatis/">mybatis</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/springboot/">springboot</a></div><article><p>基于springboot2+druid实现多数据源</p><a id="more"></a><h1 id="配置"><a href="#配置" class="headerlink" title="配置"></a>配置</h1><p>application.yml</p><pre><code>server:
+  port: 10205
+spring:
+  datasource:
+      base:
+        #监控统计拦截的filters
+        filters: stat
+        type: com.alibaba.druid.pool.DruidDataSource
+        jdbc-url: jdbc:mysql://192.168.1.250:3306/htbl_test?useUnicode=true&amp;characterEncoding=UTF-8
+        username: root
+        password: 123456
+        driver-class-name: com.mysql.jdbc.Driver
+        max-idle: 10
+        max-wait: 10000
+        min-idle: 5
+        initial-size: 5
+        validation-query: SELECT 1
+        test-on-borrow: false
+        test-while-idle: true
+        time-between-eviction-runs-millis: 18800
+      dic:
+        #监控统计拦截的filters
+        filters: stat
+        type: com.alibaba.druid.pool.DruidDataSource
+        jdbc-url: jdbc:mysql://192.168.1.48:3306/ht_nlp?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false
+        username: root
+        password: Sonar@1234
+        driver-class-name: com.mysql.jdbc.Driver
+        max-idle: 10
+        max-wait: 10000
+        min-idle: 5
+        initial-size: 5
+        validation-query: SELECT 1
+        test-on-borrow: false
+        test-while-idle: true
+        time-between-eviction-runs-millis: 18800</code></pre><h1 id="数据源1配置"><a href="#数据源1配置" class="headerlink" title="数据源1配置"></a>数据源1配置</h1><p>BaseMybatisConfig</p><pre><code>@Configuration
+@MapperScan(basePackages = {&quot;com.ht.micro.record.commons.mapper.baseMapper&quot;}, sqlSessionTemplateRef = &quot;baseSqlSessionTemplate&quot;)
+public class BaseMybatisConfig {
+
+    @Value(&quot;${spring.datasource.base.filters}&quot;)
+    String filters;
+    @Value(&quot;${spring.datasource.base.driver-class-name}&quot;)
+    String driverClassName;
+    @Value(&quot;${spring.datasource.base.username}&quot;)
+    String username;
+    @Value(&quot;${spring.datasource.base.password}&quot;)
+    String password;
+    @Value(&quot;${spring.datasource.base.jdbc-url}&quot;)
+    String url;
+
+
+    @Bean(name=&quot;baseDataSource&quot;)
+    @Primary//必须加此注解，不然报错，下一个类则不需要添加 spring.datasource
+    @ConfigurationProperties(prefix=&quot;spring.datasource.base&quot;)//prefix值必须是application.properteis中对应属性的前缀
+    public DataSource baseDataSource() throws SQLException {
+
+
+        DruidDataSource druid = new DruidDataSource();
+        // 监控统计拦截的filters
+        druid.setFilters(filters);
+        // 配置基本属性
+        druid.setDriverClassName(driverClassName);
+        druid.setUsername(username);
+        druid.setPassword(password);
+        druid.setUrl(url);
+
+        return druid;
+    }
+
+
+    @Bean(name=&quot;baseSqlSessionFactory&quot;)
+    @Primary
+    public SqlSessionFactory baseSqlSessionFactory(@Qualifier(&quot;baseDataSource&quot;)DataSource dataSource)throws Exception{
+        // 创建Mybatis的连接会话工厂实例
+        SqlSessionFactoryBean bean=new SqlSessionFactoryBean();
+        bean.setDataSource(dataSource);//// 设置数据源bean
+        //添加XML目录
+        ResourcePatternResolver resolver=new PathMatchingResourcePatternResolver();
+        try{
+            bean.setMapperLocations(resolver.getResources(&quot;classpath:baseMapper/*Mapper.xml&quot;));//// 设置mapper文件路径
+            return bean.getObject();
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Bean(name=&quot;baseSqlSessionTemplate&quot;)
+    @Primary
+    public SqlSessionTemplate baseSqlSessionTemplate(@Qualifier(&quot;baseSqlSessionFactory&quot;)SqlSessionFactory sqlSessionFactory)throws Exception{
+        SqlSessionTemplate template=new SqlSessionTemplate(sqlSessionFactory);//使用上面配置的Factory
+        return  template;
+    }
+
+}
+</code></pre><h1 id="数据源2配置"><a href="#数据源2配置" class="headerlink" title="数据源2配置"></a>数据源2配置</h1><pre><code>@Configuration
+@MapperScan(basePackages = {&quot;com.ht.micro.record.commons.mapper.dicMapper&quot;}, sqlSessionTemplateRef = &quot;dicSqlSessionTemplate&quot;)
+public class DicMybatisConfig {
+    @Value(&quot;${spring.datasource.dic.filters}&quot;)
+    String filters;
+    @Value(&quot;${spring.datasource.dic.driver-class-name}&quot;)
+    String driverClassName;
+    @Value(&quot;${spring.datasource.dic.username}&quot;)
+    String username;
+    @Value(&quot;${spring.datasource.dic.password}&quot;)
+    String password;
+    @Value(&quot;${spring.datasource.dic.jdbc-url}&quot;)
+    String url;
+
+
+    @Bean(name = &quot;dicDataSource&quot;)
+    @ConfigurationProperties(prefix=&quot;spring.datasource.dic&quot;)
+    public DataSource dicDataSource() throws SQLException {
+
+        DruidDataSource druid = new DruidDataSource();
+        // 监控统计拦截的filters
+       // druid.setFilters(filters);
+        // 配置基本属性
+        druid.setDriverClassName(driverClassName);
+        druid.setUsername(username);
+        druid.setPassword(password);
+        druid.setUrl(url);
+
+       /* //初始化时建立物理连接的个数
+        druid.setInitialSize(initialSize);
+        //最大连接池数量
+        druid.setMaxActive(maxActive);
+        //最小连接池数量
+        druid.setMinIdle(minIdle);
+        //获取连接时最大等待时间，单位毫秒。
+        druid.setMaxWait(maxWait);
+        //间隔多久进行一次检测，检测需要关闭的空闲连接
+        druid.setTimeBetweenEvictionRunsMillis(timeBetweenEvictionRunsMillis);
+        //一个连接在池中最小生存的时间
+        druid.setMinEvictableIdleTimeMillis(minEvictableIdleTimeMillis);
+        //用来检测连接是否有效的sql
+        druid.setValidationQuery(validationQuery);
+        //建议配置为true，不影响性能，并且保证安全性。
+        druid.setTestWhileIdle(testWhileIdle);
+        //申请连接时执行validationQuery检测连接是否有效
+        druid.setTestOnBorrow(testOnBorrow);
+        druid.setTestOnReturn(testOnReturn);
+        //是否缓存preparedStatement，也就是PSCache，oracle设为true，mysql设为false。分库分表较多推荐设置为false
+        druid.setPoolPreparedStatements(poolPreparedStatements);
+        // 打开PSCache时，指定每个连接上PSCache的大小
+        druid.setMaxPoolPreparedStatementPerConnectionSize(maxPoolPreparedStatementPerConnectionSize);
+*/
+        return druid;
+    }
+
+    @Bean(name = &quot;dicSqlSessionFactory&quot;)
+    public SqlSessionFactory dicSqlSessionFactory(@Qualifier(&quot;dicDataSource&quot;)DataSource dataSource)throws Exception{
+        SqlSessionFactoryBean bean=new SqlSessionFactoryBean();
+        bean.setDataSource(dataSource);
+        //添加XML目录
+        ResourcePatternResolver resolver=new PathMatchingResourcePatternResolver();
+        try{
+            bean.setMapperLocations(resolver.getResources(&quot;classpath:dicMapper/*Mapper.xml&quot;));
+            return bean.getObject();
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Bean(name=&quot;dicSqlSessionTemplate&quot;)
+    public SqlSessionTemplate dicSqlSessionTemplate(@Qualifier(&quot;dicSqlSessionFactory&quot;)SqlSessionFactory sqlSessionFactory)throws Exception{
+        SqlSessionTemplate template=new SqlSessionTemplate(sqlSessionFactory);//使用上面配置的Factory
+        return  template;
+    }
+
+}</code></pre><h1 id="启动类"><a href="#启动类" class="headerlink" title="启动类"></a>启动类</h1><p>NoteProviderServiceApplication</p><pre><code>@SpringBootApplication(scanBasePackages = &quot;com.ht.micro.record&quot;)
+@EnableDiscoveryClient
+@MapperScan(basePackages = &quot;com.ht.micro.record.commons.mapper&quot;)
+@EnableSwagger2
+public class NoteProviderServiceApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(NoteProviderServiceApplication.class, args);
+    }
+}</code></pre><h1 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h1><h2 id="服务层"><a href="#服务层" class="headerlink" title="服务层"></a>服务层</h2><p>WebDicController</p><pre><code>@RestController
+@RequestMapping(value = &quot;webdic&quot;)
+public class WebDicController extends AbstractBaseController&lt;TbUser&gt; {
+
+    @Autowired
+    private WebDicService webDicService;
+
+    @ApiOperation(value = &quot;获取所有字典&quot;)
+    @RequestMapping
+    public List&lt;WebDic&gt; getAll() {
+        return webDicService.getAll();
+    }
+
+}</code></pre><p>TApplyController</p><pre><code>@RestController
+@RequestMapping(value = &quot;apply&quot;)
+public class TApplyController extends AbstractBaseController {
+    @Autowired
+    private TApplyService tApplyService;
+
+
+    /** http://localhost:10105/apply/asked/任大龙
+     * @param name
+     * @return
+     */
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = &quot;askedName&quot;, value = &quot;被询问人名&quot;, required = true, paramType = &quot;path&quot;)
+    })
+    @GetMapping(value = &quot;asked/{name}&quot;)
+    public List&lt;TApply&gt; getByAskedName(@PathVariable String name){
+        return tApplyService.getByAskedName(name);
+    }
+}</code></pre><p>WebDicService</p><pre><code>@Service
+public class WebDicService {
+    @Autowired
+    WebDicMapper webDicMapper;
+
+    public List&lt;WebDic&gt; getAll() {
+        return webDicMapper.selectAll();
+    }
+}</code></pre><p>TApplyService</p><pre><code>public interface TApplyService extends BaseCrudService&lt;TApply&gt; {
+    List&lt;TApply&gt; getByAskedName(String name);
+}</code></pre><p>TApplyServiceImpl</p><pre><code>@Service
+public class TApplyServiceImpl extends BaseCrudServiceImpl&lt;TApply, TApplyMapper&gt; implements TApplyService {
+
+    @Autowired
+    private TApplyMapper tApplyMapper;
+
+    public List&lt;TApply&gt; getByAskedName(String name) {
+        return tApplyMapper.selectByAskedName(name);
+    }
+
+}</code></pre><h2 id="mapper层"><a href="#mapper层" class="headerlink" title="mapper层"></a>mapper层</h2><p>com.ht.micro.record.commons.mapper.baseMapper.TApplyMapper</p><pre><code>public interface TApplyMapper extends MyMapper&lt;TApply&gt; {
+
+    /**
+     * 根据名称查找
+     * @param name
+     * @return
+     */
+    List&lt;TApply&gt; selectByAskedName(String name);
+}</code></pre><p>com.ht.micro.record.commons.mapper.dicMapper.WebDicMapper</p><pre><code>public interface WebDicMapper extends MyMapper&lt;WebDic&gt; {
+}</code></pre><p>tk.mybatis.mapper.MyMapper</p><pre><code>public interface MyMapper&lt;T&gt; extends Mapper&lt;T&gt;, MySqlMapper&lt;T&gt; {
+}</code></pre><p>baseMapper/TApplyMapper.xml</p><pre><code>&lt;mapper namespace=&quot;com.ht.micro.record.commons.mapper.baseMapper.TApplyMapper&quot;&gt;
+  &lt;resultMap id=&quot;BaseResultMap&quot; type=&quot;com.ht.micro.record.commons.domain.TApply&quot;&gt;
+    &lt;!--
+      WARNING - @mbg.generated
+    --&gt;
+    &lt;id column=&quot;id&quot; jdbcType=&quot;INTEGER&quot; property=&quot;id&quot; /&gt;
+    &lt;result column=&quot;applyer_police_num&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;applyerPoliceNum&quot; /&gt;
+    &lt;result column=&quot;applyer_name&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;applyerName&quot; /&gt;
+    &lt;result column=&quot;asked_name&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;askedName&quot; /&gt;
+    &lt;result column=&quot;applyer_id&quot; jdbcType=&quot;INTEGER&quot; property=&quot;applyerId&quot; /&gt;
+    &lt;result column=&quot;unit_id&quot; jdbcType=&quot;INTEGER&quot; property=&quot;unitId&quot; /&gt;
+    &lt;result column=&quot;case_info_ids&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;caseInfoIds&quot; /&gt;
+    &lt;result column=&quot;case_count&quot; jdbcType=&quot;INTEGER&quot; property=&quot;caseCount&quot; /&gt;
+    &lt;result column=&quot;apply_time&quot; jdbcType=&quot;TIMESTAMP&quot; property=&quot;applyTime&quot; /&gt;
+    &lt;result column=&quot;apply_state&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;applyState&quot; /&gt;
+    &lt;result column=&quot;apply_goal&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;applyGoal&quot; /&gt;
+    &lt;result column=&quot;approve_time&quot; jdbcType=&quot;TIMESTAMP&quot; property=&quot;approveTime&quot; /&gt;
+    &lt;result column=&quot;approve_state&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;approveState&quot; /&gt;
+    &lt;result column=&quot;approver_id&quot; jdbcType=&quot;INTEGER&quot; property=&quot;approverId&quot; /&gt;
+    &lt;result column=&quot;approve_prop&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;approveProp&quot; /&gt;
+  &lt;/resultMap&gt;
+
+  &lt;select id=&quot;selectByAskedName&quot; parameterType=&quot;string&quot; resultMap=&quot;BaseResultMap&quot;&gt;
+    select *
+    from t_apply
+    where asked_name = #{name,jdbcType=VARCHAR}
+  &lt;/select&gt;
+&lt;/mapper&gt;</code></pre><p>dicMapper/WebDicMapper.xml</p><pre><code>&lt;mapper namespace=&quot;com.ht.micro.record.commons.mapper.dicMapper&quot;&gt;
+  &lt;resultMap id=&quot;BaseResultMap&quot; type=&quot;com.ht.micro.record.commons.domain.WebDic&quot;&gt;
+    &lt;!--
+      WARNING - @mbg.generated
+    --&gt;
+    &lt;id column=&quot;id&quot; jdbcType=&quot;INTEGER&quot; property=&quot;id&quot; /&gt;
+    &lt;result column=&quot;name&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;name&quot; /&gt;
+    &lt;result column=&quot;type&quot; jdbcType=&quot;VARCHAR&quot; property=&quot;type&quot; /&gt;
+  &lt;/resultMap&gt;
+&lt;/mapper&gt;</code></pre></article><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a> <span class="donate_txt">↑<br> 欢迎投食,求鼓励，求支持！</span><br></div><div id="donate_guide" class="donate_bar center hidden"> <img src="/images/alipay.png" alt="支付宝打赏"> <img src="/images/wechatpay.png" alt="微信打赏"></div><script type="text/javascript">document.getElementById("btn_donate").onclick=function(){$("#donate_board").addClass("hidden"),$("#donate_guide").removeClass("hidden")}</script></div><div class="nexmoe-post-copyright"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i> <strong>本文作者：</strong>OneJane<br> <strong>本文链接：</strong><a href="https://onejane.github.io/2019/08/20/springboot2-multi-druid/" title="https://onejane.github.io/2019/08/20/springboot2-multi-druid/" target="_blank" rel="noopener">https://onejane.github.io/2019/08/20/springboot2-multi-druid/</a><br> <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可</div><section class="nexmoe-comment"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css"><div id="gitalk"></div><script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script><script type="text/javascript">var gitalk=new Gitalk({clientID:"e677e59382e1c7a468fd",clientSecret:"717d041bc4ab749f069314862232cfb6ec8adc15",id:decodeURI(window.location.pathname),repo:"onejane.github.io",owner:"onejane",admin:"onejane"});gitalk.render("gitalk")</script></section></div></div></div><script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/smoothscroll-for-websites@1.4.9/SmoothScroll.min.js"></script><script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js"></script><script>hljs.initHighlightingOnLoad()</script><script src="/js/app.js?v=1566316803728"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.1.0/lazysizes.min.js"></script><div hidden><script type="text/javascript" src="https://js.users.51.la/20279757.js"></script></div></body><script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script></html>

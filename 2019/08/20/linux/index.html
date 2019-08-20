@@ -1,0 +1,451 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.9.0"><title>linux - OneJane</title><meta charset="UTF-8"><meta name="description" content><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><link rel="shortcut icon" href="/images/a.ico" type="image/png"><meta name="description" content="linux使用技巧及常规软件安装"><meta name="keywords" content="jenkins,sentinel,linux,RocketMQ,rabbitmq,gitlab"><meta property="og:type" content="article"><meta property="og:title" content="linux"><meta property="og:url" content="https://onejane.github.io/2019/08/20/linux/index.html"><meta property="og:site_name" content="OneJane"><meta property="og:description" content="linux使用技巧及常规软件安装"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/%E5%88%9B%E5%BB%BA%E7%94%A8%E6%88%B71.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/%E5%88%9B%E5%BB%BA%E7%94%A8%E6%88%B72.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/%E7%94%A8%E6%88%B7%E8%AE%BE%E7%BD%AE1.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/%E7%94%A8%E6%88%B7%E8%AE%BE%E7%BD%AE2.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/%E7%94%A8%E6%88%B7%E8%AE%BE%E7%BD%AE3.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/%E5%90%88%E5%B9%B6%E8%AF%B7%E6%B1%821.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/%E5%90%88%E5%B9%B6%E8%AF%B7%E6%B1%822.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1564814498470.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565602173041.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565602184220.png"><meta property="og:updated_time" content="2019-08-20T10:54:42.225Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="linux"><meta name="twitter:description" content="linux使用技巧及常规软件安装"><meta name="twitter:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/%E5%88%9B%E5%BB%BA%E7%94%A8%E6%88%B71.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/css/mdui.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.15.8/styles/atom-one-dark.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1038733_0xvrvpg9c0r.css"><link rel="stylesheet" href="/css/style.css?v=1566316803624"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script></head><body class="mdui-drawer-body-left"><div id="nexmoe-background"><div class="nexmoe-bg" style="background-image:url(https://i.loli.net/2019/01/13/5c3aec85a4343.jpg)"></div><div class="mdui-appbar mdui-shadow-0"><div class="mdui-toolbar"> <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a><div class="mdui-toolbar-spacer"></div> <a href="/" title="OneJane" class="mdui-btn mdui-btn-icon"><img src="https://i.loli.net/2019/08/20/UIhTqdQiPasxLtr.jpg"></a></div></div></div><div id="nexmoe-header"><div class="nexmoe-drawer mdui-drawer" id="drawer"><div class="nexmoe-avatar mdui-ripple"> <a href="/" title="OneJane"><img src="https://i.loli.net/2019/08/20/UIhTqdQiPasxLtr.jpg" alt="OneJane"></a></div><div class="nexmoe-count"><div><span>文章</span>15</div><div><span>标签</span>24</div><div><span>分类</span>8</div></div><ul class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}"><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页"><i class="mdui-list-item-icon nexmoefont icon-home"></i><div class="mdui-list-item-content"> 回到首页</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="关于博客"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i><div class="mdui-list-item-content"> 关于博客</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/py.html" title="我的朋友"><i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i><div class="mdui-list-item-content"> 我的朋友</div></a></ul><aside id="nexmoe-sidebar"><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">社交按钮</h3><div class="nexmoe-widget nexmoe-social"><a class="mdui-ripple" href="https://www.zhihu.com/people/codewj/activities" target="_blank" mdui-tooltip="{content: 'zhihu'}" style="color:#e76a8d;background-color:rgba(231,106,141,.15)"><i class="nexmoefont icon-zhihu"></i></a><a class="mdui-ripple" href="https://github.com/OneJane" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color:#191717;background-color:rgba(25,23,23,.15)"><i class="nexmoefont icon-github"></i></a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章分类</h3><div class="nexmoe-widget"><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/定时器/">定时器</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/持续集成/">持续集成</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/注册中心/">注册中心</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高可用/">高可用</a><span class="category-list-count">4</span></li></ul></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">标签云</h3><div class="nexmoe-widget tagcloud"> <a href="/tags/Docker/" style="font-size:10px">Docker</a> <a href="/tags/GitLab/" style="font-size:10px">GitLab</a> <a href="/tags/Haproxy/" style="font-size:10px">Haproxy</a> <a href="/tags/Keepalived/" style="font-size:10px">Keepalived</a> <a href="/tags/Replication/" style="font-size:10px">Replication</a> <a href="/tags/RocketMQ/" style="font-size:10px">RocketMQ</a> <a href="/tags/Spring-Cloud-Alibaba/" style="font-size:10px">Spring Cloud Alibaba</a> <a href="/tags/docker/" style="font-size:20px">docker</a> <a href="/tags/elastisearch/" style="font-size:10px">elastisearch</a> <a href="/tags/gitlab/" style="font-size:10px">gitlab</a> <a href="/tags/jenkins/" style="font-size:12.5px">jenkins</a> <a href="/tags/linux/" style="font-size:10px">linux</a> <a href="/tags/maven/" style="font-size:12.5px">maven</a> <a href="/tags/mybatis/" style="font-size:10px">mybatis</a> <a href="/tags/nexmoe/" style="font-size:10px">nexmoe</a> <a href="/tags/partition/" style="font-size:10px">partition</a> <a href="/tags/pxc/" style="font-size:10px">pxc</a> <a href="/tags/rabbitmq/" style="font-size:10px">rabbitmq</a> <a href="/tags/redis/" style="font-size:10px">redis</a> <a href="/tags/redis-cluster/" style="font-size:10px">redis-cluster</a> <a href="/tags/replication/" style="font-size:10px">replication</a> <a href="/tags/sentinel/" style="font-size:15px">sentinel</a> <a href="/tags/springboot/" style="font-size:17.5px">springboot</a> <a href="/tags/xxl-job/" style="font-size:10px">xxl-job</a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章归档</h3><div class="nexmoe-widget"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul></div></div></aside><div class="nexmoe-copyright"> &copy; 2019 OneJane</div></div></div><div id="nexmoe-content"><div class="nexmoe-primary"><div class="nexmoe-post"><div class="nexmoe-post-cover"> <img src="https://i.loli.net/2019/08/20/gQJVIL6AjNT8qK9.jpg"><h1>linux</h1></div><div class="nexmoe-post-meta"><a><i class="nexmoefont icon-calendar-fill"></i> 2019年08月20日</a><a><i class="nexmoefont icon-areachart"></i> 4.4k 字</a><a><i class="nexmoefont icon-time-circle-fill"></i> 大概 22 分钟</a> <a class="nexmoefont icon-appstore-fill -link" href="/categories/系统/">系统</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/RocketMQ/">RocketMQ</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/gitlab/">gitlab</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/jenkins/">jenkins</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/linux/">linux</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/rabbitmq/">rabbitmq</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/sentinel/">sentinel</a></div><article><p>linux使用技巧及常规软件安装</p><a id="more"></a><h1 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h1><pre><code>du -h --max-depth=1  查看各文件夹大小
+nohup sh inotify3.sh &gt;&gt;333.out &amp; 后台执行脚本并把输出都指定文件 
+jobs -l 查看运行的后台进程
+fg 1 通过jobid将后台进程提取到前台运行
+ctrl + z 将暂停当前正在运行到进程，fg放入后台运行
+yum -c /etc/yum.conf --installroot=/usr/local --releasever=/  install lszrz      安装文件到其他目录</code></pre><h2 id="ekill"><a href="#ekill" class="headerlink" title="ekill"></a>ekill</h2><pre><code>vim /usr/local/bin/ekill
+ps aux | grep -e $* | grep -v grep | awk &#39;{print $2}&#39; | xargs -i kill {}</code></pre><p>chmod a+x /usr/local/bin/ekill 通过ekill删除进程</p><h1 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h1><h2 id="gitignore无效"><a href="#gitignore无效" class="headerlink" title="gitignore无效"></a>gitignore无效</h2><pre><code class="sql">git rm -r --cached . 
+git add . 
+git commit -m &#39;.gitignore&#39; 
+git push origin master</code></pre><h1 id="GitLab"><a href="#GitLab" class="headerlink" title="GitLab"></a>GitLab</h1><h2 id="方案1"><a href="#方案1" class="headerlink" title="方案1"></a>方案1</h2><pre><code>docker run \
+    --publish 1443:443 --publish 180:80 --publish 122:22 \
+    --name gitlab \
+    --volume /usr/local/docker/gitlab/config:/etc/gitlab \
+    --volume /usr/local/docker/gitlab/logs:/var/log/gitlab \
+    --volume /usr/local/docker/gitlab/data:/var/opt/gitlab \
+    gitlab/gitlab-ce</code></pre><h2 id="方案2"><a href="#方案2" class="headerlink" title="方案2"></a>方案2</h2><p>vim /usr/local/docker/gitlab/docker-compose.yml</p><pre><code>version: &#39;3&#39;
+services:
+    gitlab:
+      image: &#39;twang2218/gitlab-ce-zh:10.5&#39;
+      restart: always
+      hostname: &#39;192.168.2.5&#39;
+      container_name: gitlab
+      environment:
+        TZ: &#39;Asia/Shanghai&#39;
+        GITLAB_OMNIBUS_CONFIG: |
+          external_url &#39;http://192.168.2.5:180&#39;
+          gitlab_rails[&#39;gitlab_shell_ssh_port&#39;] = 2222
+          unicorn[&#39;port&#39;] = 8888
+          nginx[&#39;listen_port&#39;] = 8080
+      ports:
+        - &#39;180:8080&#39;
+        - &#39;8443:443&#39;
+        - &#39;2222:22&#39;
+      volumes:
+        - /usr/local/docker/gitlab/config:/etc/gitlab
+        - /usr/local/docker/gitlab/data:/var/opt/gitlab
+        - /usr/local/docker/gitlab/logs:/var/log/gitlab
+
+ERROR: error while removing network: network gitlab_default id e3f084651bcc6b6ca5d5b7fb122d0ef3aba108292989441abc82f14343fea827 has active endpoints
+docker network inspect gitlab_default
+docker network disconnect -f gitlab_default gitlab
+docker-compose down --remove-orphans
+docker-compose logs -ft gitlab
+配置邮箱
+vim /usr/local/docker/gitlab/config/gitlab.rb
+gitlab_rails[&#39;smtp_enable&#39;] = true
+gitlab_rails[&#39;smtp_address&#39;] = &quot;smtp.163.com&quot;
+gitlab_rails[&#39;smtp_port&#39;] = 25
+gitlab_rails[&#39;smtp_user_name&#39;] = &quot;m15806204096@163.com&quot;
+gitlab_rails[&#39;smtp_password&#39;] = &quot;codewj123456&quot;
+gitlab_rails[&#39;smtp_domain&#39;] = &quot;163.com&quot;
+gitlab_rails[&#39;smtp_authentication&#39;] = &quot;login&quot;
+gitlab_rails[&#39;smtp_enable_starttls_auto&#39;] = true
+gitlab_rails[&#39;smtp_tls&#39;] = false
+gitlab_rails[&#39;gitlab_email_from&#39;] = &quot;m15806204096@163.com&quot;
+user[&quot;git_user_email&quot;] = &quot;m15806204096@163.com&quot;</code></pre><p>root/123456 管理区域-&gt;设置-&gt;开启注册 注册时发送确认邮件<br>docker-compose restart<br>新增ssh密钥 ssh-keygen -t rsa -C “<a href="mailto:15806204096@163.com" target="_blank" rel="noopener">15806204096@163.com</a>“,将.ssh的公钥加入Gitlab的SSH密钥<br>访问 <a href="http://192.168.2.5:180/" target="_blank" rel="noopener">http://192.168.2.5:180/</a> root 12345678</p><h2 id="方案3"><a href="#方案3" class="headerlink" title="方案3"></a>方案3</h2><h3 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h3><pre><code>yum –y install git
+cd /usr/local
+mkdir git
+cd git
+git init --bare learngit.git
+useradd git
+passwd git
+chown -R git:git learngit.git
+vi /etc/passwd
+git:x:1000:1000::/home/git:/usr/bin/git-shell
+复制客户端的ssh-keygen -t rsa -C &quot;你的邮箱&quot; 获得的id_rsa.pub公钥到/root/.ssh/authorized_keys和/root/.ssh/authorized_keys</code></pre><blockquote><p>gitignore无效的解决方案</p></blockquote><pre><code>git rm -r --cached .
+git add .
+git commit -m &#39;.gitignore&#39;
+git push origin master
+*.cache
+*.cache.lock
+*.iml
+*.log
+**/target
+**/logs
+.idea
+**/.project
+**/.settings</code></pre><h3 id="gitlab安装"><a href="#gitlab安装" class="headerlink" title="gitlab安装"></a>gitlab安装</h3><pre><code>git config --global http.sslVerify false
+yum -y install curl policycoreutils openssh-server openssh-clients postfix
+systemctl start sshd
+systemctl start postfix
+systemctl enable sshd
+systemctl enable postfix
+curl -sS https://packages.gitlab.com/install/repositories/gitlab/gitlab-ce/script.rpm.sh | sudo bash
+yum -y install gitlab-ce    太慢的话使用清华的源，yum makecache再install
+
+vim  /etc/yum.repos.d/gitlab_gitlab-ce.repo
+[gitlab-ce]
+name=gitlab-ce
+baseurl=http://mirrors.tuna.tsinghua.edu.cn/gitlab-ce/yum/el6
+repo_gpgcheck=0
+gpgcheck=0
+enabled=1
+gpgkey=https://packages.gitlab.com/gpg.key
+
+mkdir -p /etc/gitlab/ssl
+openssl genrsa -out &quot;/etc/gitlab/ssl/gitlab.example.com.key&quot; 2048
+
+openssl req -new -key &quot;/etc/gitlab/ssl/gitlab.example.com.key&quot; -out &quot;/etc/gitlab/ssl/gitlab.example.com.csr&quot;
+Country Name (2 letter code) [XX]:cn
+State or Province Name (full name) []:bj
+Locality Name (eg, city) (Default City]:bj
+Organization Name (eg, company) [Default Company Ltd]:
+Organizational Unit Name (eg, section) []:
+Common Name (eg, your name or your server&#39;s hostname) []:gitlab.example.com
+Email Address (]:admin@example.com
+Please enter the following &#39;extra&#39; attributes
+to be sent with your certificate request
+A challenge password [):123456
+An optional company name []:</code></pre><h3 id="GitLab基本配置"><a href="#GitLab基本配置" class="headerlink" title="GitLab基本配置"></a>GitLab基本配置</h3><pre><code>openssl x509 -req -days 3650 -in &quot;/etc/gitlab/ssl/gitlab.example.com.csr&quot; -signkey &quot;/etc/gitlab/ssl/gitlab.example.com.key&quot; -out &quot;/etc/gitlab/ssl/gitlab.example.com.crt&quot;
+openssl dhparam -out /etc/gitlab/ssl/dhparams.pem 2048
+chmod 600 /etc/gitlab/ssl/*
+
+vim /etc/gitlab/gitlab.rb     
+将external_url &#39;http://gitlab.example.com&#39;的http修改为https
+将# nginx[&#39;redirect_http_to_https&#39;] = false的注释去掉，修改为nginx[&#39;redirect_http_to_https&#39;] = true
+将# nginx[&#39;ssl_certificate&#39;] = &quot;/etc/gitlab/ssl/#{node[&#39;fqdn&#39;]}.crt&quot;修改为# nginx[&#39;ssl_certificate&#39;] = &quot;/etc/gitlab/ssl/gitlab.example.com.crt&quot;
+将# nginx[&#39;ssl_certificate_key&#39;] = &quot;/etc/gitlab/ssl/#{node[&#39;fqdn&#39;]}.key&quot;修改为# nginx[&#39;ssl_certificate_key&#39;] = &quot;/etc/gitlab/ssl/gitlab.example.com.key&quot;
+将# nginx[&#39;ssl_dhparam&#39;] = nil 修改为# nginx[&#39;ssl_dhparam&#39;] = &quot;/etc/gitlab/ssl/dhparams.pem&quot;
+　　
+gitlab-ctl reconfigure
+vim /var/opt/gitlab/nginx/conf/gitlab-http.conf
+    在server_name下添加如下配置内容：rewrite ^(.*)$ https://$host$1 permanent;
+重启gitlab，使配置生效,gitlab-ctl restart，如遇到访问错误直接等待启动完成
+修改本地hosts文件    将gitlab服务器的地址添加 gitlab.example.com
+初始化时修改管理员密码，root 12345678
+git -c http.sslVerify=false clone https://gitlab.example.com/root/test-repo.git
+git add .
+#git config --global user.email &quot;admin@example.com&quot;
+#git config --global user.name &quot;admin&quot;
+git commit -m &#39;init&#39;
+git -c http.sslVerify=false pull origin master
+git -c http.sslVerify=false push origin master
+
+https://gitlab.example.com/admin/system_info        查看系统资源状态值
+https://gitlab.example.com/admin/logs        其中application.log记录了git用户的记录，production.log实时查看所有的访问链接
+https://gitlab.example.com/admin/users/new       创建用户</code></pre><p><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/%E5%88%9B%E5%BB%BA%E7%94%A8%E6%88%B71.png" alt="创建用户1"><br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/%E5%88%9B%E5%BB%BA%E7%94%A8%E6%88%B72.png" alt="创建用户2"><br><a href="https://gitlab.example.com/root/test-repo/project_members" target="_blank" rel="noopener">https://gitlab.example.com/root/test-repo/project_members</a> 修改指定项目的成员，在项目的manage access中，修改登录密码<br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/%E7%94%A8%E6%88%B7%E8%AE%BE%E7%BD%AE1.png" alt="用户设置1"><br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/%E7%94%A8%E6%88%B7%E8%AE%BE%E7%BD%AE2.png" alt="用户设置2"><br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/%E7%94%A8%E6%88%B7%E8%AE%BE%E7%BD%AE3.png" alt="用户设置3"></p><pre><code class="dev">rm -rf test-repo/
+git -c http.sslVerify=false clone https://gitlab.example.com/root/test-repo.git
+    dev
+    12345678
+cd test-repo/
+git checkout -b release-1.0
+git add .
+git commit -m &#39;release-1.0&#39;
+git -c http.sslVerify=false push origin release-1.0
+dev登录后create merge request
+lead登录将受到release-1.0的merge申请，点击merge后可以填写comment并提交</code></pre><p><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/%E5%90%88%E5%B9%B6%E8%AF%B7%E6%B1%821.png" alt="合并请求1"><br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/%E5%90%88%E5%B9%B6%E8%AF%B7%E6%B1%822.png" alt="合并请求2"></p><h1 id="Skywalking"><a href="#Skywalking" class="headerlink" title="Skywalking"></a>Skywalking</h1><pre><code>mkdir /data2/skywalking
+vim docker-compose.yml
+version: &#39;3.3&#39;
+services:
+  elasticsearch:
+    image: wutang/elasticsearch-shanghai-zone:6.3.2
+    container_name: elasticsearch
+    restart: always
+    ports:
+      - 191:9200
+      - 192:9300
+    environment:
+      cluster.name: elasticsearch
+docker-compose up -d
+https://mirrors.huaweicloud.com/apache/incubator/skywalking/6.0.0-beta/apache-skywalking-apm-incubating-6.0.0-beta.tar.gz
+tar zxf apache-skywalking-apm-incubating-6.0.0-beta.tar.gz
+cd apache-skywalking-apm-incubating
+vim apache-skywalking-apm-bin/config/application.yml        注释h2,打开es并修改clusterNodes地址
+#  h2:
+#    driver: ${SW_STORAGE_H2_DRIVER:org.h2.jdbcx.JdbcDataSource}
+#    url: ${SW_STORAGE_H2_URL:jdbc:h2:mem:skywalking-oap-db}
+#    user: ${SW_STORAGE_H2_USER:sa}
+  elasticsearch:
+    nameSpace: ${SW_NAMESPACE:&quot;&quot;}
+    clusterNodes: ${SW_STORAGE_ES_CLUSTER_NODES:192.168.2.7:191}
+    indexShardsNumber: ${SW_STORAGE_ES_INDEX_SHARDS_NUMBER:2}
+    indexReplicasNumber: ${SW_STORAGE_ES_INDEX_REPLICAS_NUMBER:0}
+    # Batch process setting, refer to https://www.elastic.co/guide/en/elasticsearch/client/java-api/5.5/java-docs-bulk-processor.html
+    bulkActions: ${SW_STORAGE_ES_BULK_ACTIONS:2000} # Execute the bulk every 2000 requests
+    bulkSize: ${SW_STORAGE_ES_BULK_SIZE:20} # flush the bulk every 20mb
+    flushInterval: ${SW_STORAGE_ES_FLUSH_INTERVAL:10} # flush the bulk every 10 seconds whatever the number of requests
+    concurrentRequests: ${SW_STORAGE_ES_CONCURRENT_REQUESTS:2} # the number of concurrent requests
+apache-skywalking-apm-incubating/webapp/webapp.yml
+port 193
+./apache-skywalking-apm-incubating/bin/startup.sh</code></pre><h1 id="Sentinel"><a href="#Sentinel" class="headerlink" title="Sentinel"></a>Sentinel</h1><pre><code>cd /data2/ &amp;&amp; git clone https://github.com/alibaba/Sentinel.git
+cd Sentinel/
+mvn clean package -DskipTests
+cd sentinel-dashboard/target/
+nohup java -Dserver.port=190 -Dcsp.sentinel.dashboard.server=localhost:190 -Dproject.name=sentinel-dashboard -jar sentinel-dashboard.jar &amp;</code></pre><h1 id="安装黑体字体"><a href="#安装黑体字体" class="headerlink" title="安装黑体字体"></a>安装黑体字体</h1><pre><code class="dts">yum  -y  install  fontconfig
+fc-list :lang=zh
+cd /usr/share/fonts &amp;&amp; mkdir chinese
+chmod -R 755 /usr/share/fonts/chinese
+cd chinese/ &amp;&amp; rz simhei.ttf fs_GB2312.ttf fzxbsjt.ttf
+yum -y install ttmkfdir
+ttmkfdir -e /usr/share/X11/fonts/encodings/encodings.dir
+vim /etc/fonts/fonts.conf
+&lt;dir&gt;/usr/share/fonts&lt;/dir&gt;
+&lt;dir&gt;/usr/share/fonts/chinese&lt;/dir&gt;
+&lt;dir&gt;/usr/share/X11/fonts/Type1&lt;/dir&gt; &lt;dir&gt;/usr/share/X11/fonts/TTF&lt;/dir&gt; &lt;dir&gt;/usr/local/share/fonts&lt;/dir&gt;
+&lt;dir prefix=&quot;xdg&quot;&gt;fonts&lt;/dir&gt;
+&lt;!-- the following element will be removed in the future --&gt;
+&lt;dir&gt;~/.fonts&lt;/dir&gt;
+
+fc-cache
+fc-list :lang=zh</code></pre><h1 id="RocketMQ"><a href="#RocketMQ" class="headerlink" title="RocketMQ"></a>RocketMQ</h1><pre><code>mkdir /data2/RocketMQ
+vim docker-compose.yml
+version: &#39;3.5&#39;
+services:
+  rmqnamesrv:
+    image: foxiswho/rocketmq:server
+    container_name: rmqnamesrv
+    ports:
+      - 9876:9876
+    volumes:
+      - ./data/logs:/opt/logs
+      - ./data/store:/opt/store
+    networks:
+        rmq:
+          aliases:
+            - rmqnamesrv
+
+
+
+
+  rmqbroker:
+    image: foxiswho/rocketmq:broker
+    container_name: rmqbroker
+    ports:
+      - 10909:10909
+      - 10911:10911
+    volumes:
+      - ./data/logs:/opt/logs
+      - ./data/store:/opt/store
+      - ./data/brokerconf/broker.conf:/etc/rocketmq/broker.conf
+    environment:
+        NAMESRV_ADDR: &quot;rmqnamesrv:9876&quot;
+        JAVA_OPTS: &quot; -Duser.home=/opt&quot;
+        JAVA_OPT_EXT: &quot;-server -Xms128m -Xmx128m -Xmn128m&quot;
+    command: mqbroker -c /etc/rocketmq/broker.conf
+    depends_on:
+      - rmqnamesrv
+    networks:
+      rmq:
+        aliases:
+          - rmqbroker
+
+
+
+
+  rmqconsole:
+    image: styletang/rocketmq-console-ng
+    container_name: rmqconsole
+    ports:
+      - 8088:8080
+    environment:
+        JAVA_OPTS: &quot;-Drocketmq.namesrv.addr=rmqnamesrv:9876 -Dcom.rocketmq.sendMessageWithVIPChannel=false&quot;
+    depends_on:
+      - rmqnamesrv
+    networks:
+      rmq:
+        aliases:
+          - rmqconsole
+
+
+
+
+networks:
+  rmq:
+    name: rmq
+    driver: bridge
+
+
+vim /data2/RocketMQ/data/brokerconf/broker.conf
+brokerClusterName=DefaultCluster
+brokerName=broker-a
+brokerId=0
+brokerIP1=192.168.2.7
+defaultTopicQueueNums=4
+autoCreateTopicEnable=true
+autoCreateSubscriptionGroup=true
+listenPort=10911
+deleteWhen=04
+fileReservedTime=120
+mapedFileSizeCommitLog=1073741824
+mapedFileSizeConsumeQueue=300000
+diskMaxUsedSpaceRatio=88
+maxMessageSize=65536
+brokerRole=ASYNC_MASTER
+flushDiskType=ASYNC_FLUSH
+
+
+docker-compose up -d
+docker-compose down
+http://192.168.2.7:8088/</code></pre><h1 id="RabbitMQ"><a href="#RabbitMQ" class="headerlink" title="RabbitMQ"></a>RabbitMQ</h1><p>docker-compose.yml</p><pre><code>version: &#39;3&#39;
+services:
+  rabbitmq:
+    image: rabbitmq:management-alpine
+    container_name: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+    restart: always
+    ports:
+      - &quot;15672:15672&quot;
+      - &quot;5672:5672&quot;
+    logging:
+      driver: &quot;json-file&quot;
+      options:
+        max-size: &quot;200k&quot;
+        max-file: &quot;10&quot;</code></pre><p>docker-compose up -d,5672为rabbitmq的服务端口，15672为rabbitmq的web管理界面端口。</p><h1 id="jenkins"><a href="#jenkins" class="headerlink" title="jenkins"></a>jenkins</h1><pre><code>rpm -qa|grep jenkins    搜索已安装
+rpm -e --nodeps jenkins-2.83-1.1.noarch
+find / -name jenkins*|xargs rm -rf
+rpm -ivh jdk-8u171-linux-x64.rpm        安装java
+http://mirrors.jenkins.io/redhat/jenkins-2.180-1.1.noarch.rpm
+rpm -ivh jenkins-2.180-1.1.noarch.rpm       安装jenkins新版本
+vi /etc/sysconfig/jenkins
+JENKINS_USER=&quot;root&quot;
+JENKINS_PORT=&quot;181&quot;
+vim /etc/rc.d/init.d/jenkins 修改candidates
+/data2/jdk/bin/java
+systemctl daemon-reload
+systemctl restart jenkins
+http://192.168.2.7:181
+cat /var/lib/jenkins/secrets/initialAdminPassword    初始密码串并安装默认的插件
+vim /var/lib/jenkins/hudson.model.UpdateCenter.xml    必须在填写完密码后修改
+改https为http或者改为http://mirror.xmission.com/jenkins/updates/update-center.json
+systemctl restart jenkins
+若页面空白/var/lib/jenkins/config.xml
+&lt;authorizationStrategy class=&quot;hudson.security.AuthorizationStrategy$Unsecured&quot;/&gt;
+&lt;securityRealm class=&quot;hudson.security.SecurityRealm$None&quot;/&gt;
+
+
+系统管理-全局工具配置:/data2/maven    /data2/jdk  /data2/maven/conf/settings.xml
+安装插件：Maven Integration，GitHub plugin，Git plugin
+新建任务时，丢弃旧的构建，保持构建的天数3，保持构建的最大个数5</code></pre><p><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1564814498470.png" alt="enter description here"></p><h2 id="定时删除none的docker镜像"><a href="#定时删除none的docker镜像" class="headerlink" title="定时删除none的docker镜像"></a>定时删除none的docker镜像</h2><p>手动执行：docker rmi $(docker images -f “dangling=true” -q)<br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565602173041.png" alt="enter description here"><br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565602184220.png" alt="enter description here"><br>定时构建语法：</p><pre><code>每天凌晨2:00跑一次 
+H 2  * * *
+
+每隔5分钟构建一次
+H/5 * * * *
+
+每两小时构建一次
+H H/2 * * *
+
+每天中午12点定时构建一次
+H 12 * * *   或0 12 * * *（0这种写法也被H替代了）
+
+每天下午18点前定时构建一次
+H 18 * * *
+
+每15分钟构建一次
+H/15 * * * *   或*/5 * * * *(这种方式已经被第一种替代了，jenkins也不推荐这种写法了)
+
+周六到周日，18点-23点，三小时构建一次
+H 18-23/3 * * 6-7 </code></pre><p>shell脚本</p><pre><code>echo ---------------Stop-Rm-Containers...------------------
+docker stop `docker ps -a| grep expire | awk &#39;{print $1}&#39;`|xargs docker rm 
+echo ---------------Clear-Images...------------------
+clearImagesList=$(docker images -f &quot;dangling=true&quot; -q)
+if [ ! -n &quot;$clearImagesList&quot; ]; then
+echo &quot;no images need  clean up.&quot;
+else
+docker rmi $(docker images -f &quot;dangling=true&quot; -q)
+echo &quot;clear success.&quot;
+fi
+</code></pre><h1 id="cron"><a href="#cron" class="headerlink" title="cron"></a>cron</h1><pre><code class="lsl">              每隔5秒执行一次：*/5 * * * * ?
+
+                 每隔1分钟执行一次：0 */1 * * * ?
+
+                 每天23点执行一次：0 0 23 * * ?
+
+                 每天凌晨1点执行一次：0 0 1 * * ?
+
+                 每月1号凌晨1点执行一次：0 0 1 1 * ?
+
+                 每月最后一天23点执行一次：0 0 23 L * ?
+
+                 每周星期天凌晨1点实行一次：0 0 1 ? * L
+
+                 在26分、29分、33分执行一次：0 26,29,33 * * * ?
+
+                 每天的0点、13点、18点、21点都执行一次：0 0 0,13,18,21 * * ?</code></pre><h1 id="top"><a href="#top" class="headerlink" title="top"></a>top</h1><p>top -d 2 -c -p 123456 //每隔2秒显示pid是12345的进程的资源使用情况，并显式该进程启动的命令行参数</p><pre><code>M —根据驻留内存大小进行排序 
+P —根据CPU使用百分比大小进行排序 
+T —根据时间/累计时间进行排序 
+c —切换显示命令名称和完整命令行 
+t —切换显示进程和CPU信息 
+m —切换显示内存信息 
+l —切换显示平均负载和启动时间信息 
+o —改变显示项目的顺序 
+f —从当前显示中添加或删除项目 
+S —切换到累计模式 
+s —改变两次刷新之间的延迟时间。系统将提示用户输入新的时间，单位为s。如果有小数，就换算成ms。
+q —退出top程序 
+i —忽略闲置和僵尸进程。这是一个开关式的命令 
+k —终止一个进程</code></pre><p>更改显示内容通过 f 键可以选择显示的内容。按 f 键之后会显示列的列表，按 a-z 即可显示或隐藏对应的列，最后按回车键确定。</p><h2 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h2><pre><code class="tap">top - 01:06:48 up  1:22,  1 user,  load average: 0.06, 0.60, 0.48
+Tasks:  29 total,   1 running,  28 sleeping,   0 stopped,   0 zombie
+Cpu(s):  0.3% us,  1.0% sy,  0.0% ni, 98.7% id,  0.0% wa,  0.0% hi,  0.0% si
+Mem:    191272k total,   173656k used,    17616k free,    22052k buffers
+Swap:   192772k total,        0k used,   192772k free,   123988k cached
+
+PID USER      PR  NI  VIRT  RES  SHR S %CPU %MEM    TIME+  COMMAND
+root      16   0  7976 2456 1980 S  0.7  1.3   0:11.03 sshd
+root      16   0  2128  980  796 R  0.7  0.5   0:02.72 top
+root      16   0  1992  632  544 S  0.0  0.3   0:00.90 init
+root      34  19     0    0    0 S  0.0  0.0   0:00.00 ksoftirqd/0
+root      RT   0     0    0    0 S  0.0  0.0   0:00.00 watchdog/0</code></pre><p>统计信息区前五行是系统整体的统计信息。第一行是任务队列信息，同 uptime 命令的执行结果。其内容如下：</p><pre><code class="css">01:06:48    当前时间
+up 1:22    系统运行时间，格式为时:分
+1 user    当前登录用户数
+load average: 0.06, 0.60, 0.48    系统负载，即任务队列的平均长度。三个数值分别为 1分钟、5分钟、15分钟前到现在的平均值。</code></pre><p>第二、三行为进程和CPU的信息。当有多个CPU时，这些内容可能会超过两行。内容如下：</p><pre><code>total 进程总数
+running 正在运行的进程数
+sleeping 睡眠的进程数
+stopped 停止的进程数
+zombie 僵尸进程数
+Cpu(s): 
+0.3% us 用户空间占用CPU百分比
+1.0% sy 内核空间占用CPU百分比
+0.0% ni 用户进程空间内改变过优先级的进程占用CPU百分比
+98.7% id 空闲CPU百分比
+0.0% wa 等待输入输出的CPU时间百分比
+0.0%hi：硬件CPU中断占用百分比
+0.0%si：软中断占用百分比
+0.0%st：虚拟机占用百分比</code></pre><p>最后两行为内存信息。内容如下：</p><pre><code>Mem:
+191272k total    物理内存总量
+173656k used    使用的物理内存总量
+17616k free    空闲内存总量
+22052k buffers    用作内核缓存的内存量
+Swap: 
+192772k total    交换区总量
+0k used    使用的交换区总量
+192772k free    空闲交换区总量
+123988k cached    缓冲的交换区总量,内存中的内容被换出到交换区，而后又被换入到内存，但使用过的交换区尚未被覆盖，该数值即为这些内容已存在于内存中的交换区的大小,相应的内存再次被换出时可不必再对交换区写入。</code></pre><p>进程信息区统计信息区域的下方显示了各个进程的详细信息。首先来认识一下各列的含义</p><pre><code>序号  列名    含义
+a    PID     进程id
+b    PPID    父进程id
+c    RUSER   Real user name
+d    UID     进程所有者的用户id
+e    USER    进程所有者的用户名
+f    GROUP   进程所有者的组名
+g    TTY     启动进程的终端名。不是从终端启动的进程则显示为 ?
+h    PR      优先级
+i    NI      nice值。负值表示高优先级，正值表示低优先级
+j    P       最后使用的CPU，仅在多CPU环境下有意义
+k    %CPU    上次更新到现在的CPU时间占用百分比
+l    TIME    进程使用的CPU时间总计，单位秒
+m    TIME+   进程使用的CPU时间总计，单位1/100秒
+n    %MEM    进程使用的物理内存百分比
+o    VIRT    进程使用的虚拟内存总量，单位kb。VIRT=SWAP+RES
+p    SWAP    进程使用的虚拟内存中，被换出的大小，单位kb。
+q    RES     进程使用的、未被换出的物理内存大小，单位kb。RES=CODE+DATA
+r    CODE    可执行代码占用的物理内存大小，单位kb
+s    DATA    可执行代码以外的部分(数据段+栈)占用的物理内存大小，单位kb
+t    SHR     共享内存大小，单位kb
+u    nFLT    页面错误次数
+v    nDRT    最后一次写入到现在，被修改过的页面数。
+w    S       进程状态(D=不可中断的睡眠状态,R=运行,S=睡眠,T=跟踪/停止,Z=僵尸进程)
+x    COMMAND 命令名/命令行
+y    WCHAN   若该进程在睡眠，则显示睡眠中的系统函数名
+z    Flags   任务标志，参考 sched.h</code></pre><blockquote><p>VIRT：virtual memory usage。Virtual这个词很神，一般解释是：virtual adj.虚的, 实质的,[物]有效的, 事实上的。到底是虚的还是实的？让Google给Define之后，将就明白一点，就是这东西还是非物质的，但是有效果的，不发生在真实世界的，发生在软件世界的等等。这个内存使用就是一个应用占有的地址空间，只是要应用程序要求的，就全算在这里，而不管它真的用了没有。写程序怕出错，又不在乎占用的时候，多开点内存也是很正常的。<br>RES：resident memory usage。常驻内存。这个值就是该应用程序真的使用的内存，但还有两个小问题，一是有些东西可能放在交换盘上了（SWAP），二是有些内存可能是共享的。<br>SHR：shared memory。共享内存。就是说这一块内存空间有可能也被其他应用程序使用着；而Virt － Shr似乎就是这个程序所要求的并且没有共享的内存空间。<br>DATA：数据占用的内存。如果top没有显示，按f键可以显示出来。这一块是真正的该程序要求的数据空间，是真正在运行中要使用的。<br>SHR是一个潜在的可能会被共享的数字，如果只开一个程序，也没有别人共同使用它；VIRT里面的可能性更多，比如它可能计算了被许多X的库所共享的内存；RES应该是比较准确的，但不含有交换出去的空间；但基本可以说RES是程序当前使用的内存量。</p></blockquote><h1 id="Q1-bash-fork-Cannot-allocate-memory"><a href="#Q1-bash-fork-Cannot-allocate-memory" class="headerlink" title="Q1:-bash: fork: Cannot allocate memory"></a>Q1:-bash: fork: Cannot allocate memory</h1><p>进程数满了,echo 1000000 &gt; /proc/sys/kernel/pid_max,echo “kernel.pid_max=1000000 “ &gt;&gt; /etc/sysctl.conf,sysctl -p<br>top:展示进程视图，监控服务器进程数值默认进入top时，各进程是按照CPU的占用量来排序的,-f查看实际内存占用量</p><p>详情见：<br><a href="https://github.com/OneJane/blog" target="_blank" rel="noopener">https://github.com/OneJane/blog</a></p></article><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a> <span class="donate_txt">↑<br> 欢迎投食,求鼓励，求支持！</span><br></div><div id="donate_guide" class="donate_bar center hidden"> <img src="/images/alipay.png" alt="支付宝打赏"> <img src="/images/wechatpay.png" alt="微信打赏"></div><script type="text/javascript">document.getElementById("btn_donate").onclick=function(){$("#donate_board").addClass("hidden"),$("#donate_guide").removeClass("hidden")}</script></div><div class="nexmoe-post-copyright"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i> <strong>本文作者：</strong>OneJane<br> <strong>本文链接：</strong><a href="https://onejane.github.io/2019/08/20/linux/" title="https://onejane.github.io/2019/08/20/linux/" target="_blank" rel="noopener">https://onejane.github.io/2019/08/20/linux/</a><br> <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可</div><section class="nexmoe-comment"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css"><div id="gitalk"></div><script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script><script type="text/javascript">var gitalk=new Gitalk({clientID:"e677e59382e1c7a468fd",clientSecret:"717d041bc4ab749f069314862232cfb6ec8adc15",id:decodeURI(window.location.pathname),repo:"onejane.github.io",owner:"onejane",admin:"onejane"});gitalk.render("gitalk")</script></section></div></div></div><script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/smoothscroll-for-websites@1.4.9/SmoothScroll.min.js"></script><script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js"></script><script>hljs.initHighlightingOnLoad()</script><script src="/js/app.js?v=1566316803635"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.1.0/lazysizes.min.js"></script><div hidden><script type="text/javascript" src="https://js.users.51.la/20279757.js"></script></div></body><script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script></html>

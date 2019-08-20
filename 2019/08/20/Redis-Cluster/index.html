@@ -1,0 +1,264 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.9.0"><title>Redis-Cluster - OneJane</title><meta charset="UTF-8"><meta name="description" content><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><link rel="shortcut icon" href="/images/a.ico" type="image/png"><meta name="description" content="redis-cluster集群搭建使用"><meta name="keywords" content="docker,redis-cluster,springboot"><meta property="og:type" content="article"><meta property="og:title" content="Redis-Cluster"><meta property="og:url" content="https://onejane.github.io/2019/08/20/Redis-Cluster/index.html"><meta property="og:site_name" content="OneJane"><meta property="og:description" content="redis-cluster集群搭建使用"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2019-08-20T10:46:21.835Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Redis-Cluster"><meta name="twitter:description" content="redis-cluster集群搭建使用"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/css/mdui.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.15.8/styles/atom-one-dark.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1038733_0xvrvpg9c0r.css"><link rel="stylesheet" href="/css/style.css?v=1566316803684"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script></head><body class="mdui-drawer-body-left"><div id="nexmoe-background"><div class="nexmoe-bg" style="background-image:url(https://i.loli.net/2019/01/13/5c3aec85a4343.jpg)"></div><div class="mdui-appbar mdui-shadow-0"><div class="mdui-toolbar"> <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a><div class="mdui-toolbar-spacer"></div> <a href="/" title="OneJane" class="mdui-btn mdui-btn-icon"><img src="https://i.loli.net/2019/08/20/UIhTqdQiPasxLtr.jpg"></a></div></div></div><div id="nexmoe-header"><div class="nexmoe-drawer mdui-drawer" id="drawer"><div class="nexmoe-avatar mdui-ripple"> <a href="/" title="OneJane"><img src="https://i.loli.net/2019/08/20/UIhTqdQiPasxLtr.jpg" alt="OneJane"></a></div><div class="nexmoe-count"><div><span>文章</span>15</div><div><span>标签</span>24</div><div><span>分类</span>8</div></div><ul class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}"><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页"><i class="mdui-list-item-icon nexmoefont icon-home"></i><div class="mdui-list-item-content"> 回到首页</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="关于博客"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i><div class="mdui-list-item-content"> 关于博客</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/py.html" title="我的朋友"><i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i><div class="mdui-list-item-content"> 我的朋友</div></a></ul><aside id="nexmoe-sidebar"><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">社交按钮</h3><div class="nexmoe-widget nexmoe-social"><a class="mdui-ripple" href="https://www.zhihu.com/people/codewj/activities" target="_blank" mdui-tooltip="{content: 'zhihu'}" style="color:#e76a8d;background-color:rgba(231,106,141,.15)"><i class="nexmoefont icon-zhihu"></i></a><a class="mdui-ripple" href="https://github.com/OneJane" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color:#191717;background-color:rgba(25,23,23,.15)"><i class="nexmoefont icon-github"></i></a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章分类</h3><div class="nexmoe-widget"><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/定时器/">定时器</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/持续集成/">持续集成</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/注册中心/">注册中心</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高可用/">高可用</a><span class="category-list-count">4</span></li></ul></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">标签云</h3><div class="nexmoe-widget tagcloud"> <a href="/tags/Docker/" style="font-size:10px">Docker</a> <a href="/tags/GitLab/" style="font-size:10px">GitLab</a> <a href="/tags/Haproxy/" style="font-size:10px">Haproxy</a> <a href="/tags/Keepalived/" style="font-size:10px">Keepalived</a> <a href="/tags/Replication/" style="font-size:10px">Replication</a> <a href="/tags/RocketMQ/" style="font-size:10px">RocketMQ</a> <a href="/tags/Spring-Cloud-Alibaba/" style="font-size:10px">Spring Cloud Alibaba</a> <a href="/tags/docker/" style="font-size:20px">docker</a> <a href="/tags/elastisearch/" style="font-size:10px">elastisearch</a> <a href="/tags/gitlab/" style="font-size:10px">gitlab</a> <a href="/tags/jenkins/" style="font-size:12.5px">jenkins</a> <a href="/tags/linux/" style="font-size:10px">linux</a> <a href="/tags/maven/" style="font-size:12.5px">maven</a> <a href="/tags/mybatis/" style="font-size:10px">mybatis</a> <a href="/tags/nexmoe/" style="font-size:10px">nexmoe</a> <a href="/tags/partition/" style="font-size:10px">partition</a> <a href="/tags/pxc/" style="font-size:10px">pxc</a> <a href="/tags/rabbitmq/" style="font-size:10px">rabbitmq</a> <a href="/tags/redis/" style="font-size:10px">redis</a> <a href="/tags/redis-cluster/" style="font-size:10px">redis-cluster</a> <a href="/tags/replication/" style="font-size:10px">replication</a> <a href="/tags/sentinel/" style="font-size:15px">sentinel</a> <a href="/tags/springboot/" style="font-size:17.5px">springboot</a> <a href="/tags/xxl-job/" style="font-size:10px">xxl-job</a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章归档</h3><div class="nexmoe-widget"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul></div></div></aside><div class="nexmoe-copyright"> &copy; 2019 OneJane</div></div></div><div id="nexmoe-content"><div class="nexmoe-primary"><div class="nexmoe-post"><div class="nexmoe-post-cover"> <img src="https://i.loli.net/2019/08/20/HuKoFyb6XWBI8Yf.jpg"><h1>Redis-Cluster</h1></div><div class="nexmoe-post-meta"><a><i class="nexmoefont icon-calendar-fill"></i> 2019年08月20日</a><a><i class="nexmoefont icon-areachart"></i> 1.7k 字</a><a><i class="nexmoefont icon-time-circle-fill"></i> 大概 8 分钟</a> <a class="nexmoefont icon-appstore-fill -link" href="/categories/数据库/">数据库</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/docker/">docker</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/redis-cluster/">redis-cluster</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/springboot/">springboot</a></div><article><p>redis-cluster集群搭建使用</p><a id="more"></a><blockquote><p>支撑多个master node，每个master挂载多个slave，master写对应slave读，每个master都有slave节点，若挂掉则将某个slave转为master。<br>与相比Sentinel（哨兵）实现的高可用，集群（cluster）更多的是强调数据的分片或者是节点的伸缩性，如果在集群的主节点上加入对应的从节点，集群还可以自动故障转移。<br>主从复制： 通过把这个RDB文件或AOF文件传给slave服务器，slave服务器重新加载RDB文件，来实现复制的功能！当建立一个从服务器后，从服务器会想主服务器发送一个SYNC的命令，主服务器接收到SYNC命令之后会执行BGSAVE，然后保存到RDB文件，然后发送到从服务器！收到RDB文件然后就载入到内存！</p></blockquote><blockquote><p>Redis 集群中内置了 16384 个哈希槽，当需要在 Redis 集群中放置一个 key-value 时，redis 先对 key 使用 crc16 算法算出一个结果，然后把结果对 16384 求余数，这样每个 key 都会对应一个编号在 0-16383 之间的哈希槽，redis 会根据节点数量大致均等的将哈希槽映射到不同的节点</p></blockquote><blockquote><p>集群中所有master参与,如果半数以上master节点与master节点通信超过(cluster-node-timeout),认为当前master节点挂掉.<br>如果集群任意master挂掉,且当前master没有slave.集群进入fail状态,也可以理解成集群的slot映射[0-16383]不完成时进入fail状态<br>如果集群超过半数以上master挂掉，无论是否有slave集群进入fail状态.</p></blockquote><h1 id="Sentinel和Cluster区别"><a href="#Sentinel和Cluster区别" class="headerlink" title="Sentinel和Cluster区别"></a>Sentinel和Cluster区别</h1><blockquote><p>Redis-Sentinel(哨兵模式)是Redis官方推荐的高可用性(HA)解决方案，当用Redis做Master-slave的高可用方案时，假如master宕机了，Redis本身(包括它的很多客户端)都没有实现自动进行主备切换，而Redis-sentinel本身也是一个独立运行的进程，它能监控多个master-slave集群，发现master宕机后能进行自动切换。</p></blockquote><blockquote><p>Redis-Cluster当遇到单机内存、并发、流量等瓶颈时，可以采用Cluster架构达到负载均衡的目的。分布式集群首要解决把整个数据集按照分区规则映射到多个节点的问题，即把数据集划分到多个节点上，每个节点负责整个数据的一个子集。</p></blockquote><h1 id="多机集群"><a href="#多机集群" class="headerlink" title="多机集群"></a>多机集群</h1><p>redis-cluster，也叫分布式redis集群，可以有多个master，数据分片分布在这些master上。</p><h2 id="192-168-2-5"><a href="#192-168-2-5" class="headerlink" title="192.168.2.5"></a>192.168.2.5</h2><p>vim /usr/local/docker/redis/docker-compose.yml</p><pre><code>version: &#39;3&#39;
+
+services:
+  redis1:
+    image: publicisworldwide/redis-cluster
+    container_name: redis1
+    network_mode: host
+    restart: always
+    volumes:
+     - ./8001/data:/data
+    environment:
+     - REDIS_PORT=8001
+
+
+  redis2:
+    image: publicisworldwide/redis-cluster
+    container_name: redis2
+    network_mode: host
+    restart: always
+    volumes:
+     - ./8002/data:/data
+    environment:
+     - REDIS_PORT=8002
+
+
+  redis3:
+    image: publicisworldwide/redis-cluster
+    container_name: redis3
+    network_mode: host
+    restart: always
+    volumes:
+     - ./8003/data:/data
+    environment:
+     - REDIS_PORT=8003</code></pre><p>docker-compose up -d</p><h2 id="192-168-2-7"><a href="#192-168-2-7" class="headerlink" title="192.168.2.7"></a>192.168.2.7</h2><p>vim /usr/local/docker/redis/docker-compose.yml</p><pre><code>version: &#39;3&#39;
+
+services:
+  redis1:
+    image: publicisworldwide/redis-cluster
+    network_mode: host
+    container_name: redis4
+    restart: always
+    volumes:
+     - ./8004/data:/data
+    environment:
+     - REDIS_PORT=8004
+
+
+  redis2:
+    image: publicisworldwide/redis-cluster
+    network_mode: host
+    container_name: redis5
+    restart: always
+    volumes:
+     - ./8005/data:/data
+    environment:
+     - REDIS_PORT=8005
+
+
+  redis3:
+    image: publicisworldwide/redis-cluster
+    network_mode: host
+    container_name: redis6
+    restart: always
+    volumes:
+     - ./8006/data:/data
+    environment:
+     - REDIS_PORT=8006</code></pre><p>docker-compose up -d</p><h1 id="启动方式"><a href="#启动方式" class="headerlink" title="启动方式"></a>启动方式</h1><h2 id="直接启动"><a href="#直接启动" class="headerlink" title="直接启动"></a>直接启动</h2><pre><code>docker run --rm -it inem0o/redis-trib create --replicas 1 192.168.2.5:8001 192.168.2.5:8002 192.168.2.5:8003 192.168.2.7:8004 192.168.2.7:8005 192.168.2.7:8006
+
+docker exec -it redis1 redis-cli -h 127.0.0.1 -p 8001 -c
+set a 100
+cluster info
+cluster nodes</code></pre><blockquote><p>自动指定master slave</p></blockquote><h2 id="指定master"><a href="#指定master" class="headerlink" title="指定master"></a>指定master</h2><pre><code>docker run --rm -it inem0o/redis-trib create  192.168.2.5:8001 192.168.2.5:8002 192.168.2.5:8003
+
+docker run --rm -it inem0o/redis-trib add-node --slave --master-id 84c3b7ecbc4933e1368a6927f26c79ecc76810b3 192.168.2.7:8004 192.168.2.5:8001
+docker run --rm -it inem0o/redis-trib add-node --slave --master-id 716f11f2971e9494183937abd61f7a4baf0b3959 192.168.2.7:8005 192.168.2.5:8002 
+docker run --rm -it inem0o/redis-trib add-node --slave --master-id c93060613a8f1531c82b97d97eeac402048f0b25 192.168.2.7:8006 192.168.2.5:8003
+
+
+docker run --rm -it inem0o/redis-trib info 192.168.2.5:8001
+docker run --rm -it inem0o/redis-trib help</code></pre><blockquote><p>若同一台宿主机，不想使用host模式同一台，也可以把network_mode去掉，但就要加ports映射。redis-cluster的节点端口共分为2种，一种是节点提供服务的端口，如6379；一种是节点间通信的端口，固定格式为：10000+6379。</p></blockquote><pre><code>docker-compose.yml
+version: &#39;3&#39;
+
+
+services:
+redis1:
+  image: publicisworldwide/redis-cluster
+  restart: always
+  volumes:
+   - /app/app/redis/8001/data:/data
+  environment:
+   - REDIS_PORT=8001
+  ports:
+    - &#39;8001:8001&#39;
+    - &#39;18001:18001&#39;
+
+redis2:
+  image: publicisworldwide/redis-cluster
+  restart: always
+  volumes:
+   - /app/app/redis/8002/data:/data
+  environment:
+   - REDIS_PORT=8002
+  ports:
+    - &#39;8002:8002&#39;
+    - &#39;18002:18002&#39;
+
+redis3:
+  image: publicisworldwide/redis-cluster
+  restart: always
+  volumes:
+   - /app/app/redis/8003/data:/data
+  environment:
+   - REDIS_PORT=8003
+  ports:
+    - &#39;8003:8003&#39;
+    - &#39;18003:18003&#39;
+
+redis4:
+  image: publicisworldwide/redis-cluster
+  restart: always
+  volumes:
+   - /app/app/redis/8004/data:/data
+  environment:
+   - REDIS_PORT=8004
+  ports:
+    - &#39;8004:8004&#39;
+    - &#39;18004:18004&#39;
+
+redis5:
+  image: publicisworldwide/redis-cluster
+  restart: always
+  volumes:
+   - /app/app/redis/8005/data:/data
+  environment:
+   - REDIS_PORT=8005
+  ports:
+    - &#39;8005:8005&#39;
+    - &#39;18005:18005&#39;
+
+redis6:
+  image: publicisworldwide/redis-cluster
+  restart: always
+  volumes:
+   - /app/app/redis/8006/data:/data
+  environment:
+   - REDIS_PORT=8006
+  ports:
+    - &#39;8006:8006&#39;
+    - &#39;18006:18006&#39;</code></pre><h1 id="自定义Redis集群"><a href="#自定义Redis集群" class="headerlink" title="自定义Redis集群"></a>自定义Redis集群</h1><h2 id="制作redis镜像"><a href="#制作redis镜像" class="headerlink" title="制作redis镜像"></a>制作redis镜像</h2><p>vim entrypoint.sh</p><pre><code>#!/bin/sh
+#只作用于当前进程,不作用于其创建的子进程
+set -e
+#$0--Shell本身的文件名 $1--第一个参数 $@--所有参数列表
+# allow the container to be started with `--user`
+if [ &quot;$1&quot; = &#39;redis-server&#39; -a &quot;$(id -u)&quot; = &#39;0&#39; ]; then
+    sed -i &#39;s/REDIS_PORT/&#39;$REDIS_PORT&#39;/g&#39; /usr/local/etc/redis.conf
+    chown -R redis .  #改变当前文件所有者
+    exec gosu redis &quot;$0&quot; &quot;$@&quot;  #gosu是sudo轻量级”替代品”
+fi
+
+exec &quot;$@&quot;</code></pre><p>vim redis.conf</p><pre><code>#端口
+port REDIS_PORT
+#开启集群
+cluster-enabled yes
+#配置文件
+cluster-config-file nodes.conf
+cluster-node-timeout 5000
+#更新操作后进行日志记录
+appendonly yes
+#设置主服务的连接密码
+# masterauth
+#设置从服务的连接密码
+# requirepass</code></pre><p>vi Dockerfile</p><pre><code>#基础镜像
+FROM redis
+#修复时区
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+RUN echo &#39;Asia/Shanghai&#39; &gt;/etc/timezone
+#环境变量
+ENV REDIS_PORT 8000
+#ENV REDIS_PORT_NODE 18000
+#暴露变量
+EXPOSE $REDIS_PORT
+#EXPOSE $REDIS_PORT_NODE
+#复制
+COPY entrypoint.sh /usr/local/bin/
+COPY redis.conf /usr/local/etc/
+#for config rewrite
+RUN chmod 777 /usr/local/etc/redis.conf
+RUN chmod +x /usr/local/bin/entrypoint.sh
+#入口
+ENTRYPOINT [&quot;/usr/local/bin/entrypoint.sh&quot;]
+#命令
+CMD [&quot;redis-server&quot;, &quot;/usr/local/etc/redis.conf&quot;]</code></pre><blockquote><p>docker build -t codewj/redis-cluster:1.0 .<br>docker tag codewj/redis-cluster:1.0 192.168.2.5:5000/codewj-redis-cluster<br>docker push 192.168.2.5:5000/codewj-redis-cluster</p></blockquote><h2 id="192-168-2-5-1"><a href="#192-168-2-5-1" class="headerlink" title="192.168.2.5"></a>192.168.2.5</h2><pre><code>version: &#39;3&#39;
+services:
+  redis1:
+    image: 192.168.2.7:5000/onejane-redis-cluster
+    container_name: redis1
+    network_mode: host
+    restart: always
+    volumes:
+     - ./8001/data:/data
+    environment:
+     - REDIS_PORT=8001
+
+
+
+
+  redis2:
+    image: 192.168.2.7:5000/onejane-redis-cluster
+    container_name: redis2
+    network_mode: host
+    restart: always
+    volumes:
+     - ./8002/data:/data
+    environment:
+     - REDIS_PORT=8002
+
+
+
+
+  redis3:
+    image: 192.168.2.7:5000/onejane-redis-cluster
+    container_name: redis3
+    network_mode: host
+    restart: always
+    volumes:
+     - ./8003/data:/data
+    environment:
+     - REDIS_PORT=8003</code></pre><h2 id="192-168-2-7-1"><a href="#192-168-2-7-1" class="headerlink" title="192.168.2.7"></a>192.168.2.7</h2><pre><code>version: &#39;3&#39;
+services:
+  redis1:
+    image: 192.168.2.7:5000/onejane-redis-cluster
+    network_mode: host
+    container_name: redis4
+    restart: always
+    volumes:
+     - ./8004/data:/data
+    environment:
+     - REDIS_PORT=8004
+
+
+
+
+  redis2:
+    image: 192.168.2.7:5000/onejane-redis-cluster
+    network_mode: host
+    container_name: redis5
+    restart: always
+    volumes:
+     - ./8005/data:/data
+    environment:
+     - REDIS_PORT=8005
+
+
+
+
+  redis3:
+    image: 192.168.2.7:5000/onejane-redis-cluster
+    network_mode: host
+    container_name: redis6
+    restart: always
+    volumes:
+     - ./8006/data:/data
+    environment:
+     - REDIS_PORT=8006</code></pre></article><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a> <span class="donate_txt">↑<br> 欢迎投食,求鼓励，求支持！</span><br></div><div id="donate_guide" class="donate_bar center hidden"> <img src="/images/alipay.png" alt="支付宝打赏"> <img src="/images/wechatpay.png" alt="微信打赏"></div><script type="text/javascript">document.getElementById("btn_donate").onclick=function(){$("#donate_board").addClass("hidden"),$("#donate_guide").removeClass("hidden")}</script></div><div class="nexmoe-post-copyright"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i> <strong>本文作者：</strong>OneJane<br> <strong>本文链接：</strong><a href="https://onejane.github.io/2019/08/20/Redis-Cluster/" title="https://onejane.github.io/2019/08/20/Redis-Cluster/" target="_blank" rel="noopener">https://onejane.github.io/2019/08/20/Redis-Cluster/</a><br> <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可</div><section class="nexmoe-comment"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css"><div id="gitalk"></div><script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script><script type="text/javascript">var gitalk=new Gitalk({clientID:"e677e59382e1c7a468fd",clientSecret:"717d041bc4ab749f069314862232cfb6ec8adc15",id:decodeURI(window.location.pathname),repo:"onejane.github.io",owner:"onejane",admin:"onejane"});gitalk.render("gitalk")</script></section></div></div></div><script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/smoothscroll-for-websites@1.4.9/SmoothScroll.min.js"></script><script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js"></script><script>hljs.initHighlightingOnLoad()</script><script src="/js/app.js?v=1566316803691"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.1.0/lazysizes.min.js"></script><div hidden><script type="text/javascript" src="https://js.users.51.la/20279757.js"></script></div></body><script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script></html>

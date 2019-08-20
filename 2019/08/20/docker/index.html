@@ -1,0 +1,202 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.9.0"><title>docker - OneJane</title><meta charset="UTF-8"><meta name="description" content><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><link rel="shortcut icon" href="/images/a.ico" type="image/png"><meta name="description" content="docker安装使用及镜像制作"><meta name="keywords" content="docker"><meta property="og:type" content="article"><meta property="og:title" content="docker"><meta property="og:url" content="https://onejane.github.io/2019/08/20/docker/index.html"><meta property="og:site_name" content="OneJane"><meta property="og:description" content="docker安装使用及镜像制作"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2019-08-20T10:52:37.592Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="docker"><meta name="twitter:description" content="docker安装使用及镜像制作"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/css/mdui.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.15.8/styles/atom-one-dark.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1038733_0xvrvpg9c0r.css"><link rel="stylesheet" href="/css/style.css?v=1566316803649"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script></head><body class="mdui-drawer-body-left"><div id="nexmoe-background"><div class="nexmoe-bg" style="background-image:url(https://i.loli.net/2019/01/13/5c3aec85a4343.jpg)"></div><div class="mdui-appbar mdui-shadow-0"><div class="mdui-toolbar"> <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a><div class="mdui-toolbar-spacer"></div> <a href="/" title="OneJane" class="mdui-btn mdui-btn-icon"><img src="https://i.loli.net/2019/08/20/UIhTqdQiPasxLtr.jpg"></a></div></div></div><div id="nexmoe-header"><div class="nexmoe-drawer mdui-drawer" id="drawer"><div class="nexmoe-avatar mdui-ripple"> <a href="/" title="OneJane"><img src="https://i.loli.net/2019/08/20/UIhTqdQiPasxLtr.jpg" alt="OneJane"></a></div><div class="nexmoe-count"><div><span>文章</span>15</div><div><span>标签</span>24</div><div><span>分类</span>8</div></div><ul class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}"><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页"><i class="mdui-list-item-icon nexmoefont icon-home"></i><div class="mdui-list-item-content"> 回到首页</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="关于博客"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i><div class="mdui-list-item-content"> 关于博客</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/py.html" title="我的朋友"><i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i><div class="mdui-list-item-content"> 我的朋友</div></a></ul><aside id="nexmoe-sidebar"><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">社交按钮</h3><div class="nexmoe-widget nexmoe-social"><a class="mdui-ripple" href="https://www.zhihu.com/people/codewj/activities" target="_blank" mdui-tooltip="{content: 'zhihu'}" style="color:#e76a8d;background-color:rgba(231,106,141,.15)"><i class="nexmoefont icon-zhihu"></i></a><a class="mdui-ripple" href="https://github.com/OneJane" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color:#191717;background-color:rgba(25,23,23,.15)"><i class="nexmoefont icon-github"></i></a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章分类</h3><div class="nexmoe-widget"><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/定时器/">定时器</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/持续集成/">持续集成</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/注册中心/">注册中心</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高可用/">高可用</a><span class="category-list-count">4</span></li></ul></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">标签云</h3><div class="nexmoe-widget tagcloud"> <a href="/tags/Docker/" style="font-size:10px">Docker</a> <a href="/tags/GitLab/" style="font-size:10px">GitLab</a> <a href="/tags/Haproxy/" style="font-size:10px">Haproxy</a> <a href="/tags/Keepalived/" style="font-size:10px">Keepalived</a> <a href="/tags/Replication/" style="font-size:10px">Replication</a> <a href="/tags/RocketMQ/" style="font-size:10px">RocketMQ</a> <a href="/tags/Spring-Cloud-Alibaba/" style="font-size:10px">Spring Cloud Alibaba</a> <a href="/tags/docker/" style="font-size:20px">docker</a> <a href="/tags/elastisearch/" style="font-size:10px">elastisearch</a> <a href="/tags/gitlab/" style="font-size:10px">gitlab</a> <a href="/tags/jenkins/" style="font-size:12.5px">jenkins</a> <a href="/tags/linux/" style="font-size:10px">linux</a> <a href="/tags/maven/" style="font-size:12.5px">maven</a> <a href="/tags/mybatis/" style="font-size:10px">mybatis</a> <a href="/tags/nexmoe/" style="font-size:10px">nexmoe</a> <a href="/tags/partition/" style="font-size:10px">partition</a> <a href="/tags/pxc/" style="font-size:10px">pxc</a> <a href="/tags/rabbitmq/" style="font-size:10px">rabbitmq</a> <a href="/tags/redis/" style="font-size:10px">redis</a> <a href="/tags/redis-cluster/" style="font-size:10px">redis-cluster</a> <a href="/tags/replication/" style="font-size:10px">replication</a> <a href="/tags/sentinel/" style="font-size:15px">sentinel</a> <a href="/tags/springboot/" style="font-size:17.5px">springboot</a> <a href="/tags/xxl-job/" style="font-size:10px">xxl-job</a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章归档</h3><div class="nexmoe-widget"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul></div></div></aside><div class="nexmoe-copyright"> &copy; 2019 OneJane</div></div></div><div id="nexmoe-content"><div class="nexmoe-primary"><div class="nexmoe-post"><div class="nexmoe-post-cover"> <img src="https://i.loli.net/2019/08/20/gQJVIL6AjNT8qK9.jpg"><h1>docker</h1></div><div class="nexmoe-post-meta"><a><i class="nexmoefont icon-calendar-fill"></i> 2019年08月20日</a><a><i class="nexmoefont icon-areachart"></i> 1.8k 字</a><a><i class="nexmoefont icon-time-circle-fill"></i> 大概 10 分钟</a> <a class="nexmoefont icon-appstore-fill -link" href="/categories/持续集成/">持续集成</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/docker/">docker</a></div><article><p>docker安装使用及镜像制作</p><a id="more"></a><h1 id="安装docker"><a href="#安装docker" class="headerlink" title="安装docker"></a>安装docker</h1><h2 id="基本配置"><a href="#基本配置" class="headerlink" title="基本配置"></a>基本配置</h2><pre><code>yum install -y vim lrzsz git
+setenforce 0
+vim /etc/selinux/config
+SELINUX=disabled
+systemctl stop firewalld
+systemctl disable firewalld</code></pre><h2 id="centos"><a href="#centos" class="headerlink" title="centos"></a>centos</h2><pre><code>yum remove docker \
+                  docker-client \
+                  docker-client-latest \
+                  docker-common \
+                  docker-latest \
+                  docker-latest-logrotate \
+                  docker-logrotate \
+                  docker-selinux \
+                  docker-engine-selinux \
+                  docker-engine -y  移除旧版本
+yum install -y yum-utils device-mapper-persistent-data lvm2
+yum-config-manager --add-repo http://mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo
+yum makecache fast
+yum list docker-ce --showduplicates | sort -r
+yum install -y docker-ce-18.09.5
+systemctl restart docker
+
+yum update -y nss curl libcurl
+curl -L https://github.com/docker/compose/releases/download/1.20.0/docker-compose-`uname -s`-`uname -m` -o /usr/local/bin/docker-compose
+chmod +x /usr/local/bin/docker-compose
+docker-compose --version</code></pre><h2 id="ubuntu"><a href="#ubuntu" class="headerlink" title="ubuntu"></a>ubuntu</h2><pre><code>apt-get update
+apt-get -y install apt-transport-https ca-certificates curl software-properties-common
+# step 2: 安装GPG证书
+curl -fsSL http://mirrors.aliyun.com/docker-ce/linux/ubuntu/gpg | sudo apt-key add -
+# Step 3: 写入软件源信息
+sudo add-apt-repository &quot;deb [arch=amd64] http://mirrors.aliyun.com/docker-ce/linux/ubuntu $(lsb_release -cs) stable&quot;
+# Step 4: 更新并安装 Docker-CE
+sudo apt-get -y update
+sudo apt-get -y install docker-ce
+# 安装指定版本的Docker-CE:
+# Step 1: 查找Docker-CE的版本:
+# apt-cache madison docker-ce
+#   docker-ce | 17.03.1~ce-0~ubuntu-xenial | http://mirrors.aliyun.com/docker-ce/linux/ubuntu xenial/stable amd64 Packages
+#   docker-ce | 17.03.0~ce-0~ubuntu-xenial | http://mirrors.aliyun.com/docker-ce/linux/ubuntu xenial/stable amd64 Packages
+# Step 2: 安装指定版本的Docker-CE: (VERSION 例如上面的 17.03.1~ce-0~ubuntu-xenial)
+# sudo apt-get -y install docker-ce=[VERSION]</code></pre><h2 id="Docker配置及基本使用"><a href="#Docker配置及基本使用" class="headerlink" title="Docker配置及基本使用"></a>Docker配置及基本使用</h2><pre><code>vim ~/.bashrc
+alias dops=&#39;docker ps --format &quot;table {{.ID}}\t{{.Names}}\t{{.Image}}\t&quot;&#39;
+alias dopsa=&#39;docker ps -a --format &quot;table {{.ID}}\t{{.Names}}\t{{.Image}}\t&quot;&#39;
+alias dolo=&#39;docker logs -ft&#39;
+
+
+vim /etc/docker/daemon.json
+{
+  &quot;registry-mirrors&quot;: [&quot;https://3gki6pei.mirror.aliyuncs.com&quot;],
+  &quot;storage-driver&quot;:&quot;devicemapper&quot;
+}
+systemctl daemon-reload
+systemctl restart docker.service
+
+service docker stop        删除所有镜像
+rm -rf /var/lib/docker        
+systemctl start docker.service
+--restart=always    设置重启docker自动启动容器
+docker update --restart=always es-node2
+docker run -itd myimage:test /bin/bash -c &quot;命令1;命令2&quot;        启动容器自动执行命令
+
+docker export registry &gt; /home/registry.tar        将容器打成tar包
+scp /home/registry.tar root@192.168.2.7:/root
+cat ~/registry.tar | docker import - registry/2.5    将tar包打成镜像
+docker save jdk1.8 &gt; /home/java.tar.gz 导出镜像
+docker load &lt; /home/java.tar.gz 导入镜像
+docker stop sentine1 | xargs docker rm
+docker rm -f redis-slave1|true
+
+docker logs -f -t --since=&quot;2018-02-08&quot; --tail=100 CONTAINER_ID    查看指定时间后的日志，只显示最后100行
+docker logs --since 30m CONTAINER_ID    查看最近30分钟的日志
+/var/lib/docker/containers/contain id    下rm -rf *.log        删除docker日志
+</code></pre><blockquote><p>进入<a href="https://homenew.console.aliyun.com/" target="_blank" rel="noopener">https://homenew.console.aliyun.com/</a> 搜索容器镜像服务，进入侧边栏的镜像加速器获取自己的Docker加速镜像地址。</p></blockquote><h1 id="安装Registry私服"><a href="#安装Registry私服" class="headerlink" title="安装Registry私服"></a>安装Registry私服</h1><h2 id="方案1"><a href="#方案1" class="headerlink" title="方案1"></a>方案1</h2><pre><code>docker run -di --name=registry -p 5000:5000 docker.io/registry</code></pre><p>访问 <a href="http://192.168.2.5:5000/v2/_catalog" target="_blank" rel="noopener">http://192.168.2.5:5000/v2/_catalog</a></p><h2 id="方案2"><a href="#方案2" class="headerlink" title="方案2"></a>方案2</h2><p>vim /usr/local/docker/registry/docker-compose.yml</p><pre><code>version: &#39;3.1&#39;
+services:
+  registry:
+    image: registry
+    restart: always
+    container_name: registry
+    ports:
+      - 5000:5000
+    volumes:
+      - ./data:/var/lib/registry
+
+
+  frontend:
+    image: konradkleine/docker-registry-frontend:v2
+    container_name: registry-frontend
+    restart: always
+    ports:
+      - 184:80
+    volumes:
+      - ./certs/frontend.crt:/etc/apache2/server.crt:ro
+      - ./certs/frontend.key:/etc/apache2/server.key:ro
+    environment:
+      - ENV_DOCKER_REGISTRY_HOST=192.168.2.5
+      - ENV_DOCKER_REGISTRY_PORT=5000</code></pre><p>使用<kbd>docker-compose up -d</kbd>启动registry容器，<a href="http://192.168.2.5:184/" target="_blank" rel="noopener">http://192.168.2.5:184/</a> 访问私有镜像库</p><pre><code>curl -I -H &quot;Accept: application/vnd.docker.distribution.manifest.v2+json&quot; 192.168.2.7:5000/v2/ht-micro-record-service-user/manifests/1.0.0-SNAPSHOT    查看镜像Etag
+curl -I -H &quot;Accept: application/vnd.docker.distribution.manifest.v2+json&quot; 192.168.2.5:5000/v2/ht-micro-record-commons/manifests/1.0.0-SNAPSHOT  查看镜像Etag
+curl -i -X DELETE 192.168.2.5:5000/v2/codewj-redis-cluster/manifests/sha256:d6d6fad1ac67310ee34adbaa72986c6b233bd713906013961c722ecb10a049e5    删除codewj-redis-cluster:latest镜像
+curl -I -X DELETE http://192.168.2.7:5000/v2/ht-micro-record-service-user/manifests/sha256:a6d4e02fa593f0ae30476bda8d992dcb0fc2341e6fef85a9887444b5e4b75a04 删除user镜像
+
+docker exec -it registry registry garbage-collect /etc/docker/registry/config.yml        垃圾回收blob
+docker exec registry rm -rf /var/lib/registry/docker/registry/v2/repositories/codewj-redis-cluster 强制删除
+docker exec registry rm -rf /var/lib/registry/docker/registry/v2/repositories/ht-micro-record-service-user  强制删除</code></pre><h1 id="JDK镜像制作"><a href="#JDK镜像制作" class="headerlink" title="JDK镜像制作"></a>JDK镜像制作</h1><h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><p>vim /etc/docker/daemon.json</p><pre><code>{
+  &quot;registry-mirrors&quot;: [&quot;https://dhq9bx4f.mirror.aliyuncs.com&quot;],
+  &quot;storage-driver&quot;: &quot;devicemapper&quot;,
+  &quot;insecure-registries&quot;:[&quot;192.168.2.5:5000&quot;]
+} 
+vim /lib/systemd/system/docker.service            开放访问
+ExecStart 新增 -H tcp://0.0.0.0:2375 -H unix:///var/run/docker.sock \
+systemctl daemon-reload
+systemctl restart docker
+docker start registry</code></pre><h2 id="制作镜像"><a href="#制作镜像" class="headerlink" title="制作镜像"></a>制作镜像</h2><pre><code>mkdir -p /usr/local/dockerjdk8 &amp;&amp; cd /usr/local/dockerjdk8</code></pre><p>sz jdk-8u60-linux-x64.tar.gz 传到该目录下<br>vim Dockerfile</p><pre><code>#依赖镜像名称和ID
+FROM docker.io/centos:7
+#指定镜像创建者信息
+MAINTAINER OneJane
+#切换工作目录
+WORKDIR /usr
+RUN mkdir /usr/local/java
+#ADD 是相对路径jar,把java添加到容器中
+ADD jdk-8u60-linux-x64.tar.gz /usr/local/java/
+ENV LANG en_US.UTF-8
+#配置java环境变量
+ENV JAVA_HOME /usr/local/java/jdk1.8.0_60
+ENV JRE_HOME $JAVA_HOME/jre
+ENV CLASSPATH $JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar:$JRE_HOME/lib:$CLASSPATH
+ENV PATH $JAVA_HOME/bin:$PATH</code></pre><p><kbd>docker build -t='onejane-jdk1.8' .</kbd><br>安装中文环境</p><pre><code class="dts">yum  -y  install  fontconfig
+fc-list :lang=zh
+cd /usr/share/fonts &amp;&amp; mkdir chinese
+chmod -R 755 /usr/share/fonts/chinese
+cd chinese/ &amp;&amp; rz simhei.ttf fs_GB2312.ttf fzxbsjt.ttf
+yum -y install ttmkfdir
+ttmkfdir -e /usr/share/X11/fonts/encodings/encodings.dir
+vim /etc/fonts/fonts.conf
+&lt;dir&gt;/usr/share/fonts&lt;/dir&gt;
+&lt;dir&gt;/usr/share/fonts/chinese&lt;/dir&gt;
+&lt;dir&gt;/usr/share/X11/fonts/Type1&lt;/dir&gt; &lt;dir&gt;/usr/share/X11/fonts/TTF&lt;/dir&gt; &lt;dir&gt;/usr/local/share/fonts&lt;/dir&gt;
+&lt;dir prefix=&quot;xdg&quot;&gt;fonts&lt;/dir&gt;
+&lt;!-- the following element will be removed in the future --&gt;
+&lt;dir&gt;~/.fonts&lt;/dir&gt;
+
+fc-cache
+fc-list :lang=zh</code></pre><h2 id="上传到私服"><a href="#上传到私服" class="headerlink" title="上传到私服"></a>上传到私服</h2><pre><code>docker commit 6ea1085dfc2a pxc:v1.0        将镜像保存本地
+docker commit -m  &quot;容器说明&quot;   -a  &quot;OneJane&quot;   [CONTAINER ID]  [给新的镜像命名]        将容器打包成镜像
+
+
+docker tag onejane-jdk1.8 192.168.2.7:5000/onejane-jdk1.8
+docker push 192.168.2.7:5000/onejane-jdk1.8           将镜像推到仓库</code></pre><h1 id="Redis镜像制作"><a href="#Redis镜像制作" class="headerlink" title="Redis镜像制作"></a>Redis镜像制作</h1><p>vim entrypoint.sh</p><pre><code class="bash">#!/bin/sh
+#只作用于当前进程,不作用于其创建的子进程
+set -e
+#$0--Shell本身的文件名 $1--第一个参数 $@--所有参数列表
+# allow the container to be started with `--user`
+if [ &quot;$1&quot; = &#39;redis-server&#39; -a &quot;$(id -u)&quot; = &#39;0&#39; ]; then
+    sed -i &#39;s/REDIS_PORT/&#39;$REDIS_PORT&#39;/g&#39; /usr/local/etc/redis.conf
+    chown -R redis .  #改变当前文件所有者
+    exec gosu redis &quot;$0&quot; &quot;$@&quot;  #gosu是sudo轻量级”替代品”
+fi
+
+exec &quot;$@&quot;</code></pre><p>vim redis.conf</p><pre><code>#端口
+port REDIS_PORT
+#开启集群
+cluster-enabled yes
+#配置文件
+cluster-config-file nodes.conf
+cluster-node-timeout 5000
+#更新操作后进行日志记录
+appendonly yes
+#设置主服务的连接密码
+# masterauth
+#设置从服务的连接密码
+# requirepass</code></pre><p>vi Dockerfile</p><pre><code>#基础镜像
+FROM redis
+#修复时区
+RUN ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+RUN echo &#39;Asia/Shanghai&#39; &gt;/etc/timezone
+#环境变量
+ENV REDIS_PORT 8000
+#ENV REDIS_PORT_NODE 18000
+#暴露变量
+EXPOSE $REDIS_PORT
+#EXPOSE $REDIS_PORT_NODE
+#复制
+COPY entrypoint.sh /usr/local/bin/
+COPY redis.conf /usr/local/etc/
+#for config rewrite
+RUN chmod 777 /usr/local/etc/redis.conf
+RUN chmod +x /usr/local/bin/entrypoint.sh
+#入口
+ENTRYPOINT [&quot;/usr/local/bin/entrypoint.sh&quot;]
+#命令
+CMD [&quot;redis-server&quot;, &quot;/usr/local/etc/redis.conf&quot;]</code></pre><p><kbd>docker build -t codewj/redis-cluster:1.0 .</kbd></p><h2 id="上传到私服-1"><a href="#上传到私服-1" class="headerlink" title="上传到私服"></a>上传到私服</h2><pre><code>docker tag codewj/redis-cluster:1.0 192.168.2.5:5000/codewj-redis-cluster
+docker push 192.168.2.5:5000/codewj-redis-cluster</code></pre><h1 id="上传到docker-hub"><a href="#上传到docker-hub" class="headerlink" title="上传到docker hub"></a>上传到docker hub</h1><pre><code class="ebnf">docker login        输入https://hub.docker.com/账户密码
+docker tag onejane-jdk1.8 onejane/onejane-jdk1.8
+docker push onejane/onejane-jdk1.8:latest
+docker logout</code></pre><h1 id="Redis"><a href="#Redis" class="headerlink" title="Redis"></a>Redis</h1><p>docker run -d –privileged=true -p 6379:6379 -v $PWD/redis.conf:/etc/redis/redis.conf -v $PWD/data:/data –name redis redis redis-server /etc/redis/redis.conf –appendonly yes<br><a href="http://download.redis.io/redis-stable/redis.conf" target="_blank" rel="noopener">http://download.redis.io/redis-stable/redis.conf</a></p><pre><code class="yaml">bind 0.0.0.0
+port 6379
+daemonize no
+appendonly yes
+protected-mode no</code></pre><h1 id="手动部署"><a href="#手动部署" class="headerlink" title="手动部署"></a>手动部署</h1><pre><code>
+mvn clean install deploy docker:build -DpushImage
+docker run -di --name=panchip -v /tmp/saas:/tmp/saas --net=host 192.168.2.7:5000/panchip:1.0.0-SNAPSHOT
+docker export panchip &gt; /home/panchip.tar     容器打成tar
+cat panchip.tar | docker import - panchip   tar转镜像</code></pre></article><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a> <span class="donate_txt">↑<br> 欢迎投食,求鼓励，求支持！</span><br></div><div id="donate_guide" class="donate_bar center hidden"> <img src="/images/alipay.png" alt="支付宝打赏"> <img src="/images/wechatpay.png" alt="微信打赏"></div><script type="text/javascript">document.getElementById("btn_donate").onclick=function(){$("#donate_board").addClass("hidden"),$("#donate_guide").removeClass("hidden")}</script></div><div class="nexmoe-post-copyright"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i> <strong>本文作者：</strong>OneJane<br> <strong>本文链接：</strong><a href="https://onejane.github.io/2019/08/20/docker/" title="https://onejane.github.io/2019/08/20/docker/" target="_blank" rel="noopener">https://onejane.github.io/2019/08/20/docker/</a><br> <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可</div><section class="nexmoe-comment"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css"><div id="gitalk"></div><script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script><script type="text/javascript">var gitalk=new Gitalk({clientID:"e677e59382e1c7a468fd",clientSecret:"717d041bc4ab749f069314862232cfb6ec8adc15",id:decodeURI(window.location.pathname),repo:"onejane.github.io",owner:"onejane",admin:"onejane"});gitalk.render("gitalk")</script></section></div></div></div><script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/smoothscroll-for-websites@1.4.9/SmoothScroll.min.js"></script><script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js"></script><script>hljs.initHighlightingOnLoad()</script><script src="/js/app.js?v=1566316803656"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.1.0/lazysizes.min.js"></script><div hidden><script type="text/javascript" src="https://js.users.51.la/20279757.js"></script></div></body><script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script></html>

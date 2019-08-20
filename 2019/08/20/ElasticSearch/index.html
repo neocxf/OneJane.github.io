@@ -1,0 +1,524 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.9.0"><title>ElasticSearch - OneJane</title><meta charset="UTF-8"><meta name="description" content><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><link rel="shortcut icon" href="/images/a.ico" type="image/png"><meta name="description" content="ElasticSearch基础及数据迁移"><meta name="keywords" content="docker,springboot,elastisearch"><meta property="og:type" content="article"><meta property="og:title" content="ElasticSearch"><meta property="og:url" content="https://onejane.github.io/2019/08/20/ElasticSearch/index.html"><meta property="og:site_name" content="OneJane"><meta property="og:description" content="ElasticSearch基础及数据迁移"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1563335975460.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1563358966961.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1564364466864.png"><meta property="og:updated_time" content="2019-08-20T10:48:24.615Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="ElasticSearch"><meta name="twitter:description" content="ElasticSearch基础及数据迁移"><meta name="twitter:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1563335975460.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/css/mdui.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.15.8/styles/atom-one-dark.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1038733_0xvrvpg9c0r.css"><link rel="stylesheet" href="/css/style.css?v=1566316803673"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script></head><body class="mdui-drawer-body-left"><div id="nexmoe-background"><div class="nexmoe-bg" style="background-image:url(https://i.loli.net/2019/01/13/5c3aec85a4343.jpg)"></div><div class="mdui-appbar mdui-shadow-0"><div class="mdui-toolbar"> <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a><div class="mdui-toolbar-spacer"></div> <a href="/" title="OneJane" class="mdui-btn mdui-btn-icon"><img src="https://i.loli.net/2019/08/20/UIhTqdQiPasxLtr.jpg"></a></div></div></div><div id="nexmoe-header"><div class="nexmoe-drawer mdui-drawer" id="drawer"><div class="nexmoe-avatar mdui-ripple"> <a href="/" title="OneJane"><img src="https://i.loli.net/2019/08/20/UIhTqdQiPasxLtr.jpg" alt="OneJane"></a></div><div class="nexmoe-count"><div><span>文章</span>15</div><div><span>标签</span>24</div><div><span>分类</span>8</div></div><ul class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}"><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页"><i class="mdui-list-item-icon nexmoefont icon-home"></i><div class="mdui-list-item-content"> 回到首页</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="关于博客"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i><div class="mdui-list-item-content"> 关于博客</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/py.html" title="我的朋友"><i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i><div class="mdui-list-item-content"> 我的朋友</div></a></ul><aside id="nexmoe-sidebar"><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">社交按钮</h3><div class="nexmoe-widget nexmoe-social"><a class="mdui-ripple" href="https://www.zhihu.com/people/codewj/activities" target="_blank" mdui-tooltip="{content: 'zhihu'}" style="color:#e76a8d;background-color:rgba(231,106,141,.15)"><i class="nexmoefont icon-zhihu"></i></a><a class="mdui-ripple" href="https://github.com/OneJane" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color:#191717;background-color:rgba(25,23,23,.15)"><i class="nexmoefont icon-github"></i></a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章分类</h3><div class="nexmoe-widget"><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/定时器/">定时器</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/持续集成/">持续集成</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/注册中心/">注册中心</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高可用/">高可用</a><span class="category-list-count">4</span></li></ul></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">标签云</h3><div class="nexmoe-widget tagcloud"> <a href="/tags/Docker/" style="font-size:10px">Docker</a> <a href="/tags/GitLab/" style="font-size:10px">GitLab</a> <a href="/tags/Haproxy/" style="font-size:10px">Haproxy</a> <a href="/tags/Keepalived/" style="font-size:10px">Keepalived</a> <a href="/tags/Replication/" style="font-size:10px">Replication</a> <a href="/tags/RocketMQ/" style="font-size:10px">RocketMQ</a> <a href="/tags/Spring-Cloud-Alibaba/" style="font-size:10px">Spring Cloud Alibaba</a> <a href="/tags/docker/" style="font-size:20px">docker</a> <a href="/tags/elastisearch/" style="font-size:10px">elastisearch</a> <a href="/tags/gitlab/" style="font-size:10px">gitlab</a> <a href="/tags/jenkins/" style="font-size:12.5px">jenkins</a> <a href="/tags/linux/" style="font-size:10px">linux</a> <a href="/tags/maven/" style="font-size:12.5px">maven</a> <a href="/tags/mybatis/" style="font-size:10px">mybatis</a> <a href="/tags/nexmoe/" style="font-size:10px">nexmoe</a> <a href="/tags/partition/" style="font-size:10px">partition</a> <a href="/tags/pxc/" style="font-size:10px">pxc</a> <a href="/tags/rabbitmq/" style="font-size:10px">rabbitmq</a> <a href="/tags/redis/" style="font-size:10px">redis</a> <a href="/tags/redis-cluster/" style="font-size:10px">redis-cluster</a> <a href="/tags/replication/" style="font-size:10px">replication</a> <a href="/tags/sentinel/" style="font-size:15px">sentinel</a> <a href="/tags/springboot/" style="font-size:17.5px">springboot</a> <a href="/tags/xxl-job/" style="font-size:10px">xxl-job</a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章归档</h3><div class="nexmoe-widget"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul></div></div></aside><div class="nexmoe-copyright"> &copy; 2019 OneJane</div></div></div><div id="nexmoe-content"><div class="nexmoe-primary"><div class="nexmoe-post"><div class="nexmoe-post-cover"> <img src="https://i.loli.net/2019/08/20/zaIVkQOrcENp6Y9.jpg"><h1>ElasticSearch</h1></div><div class="nexmoe-post-meta"><a><i class="nexmoefont icon-calendar-fill"></i> 2019年08月20日</a><a><i class="nexmoefont icon-areachart"></i> 3.9k 字</a><a><i class="nexmoefont icon-time-circle-fill"></i> 大概 21 分钟</a> <a class="nexmoefont icon-appstore-fill -link" href="/categories/数据库/">数据库</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/docker/">docker</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/elastisearch/">elastisearch</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/springboot/">springboot</a></div><article><p>ElasticSearch基础及数据迁移</p><a id="more"></a><p><a href="https://github.com/medcl/esm-abandoned/releases/download/v0.4.1/linux64-esm--2019.4.20.tar.gz" target="_blank" rel="noopener">https://github.com/medcl/esm-abandoned/releases/download/v0.4.1/linux64-esm--2019.4.20.tar.gz</a></p><h1 id="基本原理"><a href="#基本原理" class="headerlink" title="基本原理"></a>基本原理</h1><blockquote><p>写：发送一个请求到协调节点，对document进行hash路由到对应由primary shard的节点上，处理请求并同步到replica shard，协调节点检测同步后返回相应给客户端。<br>读：发送一个请求到协调节点，根据doc id对document进行hash路由到对应node，通过随机轮询算法从primary和replica的shard中随机选择让读请求负载均衡，返回document给协调节点后给客户端。<br>一个索引拆分为多个shard存储部分数据，每个shard由primary shard和replica shard组成，primary写入将同步到replica，类似kafka的partition副本。保证高可用。<br>Es多个节点选举一个为master，管理和切换主副shard，若宕机则重新选举，并将宕机节点primary shard身份转移到其他机器的replica shard。重启将修改原primary为replica同步数据。</p></blockquote><p>每个在文档上执行的写操作，包括删除，都会使其版本增加。</p><p>真正的删除时机：</p><blockquote><p>deleting a document doesn’t immediately remove the document from disk; it just marks it as deleted. Elasticsearch will clean up deleted documents in the background as you continue to index more data.</p></blockquote><ol><li>删除索引是会立即释放空间的，不存在所谓的“标记”逻辑。</li><li>删除文档的时候，是将新文档写入，同时将旧文档标记为已删除。 磁盘空间是否释放取决于新旧文档是否在同一个segment file里面，因此ES后台的segment merge在合并segment file的过程中有可能触发旧文档的物理删除。但因为一个shard可能会有上百个segment file，还是有很大几率新旧文档存在于不同的segment里而无法物理删除。想要手动释放空间，只能是定期做一下force merge，并且将max_num_segments设置为1。<h1 id="多机器集群搭建"><a href="#多机器集群搭建" class="headerlink" title="多机器集群搭建"></a>多机器集群搭建</h1></li></ol><pre><code>vi /etc/sysctl.conf
+vm.max_map_count=262144
+sysctl -p</code></pre><h2 id="Node1-192-168-2-5"><a href="#Node1-192-168-2-5" class="headerlink" title="Node1 192.168.2.5"></a>Node1 192.168.2.5</h2><p>最好挂载到大磁盘上</p><pre><code>mkdir /usr/local/docker/ElasticSearch/data -p &amp;&amp; chmod 777 /usr/local/docker/ElasticSearch/data
+mkdir /usr/local/docker/ElasticSearch/config/ -p &amp;&amp; cd /usr/local/docker/ElasticSearch/config/
+
+
+vi es.yml
+cluster.name: elasticsearch-cluster
+node.name: es-node1
+network.bind_host: 0.0.0.0
+network.publish_host: 192.168.2.5
+http.port: 1800
+transport.tcp.port: 1801
+http.cors.enabled: true
+http.cors.allow-origin: &quot;*&quot;
+node.master: true
+node.data: true
+discovery.zen.ping.unicast.hosts: [&quot;192.168.2.5:1801&quot;,&quot;192.168.2.6:1801&quot;]  # 可配置多个
+discovery.zen.minimum_master_nodes: 1
+
+修改/usr/share/elasticsearch/config/jvm.options中-Xms10g    -Xmx10g
+
+docker run  -d  -v /data3/elasticsearch/config/jvm.options:/usr/share/elasticsearch/config/jvm.options -v /data3/elasticsearch/config/es.yml:/usr/share/elasticsearch/config/elasticsearch.yml -v /data3/elasticsearch/data:/usr/share/elasticsearch/data --name es-node1 --net host --privileged elasticsearch:6.6.0
+docker exec -it es-node1 bash
+elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v6.6.0/elasticsearch-analysis-ik-6.6.0.zip
+docker restart es-node1</code></pre><h2 id="Node2-192-168-2-6"><a href="#Node2-192-168-2-6" class="headerlink" title="Node2 192.168.2.6"></a>Node2 192.168.2.6</h2><pre><code>mkdir /usr/local/docker/ElasticSearch/data -p &amp;&amp; chmod 777 /usr/local/docker/ElasticSearch/data
+mkdir /usr/local/docker/ElasticSearch/config/ -p &amp;&amp; cd /usr/local/docker/ElasticSearch/config/
+vi es.yml
+cluster.name: elasticsearch-cluster
+node.name: es-node2
+network.bind_host: 0.0.0.0
+network.publish_host: 192.168.2.6
+http.port: 1800
+transport.tcp.port: 1801
+http.cors.enabled: true
+http.cors.allow-origin: &quot;*&quot;
+node.master: true
+node.data: true
+discovery.zen.ping.unicast.hosts: [&quot;192.168.2.5:1801&quot;,&quot;192.168.2.6:1801&quot;]  # 可配置多个
+discovery.zen.minimum_master_nodes: 1 # 集群最少需要有两个 node , 才能保证既可以不脑裂, 又可以高可用
+
+修改/usr/share/elasticsearch/config/jvm.options中-Xms10g    -Xmx10g
+
+docker run  -d  -v /data2/elasticsearch/config/jvm.options:/usr/share/elasticsearch/config/jvm.options -v /data2/elasticsearch/config/es.yml:/usr/share/elasticsearch/config/elasticsearch.yml -v /data3/elasticsearch/data:/usr/share/elasticsearch/data  --name es-node2 --net host --privileged elasticsearch:6.6.0
+docker exec -it es-node2 bash
+elasticsearch-plugin install https://github.com/medcl/elasticsearch-analysis-ik/releases/download/v6.6.0/elasticsearch-analysis-ik-6.6.0.zip
+docker restart es-node2</code></pre><p><a href="http://192.168.2.5:1800/_cat/plugins" target="_blank" rel="noopener">http://192.168.2.5:1800/_cat/plugins</a> 查看插件信息<br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1563335975460.png" alt="查看集群"></p><h1 id="esm数据迁移"><a href="#esm数据迁移" class="headerlink" title="esm数据迁移"></a>esm数据迁移</h1><pre><code class="linux">./esm -s http://192.168.2.6:9200 -d http://192.168.2.7:1800 -x p_answer_handle_alarm -w=5 -b=10 -c 10000;  同步数据
+curl 192.168.2.7:1800/_cat/indices?v    查看所有索引信息</code></pre><p>常见参数使用：</p><pre><code>./esm -s http://192.168.2.6:9200 -d http://192.168.2.7:1800 -x t_record_analyze -y record_test --copy_settings --copy_mappings --shards=4 -w=5 -b=10 -c 10000;</code></pre><h2 id="数据迁移完美方案"><a href="#数据迁移完美方案" class="headerlink" title="数据迁移完美方案"></a>数据迁移完美方案</h2><p>通过两集群都建立同样索引，保证mappings和settings一致，再同步数据</p><pre><code class="linux">curl -XGET 192.168.2.7:1800/p_answer_handle_alarm    查看索引信息
+curl -XGET 192.168.2.7:1800/p_answer_handle_alarm/_search; 
+curl -XGET http://192.168.2.5:1800/record_test/_settings?pretty    查看settings信息
+PUT http://192.168.2.5:1800/record_set/_settings            修改副本数，片的信息分又重新做了调整，同curl -XPUT &#39;192.168.2.7:1800/record_set/_settings&#39; -d&#39;{&quot;index&quot;:{&quot;number_of_replicas&quot;:1}}&#39;
+{
+  &quot;index&quot;:{
+     &quot;number_of_replicas&quot;:1
+  }
+}
+index.blocks.read_only //设置为 true 使索引和索引元数据为只读，false 为允许写入和元数据更改。
+index.blocks.read // 设置为 true 可禁用对索引的读取操作
+index.blocks.write //设置为 true 可禁用对索引的写入操作。
+index.blocks.metadata // 设置为 true 可禁用索引元数据的读取和写入
+index.mapping.total_fields.limit  //1000 防止字段过多引起崩溃
+curl -XGET http://192.168.2.5:1800/record_set/_mappings?pretty        查看mappings信息
+http://192.168.2.5:1800/_cluster/settings?pretty        查看settings信息
+PUT http:///192.168.2.5:1800/record_set/doc/_mapping    新增字段
+{
+    &quot;properties&quot;: {
+        &quot;col1&quot;: {
+            &quot;type&quot;: &quot;text&quot;,
+            &quot;index&quot;: false
+        }
+    }
+}
+
+PUT 192.168.2.6:9200/test          新建索引
+{
+    &quot;mappings&quot;:{
+        &quot;doc&quot;:{
+            &quot;properties&quot;:{
+                &quot;jjbh&quot;:{&quot;type&quot;: &quot;keyword&quot;,&quot;index&quot;: &quot;true&quot;},
+                &quot;bccljg&quot;:{&quot;type&quot;:&quot;text&quot;,&quot;index&quot;:&quot;true&quot;,&quot;analyzer&quot;: &quot;ik_max_word&quot;,&quot;search_analyzer&quot;: &quot;ik_max_word&quot;},
+                &quot;bjnr&quot;:{&quot;type&quot;: &quot;text&quot;,&quot;index&quot;: &quot;true&quot;,&quot;analyzer&quot;:&quot;ik_max_word&quot;,&quot;search_analyzer&quot;:&quot;ik_max_word&quot;},
+                &quot;cjlb&quot;:{&quot;type&quot;: &quot;keyword&quot;,&quot;index&quot;: &quot;false&quot;}
+            }
+        }
+    }
+}
+
+
+192.168.2.7:1800/test/doc/{_id}  插入数据，_id不加默认随机字符串
+{
+    &quot;jjbh&quot;: &quot;4654132465&quot;,
+    &quot;bccljg&quot;: &quot;我是一名合格的程序员&quot;,
+    &quot;bjnr&quot;: &quot;今天天气真的好啊&quot;,
+    &quot;cjlb&quot;: &quot;天上地下飞禽走兽&quot;
+}
+192.168.2.7:1800/test/doc/{_id}        更新
+{
+    &quot;jjbh&quot;: &quot;11&quot;,
+    &quot;bccljg&quot;: &quot;我是一名合格的程序员&quot;,
+    &quot;bjnr&quot;: &quot;今天天气真的好啊&quot;,
+    &quot;cjlb&quot;: &quot;天上地下飞禽走兽&quot;
+}
+
+
+PUT 192.168.2.5:1800/test          新建索引
+{
+    &quot;mappings&quot;:{
+        &quot;doc&quot;:{
+            &quot;properties&quot;:{
+                &quot;jjbh&quot;:{&quot;type&quot;: &quot;keyword&quot;,&quot;index&quot;: &quot;true&quot;},
+                &quot;bccljg&quot;:{&quot;type&quot;:&quot;text&quot;,&quot;index&quot;:&quot;true&quot;,&quot;analyzer&quot;: &quot;ik_max_word&quot;,&quot;search_analyzer&quot;: &quot;ik_max_word&quot;},
+                &quot;bjnr&quot;:{&quot;type&quot;: &quot;text&quot;,&quot;index&quot;: &quot;true&quot;,&quot;analyzer&quot;:&quot;ik_max_word&quot;,&quot;search_analyzer&quot;:&quot;ik_max_word&quot;},
+                &quot;cjlb&quot;:{&quot;type&quot;: &quot;keyword&quot;,&quot;index&quot;: &quot;false&quot;}
+            }
+        }
+    }
+}
+
+
+./esm -s http://192.168.2.6:9200 -d http://192.168.2.5:1800 -x test -y test   -w=5 -b=10 -c 10000;        同步数据
+
+POST 192.168.2.5:1800/test/doc 全局加ik分词器
+{
+    &quot;settings&quot;:{
+        &quot;analysis&quot;:{
+            &quot;analyzer&quot;:{
+                &quot;ik&quot;:{&quot;tokenizer&quot;: &quot;ik_max_keyword&quot;}
+            }
+        }
+    }
+}
+
+POST 192.168.2.5:1800/test/doc/_search 查询
+POST 192.168.2.5:1800/test/doc/_delete_by_query 删除
+
+精确查询/删除
+{
+  &quot;query&quot;:{
+    &quot;term&quot;:{
+        &quot;bccljg.keyword&quot;:&quot;我是一名合格的程序员&quot;
+    }
+  }
+}
+模糊查询/删除
+{
+    &quot;query&quot;: {
+        &quot;match&quot;: {
+            &quot;bccljg&quot;: &quot;合格&quot;
+        }
+    }
+}
+正则模糊查询
+{
+    &quot;query&quot;: {
+        &quot;regexp&quot;: {
+            &quot;bccljg.keyword&quot;: &quot;.*我是.*&quot;
+        }
+    }
+}
+文本开头查询
+{
+    &quot;query&quot;: {
+        &quot;prefix&quot;: {
+            &quot;bccljg.keyword&quot;: &quot;我是&quot;
+        }
+    }
+}</code></pre><p>Q1:若数据结果不一致，可能是磁盘不足。<br>Q2:”caused_by”:{“type”:”search_context_missing_exception”,”reason”:”No search context found for id [69218326]”}}</p><pre><code>./esm -s http://192.168.2.6:9200 -d http://192.168.2.7:1800 -x t_record_analyze -y t_record_analyze   -w=5 -b=10 -c 10000;
+./esm -s http://192.168.2.6:9200 -d http://192.168.2.7:1800 -x t_neo4j_data -y t_neo4j_data   -w=5 -b=10 -c 10000;
+./esm -s http://192.168.2.6:9200 -d http://192.168.2.7:1800 -x t_data_analysis -y t_data_analysis   -w=5 -b=10 -c 10000;
+./esm -s http://192.168.2.6:9200 -d http://192.168.2.7:1800 -x t_cjjxq -y t_cjjxq   -w=5 -b=10 -c 10000;
+./esm -s http://192.168.1.225:9200 -d http://192.168.2.7:1800 -x t_alarm_analysis_result -y t_alarm_analysis_result   -w=5 -b=10 -c 10000;
+./esm -s http://192.168.2.6:9200 -d http://192.168.2.7:1800 -x p_answer_handle_alarm -y p_answer_handle_alarm  -t=10m  -w=5 -b=10 -c 5000;
+./esm -s http://192.168.2.6:9200 -d http://192.168.2.7:1800 -x city_answer_handle_alarm -y city_answer_handle_alarm  -t=10m  -w=5 -b=10 -c 5000;</code></pre><p>scroll time 超时，设置-t参数，默认是1m</p><p>同步后的数据结构<br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1563358966961.png" alt="enter description here"></p><h1 id="logstash"><a href="#logstash" class="headerlink" title="logstash"></a>logstash</h1><h2 id="ES单节点安装"><a href="#ES单节点安装" class="headerlink" title="ES单节点安装"></a>ES单节点安装</h2><pre><code class="groovy">docker run -di --name=tensquare_es -p 9200:9200 -p 9300:9300 --privileged docker.io/elasticsearch:6.6.0 
+docker cp tensquare_es:/usr/share/elasticsearch/config/elasticsearch.yml /usr/share/elasticsearch.yml 
+docker stop tensquare_es 
+docker rm tensquare_es 
+vim /usr/share/elasticsearch.yml 
+transport.host: 0.0.0.0 
+docker restart tensquare_es 
+vim /etc/security/limits.conf 
+* soft nofile 65536 
+* hard nofile 65536 
+nofile是单个进程允许打开的最大文件个数 
+soft nofile 是软限制 
+hard nofile是硬限制 
+vim /etc/sysctl.conf 
+vm.max_map_count=655360 
+sysctl -p 
+修改内核参数立马生效 我们需要以文件挂载的 方式创建容器才行，这样我们就可以通过修改宿主机中的某个文件来实现对容器内配置 文件的修改 
+docker run -di --name=tensquare_es -p 9200:9200 -p 9300:9300 --privileged     -v /usr/share/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml docker.io/elasticsearch:6.6.0
+docker restart tensquare_es 才可以远程连接使用</code></pre><h2 id="同步mysql"><a href="#同步mysql" class="headerlink" title="同步mysql"></a>同步mysql</h2><p><a href="https://www.elastic.co/cn/downloads/past-releases/logstash-6-6-0" target="_blank" rel="noopener">https://www.elastic.co/cn/downloads/past-releases/logstash-6-6-0</a><br>tar zxf logstash-6.6.0.tar.gz &amp;&amp; cd /root/logstash-6.6.0/bin<br>mkdir mysql &amp;&amp; cd mysql &amp;&amp; vim mysql.conf</p><pre><code class="input">  jdbc {
+      # mysql jdbc connection string to our backup databse
+      jdbc_connection_string =&gt; &quot;jdbc:mysql://192.168.2.5:185/ht_micro_record?characterEncoding=UTF8&quot;
+      # the user we wish to excute our statement as
+      jdbc_user =&gt; &quot;root&quot;
+      jdbc_password =&gt; &quot;123456&quot;
+      # the path to our downloaded jdbc driver
+      jdbc_driver_library =&gt; &quot;/root/logstash-6.6.0/bin/mysql/mysql-connector-java-5.1.47.jar&quot;
+      # the name of the driver class for mysql
+      jdbc_driver_class =&gt; &quot;com.mysql.jdbc.Driver&quot;
+      jdbc_paging_enabled =&gt; &quot;true&quot;
+      jdbc_page_size =&gt; &quot;500000&quot;
+      #以下对应着要执行的sql的绝对路径。
+      #statement_filepath =&gt; &quot;select id,title,content from tb_article&quot;
+      statement =&gt; &quot;SELECT id,applyer_police_num,applyer_name FROM t_apply&quot;
+      #定时字段 各字段含义（由左至右）分、时、天、月、年，全部为*默认含义为每分钟都更新（测试结果，不同的话请留言指出）
+      schedule =&gt; &quot;* * * * *&quot;
+  }
+}
+output {
+  elasticsearch {
+      #ESIP地址与端口
+      hosts =&gt; &quot;192.168.3.224:9200&quot;
+      #ES索引名称（自己定义的）
+      index =&gt; &quot;t_apply&quot;
+      #自增ID编号
+      document_id =&gt; &quot;%{id}&quot;
+      document_type =&gt; &quot;article&quot;
+  }
+  stdout {
+      #以JSON格式输出
+      codec =&gt; json_lines
+  }
+}</code></pre><p>nohup ./logstash -f mysql/mysql.conf &amp;<br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1564364466864.png" alt="enter description here"></p><h2 id="同步es"><a href="#同步es" class="headerlink" title="同步es"></a>同步es</h2><p>/root/logstash-6.6.0/bin/es/es.conf</p><pre><code>input {
+    elasticsearch {
+        hosts =&gt; [&quot;192.168.2.5:1800&quot;,&quot;192.168.2.7:1800&quot;]
+        index =&gt; &quot;t_neo4j_data&quot;
+        size =&gt; 1000
+        scroll =&gt; &quot;1m&quot;
+        codec =&gt; &quot;json&quot;
+        docinfo =&gt; true
+    }
+}
+
+filter {
+        mutate {
+                remove_field =&gt; [&quot;@timestamp&quot;, &quot;@version&quot;]
+        }
+
+}
+
+output {
+    elasticsearch {
+        hosts =&gt; [&quot;192.168.3.224:9200&quot;]
+        index =&gt; &quot;%{[@metadata][_index]}&quot;
+    }
+    stdout { codec =&gt; rubydebug { metadata =&gt; true } }
+
+}
+</code></pre><p>./logstash -f es/es.conf –path.data ../logs/</p><h1 id="elasticdump"><a href="#elasticdump" class="headerlink" title="elasticdump"></a>elasticdump</h1><pre><code>wget https://nodejs.org/dist/v8.11.2/node-v8.11.2-linux-x64.tar.xz
+tar xf node-v8.11.2-linux-x64.tar.xz -C /usr/local/
+ln -s /usr/local/node-v8.11.2-linux-x64/bin/npm /usr/local/bin/npm
+ln -s /usr/local/node-v8.11.2-linux-x64/bin/node /usr/local/bin/node
+npm install -g cnpm --registry=https://registry.npm.taobao.org
+ln -s /usr/local/node-v8.11.2-linux-x64/bin/cnpm /usr/local/bin/cnpm
+cnpm init -f
+cnpm install elasticdump
+cd node_modules/elasticdump/bin
+./elasticdump \
+  --input=http://192.168.2.6:9200/t_record_analyze \
+  --output=http://192.168.3.224:9200/t_record_analyze \
+  --type=analyzer
+
+./elasticdump \
+  --input=http://192.168.2.6:9200/t_record_analyze \
+  --output=http://192.168.3.224:9200/t_record_analyze \
+  --type=mapping
+
+./elasticdump \
+  --input=http://192.168.2.6:9200/t_record_analyze \
+  --output=http://192.168.3.224:9200/t_record_analyze \
+  --type=data
+
+./elasticdump \
+  --input=http://192.168.2.6:9200:9200/t_record_analyze \
+  --output=data.json \
+  --searchBody &#39;{&quot;query&quot;:{&quot;term&quot;:{&quot;username&quot;: &quot;admin&quot;}}}
+
+./elasticdump \
+  --input=./data.json \
+  --output=http://192.168.2.7:1800</code></pre><h1 id="整合springboot"><a href="#整合springboot" class="headerlink" title="整合springboot"></a>整合springboot</h1><p>父pom</p><pre><code>    &lt;parent&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-parent&lt;/artifactId&gt;
+        &lt;version&gt;2.1.2.RELEASE&lt;/version&gt;
+        &lt;relativePath/&gt; &lt;!-- lookup parent from repository --&gt;
+    &lt;/parent&gt;</code></pre><p>子pom</p><pre><code>&lt;!--elasticsearch--&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.elasticsearch&lt;/groupId&gt;
+    &lt;artifactId&gt;elasticsearch&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-boot-starter-data-elasticsearch&lt;/artifactId&gt;
+&lt;/dependency&gt;
+
+&lt;dependency&gt;
+    &lt;groupId&gt;org.springframework.data&lt;/groupId&gt;
+    &lt;artifactId&gt;spring-data-elasticsearch&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;com.fasterxml.jackson.core&lt;/groupId&gt;
+    &lt;artifactId&gt;jackson-databind&lt;/artifactId&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;net.java.dev.jna&lt;/groupId&gt;
+    &lt;artifactId&gt;jna&lt;/artifactId&gt;
+    &lt;!-- &lt;version&gt;3.0.9&lt;/version&gt; --&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;com.google.code.gson&lt;/groupId&gt;
+    &lt;artifactId&gt;gson&lt;/artifactId&gt;
+    &lt;version&gt;2.8.2&lt;/version&gt;
+&lt;/dependency&gt;</code></pre><p>配置文件bootstrap.yml</p><pre><code>es:
+  nodes: 192.168.2.5:1800,192.168.2.7:1800
+  host: 192.168.2.6,192.168.2.7
+  port: 1801,1801
+  types: doc
+  clusterName: elasticsearch-cluster
+  #笔录分析库
+  blDbName: t_record_analyze
+  #接警信息库
+  jjDbName: p_answer_alarm
+  #处警信息库
+  cjDbName: p_handle_alarm
+  #警情分析结果信息库
+  jqfxDbName: t_alarm_analysis_result
+  #标准化分析
+  cjjxqDbName: t_cjjxq
+  #接处警整合库
+  jcjDbName: p_answer_handle_alarm
+  #警情分析
+  daDbName: t_data_analysis
+  #警情结果表(neo4j使用)
+  neo4jData: t_neo4j_data
+  #市局接处警表
+  cityDbName: city_answer_handle_alarm</code></pre><p>配置类com/ht/micro/record/service/dubbo/provider/utils/EsConfig.java</p><pre><code>@Service
+public class EsConfig {
+
+    @Value(&quot;${es.nodes}&quot;)
+    private String nodes;
+
+    @Value(&quot;${es.host}&quot;)
+    private String host;
+
+    @Value(&quot;${es.port}&quot;)
+    private String port;
+
+    @Value(&quot;${es.blDbName}&quot;)
+    private String blDbName;
+
+    @Value(&quot;${es.jjDbName}&quot;)
+    private String jjDbName;
+
+    @Value(&quot;${es.cjDbName}&quot;)
+    private String cjDbName;
+
+    @Value(&quot;${es.jqfxDbName}&quot;)
+    private String jqfxDbName;
+
+    @Value(&quot;${es.clusterName}&quot;)
+    private String clusterName;
+
+    @Value(&quot;${es.jjDbName}&quot;)
+    private String answerDbName;
+
+    @Value(&quot;${es.cjDbName}&quot;)
+    private String handleDbName;
+
+    @Value(&quot;${es.cjjxqDbName}&quot;)
+    private String cjjxqDbName;
+
+    @Value(&quot;${es.jcjDbName}&quot;)
+    private String jcjDbName;
+
+    @Value(&quot;${es.daDbName}&quot;)
+    private String daDbName;
+
+    @Value(&quot;${es.daDbName}&quot;)
+    private String fxDbName;
+
+    @Value(&quot;${es.types}&quot;)
+    private String types;
+
+    @Value(&quot;${es.neo4jData}&quot;)
+    private String neo4jData;
+
+    @Value(&quot;${es.cityDbName}&quot;)
+    private String cityDbName;
+}    </code></pre><p>配置类 com/ht/micro/record/service/dubbo/provider/utils/ElasticClientSingleton.java</p><pre><code>@Service
+public class ElasticClientSingleton {
+    protected final Logger logger = LoggerFactory.getLogger(ElasticClientSingleton.class);
+
+    private AtomicInteger atomicPass = new AtomicInteger();    // 0 未初始化, 1 已初始化
+
+    private TransportClient transportClient;
+    private BulkRequestBuilder bulkRequest;
+
+
+    public synchronized void init(EsConfig esConfig) {
+        try {
+            String ipArray = esConfig.getHost();
+            String portArray = esConfig.getPort();
+            String cluster = esConfig.getClusterName();
+
+            Settings settings = Settings.builder()
+                    .put(&quot;cluster.name&quot;, cluster)  //连接的集群名
+                    .put(&quot;client.transport.ignore_cluster_name&quot;, true)
+                    .put(&quot;client.transport.sniff&quot;, false)//如果集群名不对，也能连接
+                    .build();
+            transportClient = new PreBuiltTransportClient(settings);
+
+            String[] ips = ipArray.split(&quot;,&quot;);
+            String[] ports = portArray.split(&quot;,&quot;);
+            for (int i = 0; i &lt; ips.length; i++) {
+                transportClient.addTransportAddress(new TransportAddress(InetAddress.getByName(ips[i]), Integer
+                        .parseInt(ports[i])));
+            }
+
+            atomicPass.set(1);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            logger.error(e.getMessage());
+
+            atomicPass.set(0);
+            destroy();
+        }
+    }
+
+    public void destroy() {
+        if (transportClient != null) {
+            transportClient.close();
+            transportClient = null;
+        }
+    }
+
+    public BulkRequestBuilder getBulkRequest(EsConfig esConfig) {
+        if (atomicPass.get() == 0) {    // 初始化
+            init(esConfig);
+        }
+
+        bulkRequest = transportClient.prepareBulk();
+
+        return bulkRequest;
+    }
+
+    public TransportClient getTransportClient(EsConfig esConfig) {
+        if (atomicPass.get() == 0) {    // 初始化
+            init(esConfig);
+        }
+
+        return transportClient;
+    }
+}</code></pre><p>配置类 com/ht/micro/record/service/dubbo/provider/utils/ElasticClient.java</p><pre><code>@Service
+public class ElasticClient {
+    @Autowired
+    private EsConfig esConfig;
+
+    private static final Logger logger = LoggerFactory.getLogger(ElasticClient.class);
+
+    private static BulkRequestBuilder bulkRequest;
+
+    @Autowired
+    private  ElasticClientSingleton elasticClientSingleton;
+    @PostConstruct
+    public void init() {
+
+        bulkRequest = elasticClientSingleton.getBulkRequest(esConfig);
+    }
+
+
+    public static String postRequest(String url, String query) {
+        RestTemplate restTemplate = new RestTemplate();
+        MediaType type = MediaType.parseMediaType(&quot;application/json; charset=UTF-8&quot;);
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(type);
+        headers.add(&quot;Accept&quot;, MediaType.APPLICATION_JSON.toString());
+        HttpEntity&lt;String&gt; formEntity = new HttpEntity&lt;String&gt;(query, headers);
+        String result = restTemplate.postForObject(url, formEntity, String.class);
+
+        return result;
+    }
+
+
+
+    /**
+     * action 提交操作
+     */
+//    public void action() {
+//        int reqSize = bulkRequest.numberOfActions();
+//        //读不到数据了，默认已经全部读取
+//        if (reqSize == 0) {
+//            bulkRequest.request().requests().clear();
+//        }
+//        bulkRequest.setTimeout(new TimeValue(1000 * 60 * 5)); //超时30秒
+//        BulkResponse bulkResponse = bulkRequest.execute().actionGet();
+//        //持久化异常
+//        if (bulkResponse.hasFailures()) {
+//            logger.error(bulkResponse.buildFailureMessage());
+//            bulkRequest.request().requests().clear();
+//        }
+//        logger.info(&quot;import over....&quot; + bulkResponse.getItems().length);
+//    }
+
+
+}</code></pre><p>测试com/ht/micro/record/service/dubbo/provider/controller/ProviderController.java</p><pre><code>    @Autowired
+    ElasticClientSingleton elasticClientSingleton;
+    @Autowired
+    EsConfig esConfig;
+    @GetMapping(&quot;/test&quot;)
+    public void test(){
+        SearchRequestBuilder srb = elasticClientSingleton.getTransportClient(esConfig).prepareSearch(esConfig.getCityDbName()).setTypes(esConfig.getTypes());
+        TermsQueryBuilder cjbsBuilder = QueryBuilders.termsQuery(&quot;cjbs&quot;, &quot;4&quot;);
+        SearchResponse weekSearchResponse = srb.setQuery(cjbsBuilder).execute().actionGet();
+        System.out.println(weekSearchResponse.getHits().getTotalHits());
+    }    </code></pre><h1 id="Q1-重启服务"><a href="#Q1-重启服务" class="headerlink" title="Q1:重启服务"></a>Q1:重启服务</h1><p>PUT <a href="http://192.168.2.7:1800/_cluster/settings" target="_blank" rel="noopener">http://192.168.2.7:1800/_cluster/settings</a> 禁止分片分配。这一步阻止 Elasticsearch 再平衡缺失的分片，直到你告诉它可以进行了。</p><pre><code>{
+        &quot;transient&quot; : {
+            &quot;cluster.routing.allocation.enable&quot; : &quot;none&quot;
+        }
+    }</code></pre><p>启动完毕后<br>PUT <a href="http://192.168.2.7:1800/_cluster/settings" target="_blank" rel="noopener">http://192.168.2.7:1800/_cluster/settings</a> 重启分片分配</p><pre><code>{
+        &quot;transient&quot; : {
+            &quot;cluster.routing.allocation.enable&quot; : &quot;all&quot;
+        }
+    }</code></pre><h1 id="Q2"><a href="#Q2" class="headerlink" title="Q2"></a>Q2</h1><p>Elasticsearch默认安装后设置的内存是1GB，这是远远不够用于生产环境的。<br>有两种方式修改Elasticsearch的堆内存：</p><ul><li>设置环境变量：export ES_HEAP_SIZE=10g 在es启动时会读取该变量；</li><li>启动时作为参数传递给es： ./bin/elasticsearch -Xmx10g -Xms10g</li></ul></article><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a> <span class="donate_txt">↑<br> 欢迎投食,求鼓励，求支持！</span><br></div><div id="donate_guide" class="donate_bar center hidden"> <img src="/images/alipay.png" alt="支付宝打赏"> <img src="/images/wechatpay.png" alt="微信打赏"></div><script type="text/javascript">document.getElementById("btn_donate").onclick=function(){$("#donate_board").addClass("hidden"),$("#donate_guide").removeClass("hidden")}</script></div><div class="nexmoe-post-copyright"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i> <strong>本文作者：</strong>OneJane<br> <strong>本文链接：</strong><a href="https://onejane.github.io/2019/08/20/ElasticSearch/" title="https://onejane.github.io/2019/08/20/ElasticSearch/" target="_blank" rel="noopener">https://onejane.github.io/2019/08/20/ElasticSearch/</a><br> <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可</div><section class="nexmoe-comment"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css"><div id="gitalk"></div><script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script><script type="text/javascript">var gitalk=new Gitalk({clientID:"e677e59382e1c7a468fd",clientSecret:"717d041bc4ab749f069314862232cfb6ec8adc15",id:decodeURI(window.location.pathname),repo:"onejane.github.io",owner:"onejane",admin:"onejane"});gitalk.render("gitalk")</script></section></div></div></div><script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/smoothscroll-for-websites@1.4.9/SmoothScroll.min.js"></script><script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js"></script><script>hljs.initHighlightingOnLoad()</script><script src="/js/app.js?v=1566316803680"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.1.0/lazysizes.min.js"></script><div hidden><script type="text/javascript" src="https://js.users.51.la/20279757.js"></script></div></body><script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script></html>
