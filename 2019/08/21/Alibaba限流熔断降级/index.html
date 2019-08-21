@@ -1,0 +1,423 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.9.0"><title>Alibaba限流熔断降级 - OneJane</title><meta charset="UTF-8"><meta name="description" content><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><link rel="shortcut icon" href="/images/a.ico" type="image/png"><meta name="description" content="基于spring cloud alibaba实战整合开发"><meta name="keywords" content="spring cloud alibaba,sentinel,nacos"><meta property="og:type" content="article"><meta property="og:title" content="Alibaba限流熔断降级"><meta property="og:url" content="https://onejane.github.io/2019/08/21/Alibaba限流熔断降级/index.html"><meta property="og:site_name" content="OneJane"><meta property="og:description" content="基于spring cloud alibaba实战整合开发"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565244022641.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565244045582.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565245358260.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565245759454.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565252128686.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565252299866.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565254838577.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565254852481.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565254921781.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565255315318.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565255392581.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565256038192.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565256058092.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565256075475.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565256088028.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565256102707.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565313768651.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565313831198.png"><meta property="og:updated_time" content="2019-08-21T01:12:00.828Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Alibaba限流熔断降级"><meta name="twitter:description" content="基于spring cloud alibaba实战整合开发"><meta name="twitter:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565244022641.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/css/mdui.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.15.8/styles/atom-one-dark.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1038733_0xvrvpg9c0r.css"><link rel="stylesheet" href="/css/style.css?v=1566367773171"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script></head><body class="mdui-drawer-body-left"><div id="nexmoe-background"><div class="nexmoe-bg" style="background-image:url(https://i.loli.net/2019/01/13/5c3aec85a4343.jpg)"></div><div class="mdui-appbar mdui-shadow-0"><div class="mdui-toolbar"> <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a><div class="mdui-toolbar-spacer"></div> <a href="/" title="OneJane" class="mdui-btn mdui-btn-icon"><img src="https://i.loli.net/2019/08/20/UIhTqdQiPasxLtr.jpg"></a></div></div></div><div id="nexmoe-header"><div class="nexmoe-drawer mdui-drawer" id="drawer"><div class="nexmoe-avatar mdui-ripple"> <a href="/" title="OneJane"><img src="https://i.loli.net/2019/08/20/UIhTqdQiPasxLtr.jpg" alt="OneJane"></a></div><div class="nexmoe-count"><div><span>文章</span>25</div><div><span>标签</span>45</div><div><span>分类</span>9</div></div><ul class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}"><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页"><i class="mdui-list-item-icon nexmoefont icon-home"></i><div class="mdui-list-item-content"> 回到首页</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="关于博客"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i><div class="mdui-list-item-content"> 关于博客</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/py.html" title="我的朋友"><i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i><div class="mdui-list-item-content"> 我的朋友</div></a></ul><aside id="nexmoe-sidebar"><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">社交按钮</h3><div class="nexmoe-widget nexmoe-social"><a class="mdui-ripple" href="https://www.zhihu.com/people/codewj/activities" target="_blank" mdui-tooltip="{content: 'zhihu'}" style="color:#e76a8d;background-color:rgba(231,106,141,.15)"><i class="nexmoefont icon-zhihu"></i></a><a class="mdui-ripple" href="https://github.com/OneJane" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color:#191717;background-color:rgba(25,23,23,.15)"><i class="nexmoefont icon-github"></i></a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章分类</h3><div class="nexmoe-widget"><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/定时器/">定时器</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/持续集成/">持续集成</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/注册中心/">注册中心</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/项目实战/">项目实战</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高可用/">高可用</a><span class="category-list-count">4</span></li></ul></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">标签云</h3><div class="nexmoe-widget tagcloud"> <a href="/tags/Docker/" style="font-size:10px">Docker</a> <a href="/tags/GitLab/" style="font-size:10px">GitLab</a> <a href="/tags/Haproxy/" style="font-size:10px">Haproxy</a> <a href="/tags/Keepalived/" style="font-size:10px">Keepalived</a> <a href="/tags/Replication/" style="font-size:10px">Replication</a> <a href="/tags/RocketMQ/" style="font-size:10px">RocketMQ</a> <a href="/tags/Spring-Cloud-Alibaba/" style="font-size:10px">Spring Cloud Alibaba</a> <a href="/tags/ant-design/" style="font-size:10px">ant design</a> <a href="/tags/ant-design-pro/" style="font-size:12.5px">ant design pro</a> <a href="/tags/docker/" style="font-size:17.5px">docker</a> <a href="/tags/dubbo/" style="font-size:12.5px">dubbo</a> <a href="/tags/elasticsearch/" style="font-size:10px">elasticsearch</a> <a href="/tags/elastisearch/" style="font-size:10px">elastisearch</a> <a href="/tags/email/" style="font-size:10px">email</a> <a href="/tags/es6/" style="font-size:10px">es6</a> <a href="/tags/feign/" style="font-size:10px">feign</a> <a href="/tags/freemarker/" style="font-size:10px">freemarker</a> <a href="/tags/gateway/" style="font-size:10px">gateway</a> <a href="/tags/gitlab/" style="font-size:10px">gitlab</a> <a href="/tags/jenkins/" style="font-size:12.5px">jenkins</a> <a href="/tags/linux/" style="font-size:10px">linux</a> <a href="/tags/maven/" style="font-size:12.5px">maven</a> <a href="/tags/multi-druid/" style="font-size:10px">multi druid</a> <a href="/tags/mybatis/" style="font-size:10px">mybatis</a> <a href="/tags/nacos/" style="font-size:12.5px">nacos</a> <a href="/tags/nexmoe/" style="font-size:10px">nexmoe</a> <a href="/tags/partition/" style="font-size:10px">partition</a> <a href="/tags/pxc/" style="font-size:10px">pxc</a> <a href="/tags/rabbitmq/" style="font-size:10px">rabbitmq</a> <a href="/tags/react/" style="font-size:12.5px">react</a> <a href="/tags/redis/" style="font-size:12.5px">redis</a> <a href="/tags/redis-cluster/" style="font-size:10px">redis-cluster</a> <a href="/tags/replication/" style="font-size:10px">replication</a> <a href="/tags/rocketmq/" style="font-size:10px">rocketmq</a> <a href="/tags/sentinel/" style="font-size:15px">sentinel</a> <a href="/tags/session/" style="font-size:10px">session</a> <a href="/tags/skywalking/" style="font-size:12.5px">skywalking</a> <a href="/tags/spring-cloud-alibaba/" style="font-size:20px">spring cloud alibaba</a> <a href="/tags/springboot/" style="font-size:15px">springboot</a> <a href="/tags/swagger/" style="font-size:10px">swagger</a> <a href="/tags/tk-mybatis/" style="font-size:10px">tk mybatis</a> <a href="/tags/umi/" style="font-size:10px">umi</a> <a href="/tags/validate/" style="font-size:10px">validate</a> <a href="/tags/xxl-job/" style="font-size:12.5px">xxl-job</a> <a href="/tags/zk/" style="font-size:10px">zk</a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章归档</h3><div class="nexmoe-widget"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul></div></div></aside><div class="nexmoe-copyright"> &copy; 2019 OneJane</div></div></div><div id="nexmoe-content"><div class="nexmoe-primary"><div class="nexmoe-post"><div class="nexmoe-post-cover"> <img src="https://i.loli.net/2019/08/21/Vz49UN2aIr1EYSs.jpg"><h1>Alibaba限流熔断降级</h1></div><div class="nexmoe-post-meta"><a><i class="nexmoefont icon-calendar-fill"></i> 2019年08月21日</a><a><i class="nexmoefont icon-areachart"></i> 2.6k 字</a><a><i class="nexmoefont icon-time-circle-fill"></i> 大概 15 分钟</a> <a class="nexmoefont icon-appstore-fill -link" href="/categories/项目实战/">项目实战</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/nacos/">nacos</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/sentinel/">sentinel</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/spring-cloud-alibaba/">spring cloud alibaba</a></div><article><p>基于spring cloud alibaba实战整合开发</p><a id="more"></a><h1 id="限流"><a href="#限流" class="headerlink" title="限流"></a>限流</h1><h2 id="sentinel存储"><a href="#sentinel存储" class="headerlink" title="sentinel存储"></a>sentinel存储</h2><pre><code class="xml">   &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-cloud-starter-alibaba-sentinel&lt;/artifactId&gt;
+    &lt;/dependency&gt;</code></pre><p>application.yml</p><pre><code class="css">spring:
+  application:
+    name: ht-micro-record-service-user
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.2.7:8848,192.168.2.7:8849,192.168.2.7:8850
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: 192.168.2.7:19</code></pre><p>访问ht-micro-record-service-user服务，<a href="http://localhost:9506/apply/page/1/2" target="_blank" rel="noopener">http://localhost:9506/apply/page/1/2</a><br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565244022641.png" alt="enter description here"><br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565244045582.png" alt="enter description here"><br>快速的调用两次<a href="http://localhost:9506/apply/page/1/2" target="_blank" rel="noopener">http://localhost:9506/apply/page/1/2</a> 接口之后，第三次调用被限流了</p><h2 id="nacos存储"><a href="#nacos存储" class="headerlink" title="nacos存储"></a>nacos存储</h2><pre><code class="xml">      &lt;dependency&gt;
+            &lt;groupId&gt;com.alibaba.csp&lt;/groupId&gt;
+            &lt;artifactId&gt;sentinel-datasource-nacos&lt;/artifactId&gt;
+        &lt;/dependency&gt;</code></pre><p>application.yml</p><pre><code>spring:
+  cloud:
+    sentinel:
+      datasource:
+        ds:
+          nacos:
+            dataId: ${spring.application.name}-sentinel
+            groupId: DEFAULT_GROUP
+            rule-type: flow
+            server-addr: 192.168.2.7:8848,192.168.2.7:8849,192.168.2.7:8850</code></pre><p>nacos中配置ht-micro-record-service-user-sentinel<br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565245358260.png" alt="enter description here"></p><pre><code class="json">[
+        {
+        &quot;resource&quot;: &quot;/apply/page/1/2&quot;,
+        &quot;limitApp&quot;: &quot;default&quot;,
+        &quot;grade&quot;: 1,
+        &quot;count&quot;: 5,
+        &quot;strategy&quot;: 0,
+        &quot;controlBehavior&quot;: 0,
+        &quot;clusterMode&quot;: false
+        }
+]</code></pre><p>进入<a href="http://192.168.2.7:190/#/dashboard/identity/ht-micro-record-service-user" target="_blank" rel="noopener">http://192.168.2.7:190/#/dashboard/identity/ht-micro-record-service-user</a> 访问<br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565245759454.png" alt="enter description here"></p><ul><li>Sentinel控制台中修改规则：仅存在于服务的内存中，不会修改Nacos中的配置值，重启后恢复原来的值。</li><li>Nacos控制台中修改规则：服务的内存中规则会更新，Nacos中持久化规则也会更新，重启后依然保持。<h2 id="限流捕获处理异常"><a href="#限流捕获处理异常" class="headerlink" title="限流捕获处理异常"></a>限流捕获处理异常</h2>ht-micro-record-service-dubbo-provider</li></ul><pre><code class="xml">&lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-alibaba-sentinel&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.alibaba.csp&lt;/groupId&gt;
+            &lt;artifactId&gt;sentinel-datasource-nacos&lt;/artifactId&gt;
+        &lt;/dependency&gt;</code></pre><p>com.ht.micro.record.service.dubbo.provider.DubboProviderApplication</p><pre><code class="aspectj">// 注解支持的配置Bean
+    @Bean
+    public SentinelResourceAspect sentinelResourceAspect() {
+        return new SentinelResourceAspect();
+    }</code></pre><p>bootstrap.yml</p><pre><code>spring:
+  application:
+    name: ht-micro-record-service-dubbo-provider
+  cloud:
+    nacos:
+      config:
+        file-extension: yaml
+        server-addr: 192.168.2.7:8848,192.168.2.7:8849,192.168.2.7:8850
+    sentinel:
+      transport:
+        port: 8720
+        dashboard: 192.168.2.7:190
+      datasource:
+        ds:
+          nacos:
+            dataId: ${spring.application.name}-sentinel
+            groupId: DEFAULT_GROUP
+            rule-type: flow
+            data-type: json
+            server-addr: 192.168.2.7:8848,192.168.2.7:8849,192.168.2.7:8850</code></pre><p>nacos配置ht-micro-record-service-dubbo-provider-sentinel</p><pre><code class="json">[
+  {
+    &quot;resource&quot;: &quot;protected-resource&quot;,
+    &quot;controlBehavior&quot;: 2,
+    &quot;count&quot;: 1,
+    &quot;grade&quot;: 1,
+    &quot;limitApp&quot;: &quot;default&quot;,
+    &quot;strategy&quot;: 0
+  }
+]</code></pre><p><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565252128686.png" alt="enter description here"><br>nacos配置ht-micro-record-service-dubbo-provider.yaml</p><pre><code class="css">spring:
+  application:
+    name: ht-micro-record-service-dubbo-provider
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.2.7:8848,192.168.2.7:8849,192.168.2.7:8850
+
+server:
+  port: 9502</code></pre><p>com.ht.micro.record.service.dubbo.provider.controller.ProviderController</p><pre><code>@GetMapping(&quot;/port&quot;)
+    @SentinelResource(value = &quot;protected-resource&quot;, blockHandler = &quot;handleBlock&quot;)
+    public Object port() {
+        return &quot;port= &quot;+ port + &quot;, name=&quot; + applicationContext.getEnvironment().getProperty(&quot;user.name&quot;);
+    }
+    public String  handleBlock(BlockException ex) {
+        return &quot;限流了&quot;;
+    }</code></pre><p>启动服务后<a href="http://192.168.2.7:190/#/dashboard/flow/ht-micro-record-service-dubbo-provider" target="_blank" rel="noopener">http://192.168.2.7:190/#/dashboard/flow/ht-micro-record-service-dubbo-provider</a><br>快速访问<a href="http://localhost:9502/provider/port" target="_blank" rel="noopener">http://localhost:9502/provider/port</a> 每秒超过1个请求将会显示限流了<br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565252299866.png" alt="enter description here"></p><h1 id="熔断"><a href="#熔断" class="headerlink" title="熔断"></a>熔断</h1><pre><code class="kotlin"> @GetMapping(&quot;name&quot;)
+    @SentinelResource(value = &quot;getName&quot;, fallback = &quot;getNameFallback&quot;)
+    public String userName(String name){
+        for (int i = 0; i &lt; 100000000L; i++) {
+        }
+        return &quot;getName &quot; + name;
+    }
+
+    // 该方法降级处理函数，参数要与原函数getName相同，并且返回值类型也要与原函数相同，此外，该方法必须与原函数在同一个类中
+    public String getNameFallback(String name){
+        return &quot;getNameFallback&quot;;
+    }</code></pre><p>访问<a href="http://localhost:9502/provider/name" target="_blank" rel="noopener">http://localhost:9502/provider/name</a><br>查看<a href="http://192.168.2.7:190/#/dashboard/identity/ht-micro-record-service-dubbo-provider" target="_blank" rel="noopener">http://192.168.2.7:190/#/dashboard/identity/ht-micro-record-service-dubbo-provider</a><br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565254838577.png" alt="enter description here"><br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565254852481.png" alt="enter description here"><br>根据响应时间，大于10毫秒，则熔断降级（要连续超过5个请求超过10毫秒才会熔断）<br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565254921781.png" alt="enter description here"><br>快速访问<a href="http://localhost:9502/provider/name" target="_blank" rel="noopener">http://localhost:9502/provider/name</a></p><pre><code class="typescript">@GetMapping(&quot;name&quot;)
+    @SentinelResource(value = &quot;getName&quot;, fallback = &quot;getNameFallback&quot;)
+    public String userName(String name){
+        for (int i = 0; i &lt; 100000000L; i++) {
+            throw new RuntimeException();
+        }
+        return &quot;getName &quot; + name;
+    }
+
+    // 该方法降级处理函数，参数要与原函数getName相同，并且返回值类型也要与原函数相同，此外，该方法必须与原函数在同一个类中
+    public String getNameFallback(String name){
+        return &quot;getNameFallback&quot;;
+    }</code></pre><p><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565255315318.png" alt="enter description here"><br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565255392581.png" alt="enter description here"><br>显示抛出是10个异常，然后返回结果是熔断处理方法返回结果</p><h1 id="流控规则"><a href="#流控规则" class="headerlink" title="流控规则"></a>流控规则</h1><p><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565256038192.png" alt="enter description here"></p><h1 id="降级规则"><a href="#降级规则" class="headerlink" title="降级规则"></a>降级规则</h1><p><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565256058092.png" alt="enter description here"><br>timeWindow为熔断恢复时间<br>熔断模式，当熔断触发后，需要等待timewindow时间，再关闭熔断器。</p><ul><li>0 根据rt时间，当超过指定规则的时间连续超过5笔，则触发熔断。</li><li>1 根据异常比例熔断 DEGRADE_GRADE_EXCEPTION_RATIO</li><li>2 根据单位时间内异常总数做熔断<h1 id="热点规则"><a href="#热点规则" class="headerlink" title="热点规则"></a>热点规则</h1><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565256075475.png" alt="enter description here"><h1 id="系统规则"><a href="#系统规则" class="headerlink" title="系统规则"></a>系统规则</h1><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565256088028.png" alt="enter description here"><h1 id="授权规则"><a href="#授权规则" class="headerlink" title="授权规则"></a>授权规则</h1><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565256102707.png" alt="enter description here"></li></ul><h1 id="Sentinel整合Nacos动态发布"><a href="#Sentinel整合Nacos动态发布" class="headerlink" title="Sentinel整合Nacos动态发布"></a>Sentinel整合Nacos动态发布</h1><pre><code class="crmsh">git clone https://github.com/alibaba/Sentinel.git
+cd Sentinel/sentinel-dashboard</code></pre><p>vim pom.xml</p><pre><code class="xml">     &lt;dependency&gt;
+            &lt;groupId&gt;com.alibaba.csp&lt;/groupId&gt;
+            &lt;artifactId&gt;sentinel-datasource-nacos&lt;/artifactId&gt;
+            &lt;!--&lt;scope&gt;test&lt;/scope&gt;--&gt;
+        &lt;/dependency&gt;</code></pre><p>修改resources/app/scripts/directives/sidebar/sidebar.html</p><pre><code class="dust">&lt;li ui-sref-active=&quot;active&quot;&gt;
+    &lt;a ui-sref=&quot;dashboard.flowV1({app: entry.app})&quot;&gt;
+        &lt;i class=&quot;glyphicon glyphicon-filter&quot;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;流控规则
+    &lt;/a&gt;
+&lt;/li&gt;</code></pre><p>为</p><pre><code class="dust">&lt;li ui-sref-active=&quot;active&quot;&gt;
+    &lt;a ui-sref=&quot;dashboard.flow({app: entry.app})&quot;&gt;
+        &lt;i class=&quot;glyphicon glyphicon-filter&quot;&gt;&lt;/i&gt;&amp;nbsp;&amp;nbsp;流控规则
+    &lt;/a&gt;
+&lt;/li&gt;</code></pre><p>com.alibaba.csp.sentinel.dashboard.rule.nacos.NacosConfigConstant</p><pre><code class="processing">public final class NacosConfigConstant {
+
+    public static final String GROUP_ID = &quot;DEFAULT_GROUP&quot;;
+
+    public static final String FLOW_DATA_ID_POSTFIX = &quot;-flow-rules&quot;;
+    public static final String PARAM_FLOW_DATA_ID_POSTFIX = &quot;-param-flow-rules&quot;;
+    public static final String DEGRADE_DATA_ID_POSTFIX = &quot;-degrade-rules&quot;;
+    public static final String SYSTEM_DATA_ID_POSTFIX = &quot;-system-rules&quot;;
+    public static final String AUTHORITY_DATA_ID_POSTFIX = &quot;-authority-rules&quot;;
+
+}</code></pre><p>com.alibaba.csp.sentinel.dashboard.rule.nacos.NacosConfigProperties</p><pre><code class="typescript">@Component
+public class NacosConfigProperties {
+
+    @Value(&quot;${houyi.nacos.server.ip}&quot;)
+    private String ip;
+
+    @Value(&quot;${houyi.nacos.server.port}&quot;)
+    private String port;
+
+    @Value(&quot;${houyi.nacos.server.namespace}&quot;)
+    private String namespace;
+
+    @Value(&quot;${houyi.nacos.server.group-id}&quot;)
+    private String groupId;
+
+    public String getIp() {
+        return ip;
+    }
+    public void setIp(String ip) {
+        this.ip = ip;
+    }
+    public String getPort() {
+        return port;
+    }
+    public void setPort(String port) {
+        this.port = port;
+    }
+    public String getNamespace() {
+        return namespace;
+    }
+    public void setNamespace(String namespace) {
+        this.namespace = namespace;
+    }
+    public String getGroupId() {
+        return groupId;
+    }
+    public void setGroupId(String groupId) {
+        this.groupId = groupId;
+    }
+    public String getServerAddr() {
+        return this.getIp()+&quot;:&quot;+this.getPort();
+    }
+    @Override
+    public String toString() {
+        return &quot;NacosConfigProperties [ip=&quot; + ip + &quot;, port=&quot; + port + &quot;, namespace=&quot;
+                + namespace + &quot;, groupId=&quot; + groupId + &quot;]&quot;;
+    }
+}</code></pre><p>com.alibaba.csp.sentinel.dashboard.rule.nacos.NacosConfig</p><pre><code class="aspectj">@Configuration
+public class NacosConfig {
+
+    @Autowired
+    private NacosConfigProperties nacosConfigProperties;
+
+    @Bean
+    public ConfigService nacosConfigService() throws Exception {
+        Properties properties = new Properties();
+        properties.put(PropertyKeyConst.SERVER_ADDR, nacosConfigProperties.getServerAddr());
+        if(nacosConfigProperties.getNamespace() != null &amp;&amp; !&quot;&quot;.equals(nacosConfigProperties.getNamespace()))
+            properties.put(PropertyKeyConst.NAMESPACE, nacosConfigProperties.getNamespace());
+        return ConfigFactory.createConfigService(properties);
+    }
+}</code></pre><p>application.properties</p><pre><code class="stylus">houyi.nacos.server.ip=192.168.2.7
+houyi.nacos.server.port=8848
+houyi.nacos.server.namespace=
+houyi.nacos.server.group-id=DEFAULT_GROUP</code></pre><h2 id="FlowRule"><a href="#FlowRule" class="headerlink" title="FlowRule"></a>FlowRule</h2><p>com.alibaba.csp.sentinel.dashboard.rule.nacos.FlowRuleNacosPublisher</p><pre><code class="groovy">@Component(&quot;flowRuleNacosPublisher&quot;)
+public class FlowRuleNacosPublisher implements DynamicRulePublisher&lt;List&lt;FlowRuleEntity&gt;&gt; {
+
+    @Autowired
+    private ConfigService configService;
+
+    @Autowired
+    private NacosConfigProperties nacosConfigProperties;
+
+    @Override
+    public void publish(String app, List&lt;FlowRuleEntity&gt; rules) throws Exception {
+        AssertUtil.notEmpty(app, &quot;app name cannot be empty&quot;);
+        if (rules == null) {
+            return;
+        }
+        configService.publishConfig(app + NacosConfigConstant.FLOW_DATA_ID_POSTFIX,
+                nacosConfigProperties.getGroupId(),
+                JSON.toJSONString(rules.stream().map(FlowRuleEntity::toRule).collect(Collectors.toList())));
+    }
+}</code></pre><p>com.alibaba.csp.sentinel.dashboard.rule.nacos.FlowRuleNacosProvider</p><pre><code class="groovy">@Component(&quot;flowRuleNacosProvider&quot;)
+public class FlowRuleNacosProvider implements DynamicRuleProvider&lt;List&lt;FlowRuleEntity&gt;&gt; {
+
+    private static Logger logger = LoggerFactory.getLogger(FlowRuleNacosProvider.class);
+    @Autowired
+    private ConfigService configService;
+
+    @Autowired
+    private NacosConfigProperties nacosConfigProperties;
+
+    @Override
+    public List&lt;FlowRuleEntity&gt; getRules(String appName) throws Exception {
+        String rulesStr = configService.getConfig(appName + NacosConfigConstant.FLOW_DATA_ID_POSTFIX,
+                nacosConfigProperties.getGroupId(), 3000);
+        logger.info(&quot;nacosConfigProperties{}:&quot;, nacosConfigProperties);
+        logger.info(&quot;从Nacos中获取到限流规则信息{}&quot;, rulesStr);
+        if (StringUtil.isEmpty(rulesStr)) {
+            return new ArrayList&lt;&gt;();
+        }
+        List&lt;FlowRule&gt; rules = RuleUtils.parseFlowRule(rulesStr);
+
+        if (rules != null) {
+            return rules.stream().map(rule -&gt; FlowRuleEntity.fromFlowRule(appName, nacosConfigProperties.getIp(), Integer.valueOf(nacosConfigProperties.getPort()), rule))
+                    .collect(Collectors.toList());
+        } else {
+            return new ArrayList&lt;&gt;();
+        }
+    }
+}</code></pre><p>com.alibaba.csp.sentinel.dashboard.controller.FlowControllerV1<br>将原始HTTP调用改为对应的Provider及Publisher<br>去除</p><pre><code class="aspectj">@Autowired
+    private SentinelApiClient sentinelApiClient;</code></pre><p>新增Qualifier和Component值保持一致</p><pre><code class="less">@Autowired
+    @Qualifier(&quot;flowRuleNacosProvider&quot;)
+    private DynamicRuleProvider&lt;List&lt;FlowRuleEntity&gt;&gt; provider;
+    @Autowired
+    @Qualifier(&quot;flowRuleNacosPublisher&quot;)
+    private DynamicRulePublisher&lt;List&lt;FlowRuleEntity&gt;&gt; publisher;
+@GetMapping(&quot;/rules&quot;)
+    public Result&lt;List&lt;FlowRuleEntity&gt;&gt; apiQueryMachineRules(HttpServletRequest request,
+                                                             @RequestParam String app,
+                                                             @RequestParam String ip,
+                                                             @RequestParam Integer port) {
+        AuthUser authUser = authService.getAuthUser(request);
+        authUser.authTarget(app, PrivilegeType.READ_RULE);
+
+        if (StringUtil.isEmpty(app)) {
+            return Result.ofFail(-1, &quot;app can&#39;t be null or empty&quot;);
+        }
+        if (StringUtil.isEmpty(ip)) {
+            return Result.ofFail(-1, &quot;ip can&#39;t be null or empty&quot;);
+        }
+        if (port == null) {
+            return Result.ofFail(-1, &quot;port can&#39;t be null&quot;);
+        }
+        try {
+            List&lt;FlowRuleEntity&gt; rules = provider.getRules(app);
+            rules = repository.saveAll(rules);
+            return Result.ofSuccess(rules);
+        } catch (Throwable throwable) {
+            logger.error(&quot;Error when querying flow rules&quot;, throwable);
+            return Result.ofThrowable(-1, throwable);
+        }
+    }    
+    private boolean publishRules(String app, String ip, Integer port) {
+        List&lt;FlowRuleEntity&gt; rules = repository.findAllByMachine(MachineInfo.of(app, ip, port));
+        try {
+            publisher.publish(app, rules);
+            logger.info(&quot;添加限流规则成功{}&quot;, JSON.toJSONString(rules.stream().map(FlowRuleEntity::toRule).collect(Collectors.toList())));
+            return true;
+        } catch (Exception e) {
+            logger.info(&quot;添加限流规则失败{}&quot;,JSON.toJSONString(rules.stream().map(FlowRuleEntity::toRule).collect(Collectors.toList())));
+            e.printStackTrace();
+            return false;
+        }
+    }    </code></pre><h2 id="DegradeRule"><a href="#DegradeRule" class="headerlink" title="DegradeRule"></a>DegradeRule</h2><p>com.alibaba.csp.sentinel.dashboard.rule.nacos.DegradeRuleNacosPublisher</p><pre><code class="groovy">@Component(&quot;degradeRuleNacosPublisher&quot;)
+public class DegradeRuleNacosPublisher implements DynamicRulePublisher&lt;List&lt;DegradeRuleEntity&gt;&gt; {
+
+    @Autowired
+    private ConfigService configService;
+
+    @Autowired
+    private NacosConfigProperties nacosConfigProperties;
+
+    @Override
+    public void publish(String app, List&lt;DegradeRuleEntity&gt; rules) throws Exception {
+        AssertUtil.notEmpty(app, &quot;app name cannot be empty&quot;);
+        if (rules == null) {
+            return;
+        }
+        configService.publishConfig(app + NacosConfigConstant.DEGRADE_DATA_ID_POSTFIX,
+                nacosConfigProperties.getGroupId(),
+                JSON.toJSONString(rules.stream().map(DegradeRuleEntity::toRule).collect(Collectors.toList())));
+    }
+}</code></pre><p>com.alibaba.csp.sentinel.dashboard.rule.nacos.DegradeRuleNacosProvider</p><pre><code class="groovy">@Component(&quot;degradeRuleNacosProvider&quot;)
+public class DegradeRuleNacosProvider implements DynamicRuleProvider&lt;List&lt;DegradeRuleEntity&gt;&gt; {
+
+    private static Logger logger = LoggerFactory.getLogger(DegradeRuleNacosProvider.class);
+    @Autowired
+    private ConfigService configService;
+
+    @Autowired
+    private NacosConfigProperties nacosConfigProperties;
+
+    @Override
+    public List&lt;DegradeRuleEntity&gt; getRules(String appName) throws Exception {
+        String rulesStr = configService.getConfig(appName + NacosConfigConstant.DEGRADE_DATA_ID_POSTFIX,
+                nacosConfigProperties.getGroupId(), 3000);
+        logger.info(&quot;nacosConfigProperties{}:&quot;, nacosConfigProperties);
+        logger.info(&quot;从Nacos中获取到熔断降级规则信息{}&quot;, rulesStr);
+        if (StringUtil.isEmpty(rulesStr)) {
+            return new ArrayList&lt;&gt;();
+        }
+        List&lt;DegradeRule&gt; rules = RuleUtils.parseDegradeRule(rulesStr);
+
+        if (rules != null) {
+            return rules.stream().map(rule -&gt; DegradeRuleEntity.fromDegradeRule(appName, nacosConfigProperties.getIp(), Integer.valueOf(nacosConfigProperties.getPort()), rule))
+                    .collect(Collectors.toList());
+        } else {
+            return new ArrayList&lt;&gt;();
+        }
+    }
+}</code></pre><p>com.alibaba.csp.sentinel.dashboard.controller.DegradeController<br>去除</p><pre><code>@Autowired
+    private SentinelApiClient sentinelApiClient;</code></pre><p>新增</p><pre><code>@Autowired
+    @Qualifier(&quot;degradeRuleNacosProvider&quot;)
+    private DynamicRuleProvider&lt;List&lt;DegradeRuleEntity&gt;&gt; provider;
+
+    @Autowired
+    @Qualifier(&quot;degradeRuleNacosPublisher&quot;)
+    private DynamicRulePublisher&lt;List&lt;DegradeRuleEntity&gt;&gt; publisher;
+    @ResponseBody
+    @RequestMapping(&quot;/rules.json&quot;)
+    public Result&lt;List&lt;DegradeRuleEntity&gt;&gt; queryMachineRules(HttpServletRequest request, String app, String ip, Integer port) {
+        AuthUser authUser = authService.getAuthUser(request);
+        authUser.authTarget(app, PrivilegeType.READ_RULE);
+
+        if (StringUtil.isEmpty(app)) {
+            return Result.ofFail(-1, &quot;app can&#39;t be null or empty&quot;);
+        }
+        if (StringUtil.isEmpty(ip)) {
+            return Result.ofFail(-1, &quot;ip can&#39;t be null or empty&quot;);
+        }
+        if (port == null) {
+            return Result.ofFail(-1, &quot;port can&#39;t be null&quot;);
+        }
+        try {
+            List&lt;DegradeRuleEntity&gt; rules = provider.getRules(app);
+            rules = repository.saveAll(rules);
+            return Result.ofSuccess(rules);
+        } catch (Throwable throwable) {
+            logger.error(&quot;queryApps error:&quot;, throwable);
+            return Result.ofThrowable(-1, throwable);
+        }
+    }
+       private boolean publishRules(String app, String ip, Integer port) {
+        List&lt;DegradeRuleEntity&gt; rules = repository.findAllByMachine(MachineInfo.of(app, ip, port));
+        try {
+            publisher.publish(app, rules);
+            logger.info(&quot;添加熔断降级规则成功{}&quot;, JSON.toJSONString(rules.stream().map(DegradeRuleEntity::toRule).collect(Collectors.toList())));
+            return true;
+        } catch (Exception e) {
+            logger.info(&quot;添加熔断降级规则失败{}&quot;,JSON.toJSONString(rules.stream().map(DegradeRuleEntity::toRule).collect(Collectors.toList())));
+            e.printStackTrace();
+            return false;
+        }
+    }</code></pre><p>重新打包启动</p><pre><code>mvn clean package -DskipTests
+cd sentinel-dashboard/target/
+nohup java -Dserver.port=190 -Dcsp.sentinel.dashboard.server=localhost:190 -Dproject.name=sentinel-dashboard -jar sentinel-dashboard.jar &amp;</code></pre><p>项目中bootstrap.yml</p><pre><code class="yaml">spring:
+  application:
+    name: ht-micro-record-service-dubbo-provider
+  cloud:
+    nacos:
+      config:
+        file-extension: yaml
+        server-addr: 192.168.2.7:8848,192.168.2.7:8849,192.168.2.7:8850
+    sentinel:
+      transport:
+        port: 8720
+        dashboard: localhost:8080
+      datasource:
+        ds:
+          nacos:
+            dataId: ${spring.application.name}-flow-rules
+            groupId: DEFAULT_GROUP
+            rule-type: flow # 流控
+#            rule-type: degrade # 熔断
+            data-type: json
+            server-addr: 192.168.2.7:8848,192.168.2.7:8849,192.168.2.7:8850
+        ds1:
+          nacos:
+            dataId: ${spring.application.name}-degrade-rules
+            groupId: DEFAULT_GROUP
+            rule-type: degrade # 熔断
+            data-type: json
+            server-addr: 192.168.2.7:8848,192.168.2.7:8849,192.168.2.7:8850</code></pre><p>nacos配置ht-micro-record-service-dubbo-provider.yaml</p><pre><code>spring:
+  application:
+    name: ht-micro-record-service-dubbo-provider
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.2.7:8848,192.168.2.7:8849,192.168.2.7:8850
+
+server:
+  port: 9502</code></pre><p><a href="http://localhost:8080/#/dashboard" target="_blank" rel="noopener">http://localhost:8080/#/dashboard</a> 新增规则<br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565313768651.png" alt="enter description here"><br>在<a href="http://192.168.2.7:8848/nacos" target="_blank" rel="noopener">http://192.168.2.7:8848/nacos</a> 中自动同步<br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565313831198.png" alt="enter description here"><br>暂时实现flow，degrade，</p></article><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a> <span class="donate_txt">↑<br> 欢迎投食,求鼓励，求支持！</span><br></div><div id="donate_guide" class="donate_bar center hidden"> <img src="/images/alipay.png" alt="支付宝打赏"> <img src="/images/wechatpay.png" alt="微信打赏"></div><script type="text/javascript">document.getElementById("btn_donate").onclick=function(){$("#donate_board").addClass("hidden"),$("#donate_guide").removeClass("hidden")}</script></div><div class="nexmoe-post-copyright"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i> <strong>本文作者：</strong>OneJane<br> <strong>本文链接：</strong><a href="https://onejane.github.io/2019/08/21/Alibaba限流熔断降级/" title="https://onejane.github.io/2019/08/21/Alibaba限流熔断降级/" target="_blank" rel="noopener">https://onejane.github.io/2019/08/21/Alibaba限流熔断降级/</a><br> <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可</div><section class="nexmoe-comment"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css"><div id="gitalk"></div><script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script><script type="text/javascript">var gitalk=new Gitalk({clientID:"e677e59382e1c7a468fd",clientSecret:"717d041bc4ab749f069314862232cfb6ec8adc15",id:decodeURI(window.location.pathname),repo:"onejane.github.io",owner:"onejane",admin:"onejane"});gitalk.render("gitalk")</script></section></div></div></div><script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/smoothscroll-for-websites@1.4.9/SmoothScroll.min.js"></script><script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js"></script><script>hljs.initHighlightingOnLoad()</script><script src="/js/app.js?v=1566367773181"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.1.0/lazysizes.min.js"></script><div hidden><script type="text/javascript" src="https://js.users.51.la/20279757.js"></script></div></body><script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script></html>

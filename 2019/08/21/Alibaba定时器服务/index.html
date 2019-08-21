@@ -1,0 +1,237 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.9.0"><title>Alibaba分布式session.md - OneJane</title><meta charset="UTF-8"><meta name="description" content><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><link rel="shortcut icon" href="/images/a.ico" type="image/png"><meta name="description" content="基于spring cloud alibaba实战整合开发"><meta name="keywords" content="spring cloud alibaba,xxl-job"><meta property="og:type" content="article"><meta property="og:title" content="Alibaba分布式session.md"><meta property="og:url" content="https://onejane.github.io/2019/08/21/Alibaba定时器服务/index.html"><meta property="og:site_name" content="OneJane"><meta property="og:description" content="基于spring cloud alibaba实战整合开发"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2019-08-21T01:18:34.407Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Alibaba分布式session.md"><meta name="twitter:description" content="基于spring cloud alibaba实战整合开发"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/css/mdui.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.15.8/styles/atom-one-dark.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1038733_0xvrvpg9c0r.css"><link rel="stylesheet" href="/css/style.css?v=1566367773118"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script></head><body class="mdui-drawer-body-left"><div id="nexmoe-background"><div class="nexmoe-bg" style="background-image:url(https://i.loli.net/2019/01/13/5c3aec85a4343.jpg)"></div><div class="mdui-appbar mdui-shadow-0"><div class="mdui-toolbar"> <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a><div class="mdui-toolbar-spacer"></div> <a href="/" title="OneJane" class="mdui-btn mdui-btn-icon"><img src="https://i.loli.net/2019/08/20/UIhTqdQiPasxLtr.jpg"></a></div></div></div><div id="nexmoe-header"><div class="nexmoe-drawer mdui-drawer" id="drawer"><div class="nexmoe-avatar mdui-ripple"> <a href="/" title="OneJane"><img src="https://i.loli.net/2019/08/20/UIhTqdQiPasxLtr.jpg" alt="OneJane"></a></div><div class="nexmoe-count"><div><span>文章</span>25</div><div><span>标签</span>45</div><div><span>分类</span>9</div></div><ul class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}"><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页"><i class="mdui-list-item-icon nexmoefont icon-home"></i><div class="mdui-list-item-content"> 回到首页</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="关于博客"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i><div class="mdui-list-item-content"> 关于博客</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/py.html" title="我的朋友"><i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i><div class="mdui-list-item-content"> 我的朋友</div></a></ul><aside id="nexmoe-sidebar"><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">社交按钮</h3><div class="nexmoe-widget nexmoe-social"><a class="mdui-ripple" href="https://www.zhihu.com/people/codewj/activities" target="_blank" mdui-tooltip="{content: 'zhihu'}" style="color:#e76a8d;background-color:rgba(231,106,141,.15)"><i class="nexmoefont icon-zhihu"></i></a><a class="mdui-ripple" href="https://github.com/OneJane" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color:#191717;background-color:rgba(25,23,23,.15)"><i class="nexmoefont icon-github"></i></a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章分类</h3><div class="nexmoe-widget"><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/定时器/">定时器</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/持续集成/">持续集成</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/注册中心/">注册中心</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/项目实战/">项目实战</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高可用/">高可用</a><span class="category-list-count">4</span></li></ul></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">标签云</h3><div class="nexmoe-widget tagcloud"> <a href="/tags/Docker/" style="font-size:10px">Docker</a> <a href="/tags/GitLab/" style="font-size:10px">GitLab</a> <a href="/tags/Haproxy/" style="font-size:10px">Haproxy</a> <a href="/tags/Keepalived/" style="font-size:10px">Keepalived</a> <a href="/tags/Replication/" style="font-size:10px">Replication</a> <a href="/tags/RocketMQ/" style="font-size:10px">RocketMQ</a> <a href="/tags/Spring-Cloud-Alibaba/" style="font-size:10px">Spring Cloud Alibaba</a> <a href="/tags/ant-design/" style="font-size:10px">ant design</a> <a href="/tags/ant-design-pro/" style="font-size:12.5px">ant design pro</a> <a href="/tags/docker/" style="font-size:17.5px">docker</a> <a href="/tags/dubbo/" style="font-size:12.5px">dubbo</a> <a href="/tags/elasticsearch/" style="font-size:10px">elasticsearch</a> <a href="/tags/elastisearch/" style="font-size:10px">elastisearch</a> <a href="/tags/email/" style="font-size:10px">email</a> <a href="/tags/es6/" style="font-size:10px">es6</a> <a href="/tags/feign/" style="font-size:10px">feign</a> <a href="/tags/freemarker/" style="font-size:10px">freemarker</a> <a href="/tags/gateway/" style="font-size:10px">gateway</a> <a href="/tags/gitlab/" style="font-size:10px">gitlab</a> <a href="/tags/jenkins/" style="font-size:12.5px">jenkins</a> <a href="/tags/linux/" style="font-size:10px">linux</a> <a href="/tags/maven/" style="font-size:12.5px">maven</a> <a href="/tags/multi-druid/" style="font-size:10px">multi druid</a> <a href="/tags/mybatis/" style="font-size:10px">mybatis</a> <a href="/tags/nacos/" style="font-size:12.5px">nacos</a> <a href="/tags/nexmoe/" style="font-size:10px">nexmoe</a> <a href="/tags/partition/" style="font-size:10px">partition</a> <a href="/tags/pxc/" style="font-size:10px">pxc</a> <a href="/tags/rabbitmq/" style="font-size:10px">rabbitmq</a> <a href="/tags/react/" style="font-size:12.5px">react</a> <a href="/tags/redis/" style="font-size:12.5px">redis</a> <a href="/tags/redis-cluster/" style="font-size:10px">redis-cluster</a> <a href="/tags/replication/" style="font-size:10px">replication</a> <a href="/tags/rocketmq/" style="font-size:10px">rocketmq</a> <a href="/tags/sentinel/" style="font-size:15px">sentinel</a> <a href="/tags/session/" style="font-size:10px">session</a> <a href="/tags/skywalking/" style="font-size:12.5px">skywalking</a> <a href="/tags/spring-cloud-alibaba/" style="font-size:20px">spring cloud alibaba</a> <a href="/tags/springboot/" style="font-size:15px">springboot</a> <a href="/tags/swagger/" style="font-size:10px">swagger</a> <a href="/tags/tk-mybatis/" style="font-size:10px">tk mybatis</a> <a href="/tags/umi/" style="font-size:10px">umi</a> <a href="/tags/validate/" style="font-size:10px">validate</a> <a href="/tags/xxl-job/" style="font-size:12.5px">xxl-job</a> <a href="/tags/zk/" style="font-size:10px">zk</a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章归档</h3><div class="nexmoe-widget"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul></div></div></aside><div class="nexmoe-copyright"> &copy; 2019 OneJane</div></div></div><div id="nexmoe-content"><div class="nexmoe-primary"><div class="nexmoe-post"><div class="nexmoe-post-cover"> <img src="https://i.loli.net/2019/08/21/Ysb6CjynGhHOLPr.jpg"><h1>Alibaba分布式session.md</h1></div><div class="nexmoe-post-meta"><a><i class="nexmoefont icon-calendar-fill"></i> 2019年08月21日</a><a><i class="nexmoefont icon-areachart"></i> 1.1k 字</a><a><i class="nexmoefont icon-time-circle-fill"></i> 大概 7 分钟</a> <a class="nexmoefont icon-appstore-fill -link" href="/categories/项目实战/">项目实战</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/spring-cloud-alibaba/">spring cloud alibaba</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/xxl-job/">xxl-job</a></div><article><p>基于spring cloud alibaba实战整合开发</p><a id="more"></a><h1 id="ht-micro-record-service-job"><a href="#ht-micro-record-service-job" class="headerlink" title="ht-micro-record-service-job"></a>ht-micro-record-service-job</h1><pre><code class="dust">    &lt;parent&gt;
+        &lt;groupId&gt;com.htdc&lt;/groupId&gt;
+        &lt;artifactId&gt;ht-micro-record-dependencies&lt;/artifactId&gt;
+        &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+        &lt;relativePath&gt;../ht-micro-record-dependencies/pom.xml&lt;/relativePath&gt;
+    &lt;/parent&gt;
+
+    &lt;artifactId&gt;ht-micro-record-service-job&lt;/artifactId&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+
+    &lt;name&gt;ht-micro-record-service-job&lt;/name&gt;
+    &lt;url&gt;http://www.htdatacloud.com/&lt;/url&gt;
+    &lt;inceptionYear&gt;2019-Now&lt;/inceptionYear&gt;
+
+    &lt;dependencies&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.xuxueli&lt;/groupId&gt;
+            &lt;artifactId&gt;xxl-job-core&lt;/artifactId&gt;
+            &lt;version&gt;2.1.0&lt;/version&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- Spring Boot Begin --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;!-- Spring Boot End --&gt;
+
+        &lt;!-- Spring Cloud Begin --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-config&lt;/artifactId&gt;
+            &lt;exclusions&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
+                    &lt;artifactId&gt;fastjson&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;com.google.guava&lt;/groupId&gt;
+                    &lt;artifactId&gt;guava&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+            &lt;/exclusions&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-discovery&lt;/artifactId&gt;
+            &lt;exclusions&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;com.google.guava&lt;/groupId&gt;
+                    &lt;artifactId&gt;guava&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+            &lt;/exclusions&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-alibaba-sentinel&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt;
+            &lt;exclusions&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;com.google.guava&lt;/groupId&gt;
+                    &lt;artifactId&gt;guava&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;com.google.code.findbugs&lt;/groupId&gt;
+                    &lt;artifactId&gt;jsr305&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;org.hdrhistogram&lt;/groupId&gt;
+                    &lt;artifactId&gt;HdrHistogram&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+            &lt;/exclusions&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-stream-rocketmq&lt;/artifactId&gt;
+            &lt;exclusions&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
+                    &lt;artifactId&gt;fastjson&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+            &lt;/exclusions&gt;
+        &lt;/dependency&gt;
+        &lt;!-- Spring Cloud End --&gt;
+
+        &lt;!-- Projects Begin --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.htdc&lt;/groupId&gt;
+            &lt;artifactId&gt;ht-micro-record-commons-service&lt;/artifactId&gt;
+            &lt;version&gt;${project.parent.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- Projects End --&gt;
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+                &lt;configuration&gt;
+                    &lt;mainClass&gt;ht.micro.record.service.job.JobServiceApplication&lt;/mainClass&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;</code></pre><p>bootstrap.properties</p><pre><code class="stylus">spring.application.name=ht-micro-record-service-xxl-job-config
+spring.cloud.nacos.config.file-extension=yaml
+spring.cloud.nacos.config.server-addr=192.168.2.7:8848,192.168.2.7:8849,192.168.2.7:8850</code></pre><p>application.yaml</p><pre><code>spring:
+  datasource:
+    druid:
+      url: jdbc:mysql://192.168.2.7:185/ht_micro_record?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false
+      username: root
+      password: 123456
+      initial-size: 1
+      min-idle: 1
+      max-active: 20
+      test-on-borrow: true
+      driver-class-name: com.mysql.jdbc.Driver
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.2.7:8848,192.168.2.7:8849,192.168.2.7:8850
+      config:
+        server-addr: 192.168.2.7:8848,192.168.2.7:8849,192.168.2.7:8850
+
+server:
+  port: 9701
+
+xxl:
+  job:
+    executor:
+      logpath: logs/xxl-job/jobhandler
+      appname: xxl-job-executor
+      port: 1234
+      logretentiondays: -1
+      ip: 192.168.3.233
+    admin:
+      addresses: http://192.168.2.7:183/xxl-job-admin
+    accessToken:</code></pre><p>nacos配置</p><pre><code class="less">spring:
+  application:
+    name: ht-micro-record-service-xxl-job
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.2.7:8848,192.168.2.7:8849,192.168.2.7:8850
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: 192.168.2.7:190
+
+
+server:
+  port: 9701
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: &quot;*&quot;</code></pre><p>com/ht/micro/record/service/job/JobServiceApplication.java</p><pre><code class="less">@SpringBootApplication(scanBasePackages = &quot;com.ht.micro.record&quot;)
+@EnableDiscoveryClient
+@MapperScan(basePackages = &quot;com.ht.micro.record.commons.mapper&quot;)
+public class JobServiceApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(JobServiceApplication.class, args);
+    }
+
+}</code></pre><p>com/ht/micro/record/service/job/config/XxlJobConfig.java</p><pre><code class="kotlin">@Configuration
+@ComponentScan(basePackages = &quot;com.ht.micro.record.service.job.handler&quot;)
+public class XxlJobConfig {
+    private Logger logger = LoggerFactory.getLogger(XxlJobConfig.class);
+
+    @Value(&quot;${xxl.job.admin.addresses}&quot;)
+    private String adminAddresses;
+
+    @Value(&quot;${xxl.job.executor.appname}&quot;)
+    private String appName;
+
+    @Value(&quot;${xxl.job.executor.ip}&quot;)
+    private String ip;
+
+    @Value(&quot;${xxl.job.executor.port}&quot;)
+    private int port;
+
+    @Value(&quot;${xxl.job.accessToken}&quot;)
+    private String accessToken;
+
+    @Value(&quot;${xxl.job.executor.logpath}&quot;)
+    private String logPath;
+
+    @Value(&quot;${xxl.job.executor.logretentiondays}&quot;)
+    private int logRetentionDays;
+
+
+    @Bean(initMethod = &quot;start&quot;, destroyMethod = &quot;destroy&quot;)
+    public XxlJobSpringExecutor xxlJobExecutor() {
+        logger.info(&quot;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; xxl-job config init.&quot;);
+        XxlJobSpringExecutor xxlJobSpringExecutor = new XxlJobSpringExecutor();
+        xxlJobSpringExecutor.setAdminAddresses(adminAddresses);
+        xxlJobSpringExecutor.setAppName(appName);
+        xxlJobSpringExecutor.setIp(ip);
+        xxlJobSpringExecutor.setPort(port);
+        xxlJobSpringExecutor.setAccessToken(accessToken);
+        xxlJobSpringExecutor.setLogPath(logPath);
+        xxlJobSpringExecutor.setLogRetentionDays(logRetentionDays);
+
+        return xxlJobSpringExecutor;
+    }
+
+}</code></pre><p>com/ht/micro/record/service/job/handler/TestJobHandler.java</p><pre><code class="scala">@JobHandler(value=&quot;testJobHandler&quot;)
+@Component
+public class TestJobHandler extends IJobHandler {
+
+
+    @Override
+    public ReturnT&lt;String&gt; execute(String param) throws Exception {
+        XxlJobLogger.log(&quot;XXL-JOB, Hello World.&quot;);
+
+        for (int i = 0; i &lt; 5; i++) {
+            XxlJobLogger.log(&quot;beat at:&quot; + i);
+            TimeUnit.SECONDS.sleep(2);
+        }
+
+        return SUCCESS;
+    }
+}</code></pre><p><a href="http://192.168.2.7:183/xxl-job-admin" target="_blank" rel="noopener">http://192.168.2.7:183/xxl-job-admin</a></p></article><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a> <span class="donate_txt">↑<br> 欢迎投食,求鼓励，求支持！</span><br></div><div id="donate_guide" class="donate_bar center hidden"> <img src="/images/alipay.png" alt="支付宝打赏"> <img src="/images/wechatpay.png" alt="微信打赏"></div><script type="text/javascript">document.getElementById("btn_donate").onclick=function(){$("#donate_board").addClass("hidden"),$("#donate_guide").removeClass("hidden")}</script></div><div class="nexmoe-post-copyright"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i> <strong>本文作者：</strong>OneJane<br> <strong>本文链接：</strong><a href="https://onejane.github.io/2019/08/21/Alibaba定时器服务/" title="https://onejane.github.io/2019/08/21/Alibaba定时器服务/" target="_blank" rel="noopener">https://onejane.github.io/2019/08/21/Alibaba定时器服务/</a><br> <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可</div><section class="nexmoe-comment"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css"><div id="gitalk"></div><script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script><script type="text/javascript">var gitalk=new Gitalk({clientID:"e677e59382e1c7a468fd",clientSecret:"717d041bc4ab749f069314862232cfb6ec8adc15",id:decodeURI(window.location.pathname),repo:"onejane.github.io",owner:"onejane",admin:"onejane"});gitalk.render("gitalk")</script></section></div></div></div><script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/smoothscroll-for-websites@1.4.9/SmoothScroll.min.js"></script><script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js"></script><script>hljs.initHighlightingOnLoad()</script><script src="/js/app.js?v=1566367773127"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.1.0/lazysizes.min.js"></script><div hidden><script type="text/javascript" src="https://js.users.51.la/20279757.js"></script></div></body><script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script></html>

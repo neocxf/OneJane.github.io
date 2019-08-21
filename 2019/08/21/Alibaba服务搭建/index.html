@@ -1,0 +1,1596 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.9.0"><title>Alibaba服务搭建 - OneJane</title><meta charset="UTF-8"><meta name="description" content><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><link rel="shortcut icon" href="/images/a.ico" type="image/png"><meta name="description" content="基于spring cloud alibaba实战整合开发"><meta name="keywords" content="spring cloud alibaba,skywalking,validate,rocketmq,multi druid,swagger,email"><meta property="og:type" content="article"><meta property="og:title" content="Alibaba服务搭建"><meta property="og:url" content="https://onejane.github.io/2019/08/21/Alibaba服务搭建/index.html"><meta property="og:site_name" content="OneJane"><meta property="og:description" content="基于spring cloud alibaba实战整合开发"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1564815890566.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565245719246.png"><meta property="og:updated_time" content="2019-08-21T01:07:48.587Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="Alibaba服务搭建"><meta name="twitter:description" content="基于spring cloud alibaba实战整合开发"><meta name="twitter:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1564815890566.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/css/mdui.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.15.8/styles/atom-one-dark.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1038733_0xvrvpg9c0r.css"><link rel="stylesheet" href="/css/style.css?v=1566367773153"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script></head><body class="mdui-drawer-body-left"><div id="nexmoe-background"><div class="nexmoe-bg" style="background-image:url(https://i.loli.net/2019/01/13/5c3aec85a4343.jpg)"></div><div class="mdui-appbar mdui-shadow-0"><div class="mdui-toolbar"> <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a><div class="mdui-toolbar-spacer"></div> <a href="/" title="OneJane" class="mdui-btn mdui-btn-icon"><img src="https://i.loli.net/2019/08/20/UIhTqdQiPasxLtr.jpg"></a></div></div></div><div id="nexmoe-header"><div class="nexmoe-drawer mdui-drawer" id="drawer"><div class="nexmoe-avatar mdui-ripple"> <a href="/" title="OneJane"><img src="https://i.loli.net/2019/08/20/UIhTqdQiPasxLtr.jpg" alt="OneJane"></a></div><div class="nexmoe-count"><div><span>文章</span>25</div><div><span>标签</span>45</div><div><span>分类</span>9</div></div><ul class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}"><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页"><i class="mdui-list-item-icon nexmoefont icon-home"></i><div class="mdui-list-item-content"> 回到首页</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="关于博客"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i><div class="mdui-list-item-content"> 关于博客</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/py.html" title="我的朋友"><i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i><div class="mdui-list-item-content"> 我的朋友</div></a></ul><aside id="nexmoe-sidebar"><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">社交按钮</h3><div class="nexmoe-widget nexmoe-social"><a class="mdui-ripple" href="https://www.zhihu.com/people/codewj/activities" target="_blank" mdui-tooltip="{content: 'zhihu'}" style="color:#e76a8d;background-color:rgba(231,106,141,.15)"><i class="nexmoefont icon-zhihu"></i></a><a class="mdui-ripple" href="https://github.com/OneJane" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color:#191717;background-color:rgba(25,23,23,.15)"><i class="nexmoefont icon-github"></i></a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章分类</h3><div class="nexmoe-widget"><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/定时器/">定时器</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/工具/">工具</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/持续集成/">持续集成</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/注册中心/">注册中心</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/项目实战/">项目实战</a><span class="category-list-count">10</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高可用/">高可用</a><span class="category-list-count">4</span></li></ul></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">标签云</h3><div class="nexmoe-widget tagcloud"> <a href="/tags/Docker/" style="font-size:10px">Docker</a> <a href="/tags/GitLab/" style="font-size:10px">GitLab</a> <a href="/tags/Haproxy/" style="font-size:10px">Haproxy</a> <a href="/tags/Keepalived/" style="font-size:10px">Keepalived</a> <a href="/tags/Replication/" style="font-size:10px">Replication</a> <a href="/tags/RocketMQ/" style="font-size:10px">RocketMQ</a> <a href="/tags/Spring-Cloud-Alibaba/" style="font-size:10px">Spring Cloud Alibaba</a> <a href="/tags/ant-design/" style="font-size:10px">ant design</a> <a href="/tags/ant-design-pro/" style="font-size:12.5px">ant design pro</a> <a href="/tags/docker/" style="font-size:17.5px">docker</a> <a href="/tags/dubbo/" style="font-size:12.5px">dubbo</a> <a href="/tags/elasticsearch/" style="font-size:10px">elasticsearch</a> <a href="/tags/elastisearch/" style="font-size:10px">elastisearch</a> <a href="/tags/email/" style="font-size:10px">email</a> <a href="/tags/es6/" style="font-size:10px">es6</a> <a href="/tags/feign/" style="font-size:10px">feign</a> <a href="/tags/freemarker/" style="font-size:10px">freemarker</a> <a href="/tags/gateway/" style="font-size:10px">gateway</a> <a href="/tags/gitlab/" style="font-size:10px">gitlab</a> <a href="/tags/jenkins/" style="font-size:12.5px">jenkins</a> <a href="/tags/linux/" style="font-size:10px">linux</a> <a href="/tags/maven/" style="font-size:12.5px">maven</a> <a href="/tags/multi-druid/" style="font-size:10px">multi druid</a> <a href="/tags/mybatis/" style="font-size:10px">mybatis</a> <a href="/tags/nacos/" style="font-size:12.5px">nacos</a> <a href="/tags/nexmoe/" style="font-size:10px">nexmoe</a> <a href="/tags/partition/" style="font-size:10px">partition</a> <a href="/tags/pxc/" style="font-size:10px">pxc</a> <a href="/tags/rabbitmq/" style="font-size:10px">rabbitmq</a> <a href="/tags/react/" style="font-size:12.5px">react</a> <a href="/tags/redis/" style="font-size:12.5px">redis</a> <a href="/tags/redis-cluster/" style="font-size:10px">redis-cluster</a> <a href="/tags/replication/" style="font-size:10px">replication</a> <a href="/tags/rocketmq/" style="font-size:10px">rocketmq</a> <a href="/tags/sentinel/" style="font-size:15px">sentinel</a> <a href="/tags/session/" style="font-size:10px">session</a> <a href="/tags/skywalking/" style="font-size:12.5px">skywalking</a> <a href="/tags/spring-cloud-alibaba/" style="font-size:20px">spring cloud alibaba</a> <a href="/tags/springboot/" style="font-size:15px">springboot</a> <a href="/tags/swagger/" style="font-size:10px">swagger</a> <a href="/tags/tk-mybatis/" style="font-size:10px">tk mybatis</a> <a href="/tags/umi/" style="font-size:10px">umi</a> <a href="/tags/validate/" style="font-size:10px">validate</a> <a href="/tags/xxl-job/" style="font-size:12.5px">xxl-job</a> <a href="/tags/zk/" style="font-size:10px">zk</a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章归档</h3><div class="nexmoe-widget"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul></div></div></aside><div class="nexmoe-copyright"> &copy; 2019 OneJane</div></div></div><div id="nexmoe-content"><div class="nexmoe-primary"><div class="nexmoe-post"><div class="nexmoe-post-cover"> <img src="https://i.loli.net/2019/08/21/bm6fpgOBuhMiZW7.jpg"><h1>Alibaba服务搭建</h1></div><div class="nexmoe-post-meta"><a><i class="nexmoefont icon-calendar-fill"></i> 2019年08月21日</a><a><i class="nexmoefont icon-areachart"></i> 6.8k 字</a><a><i class="nexmoefont icon-time-circle-fill"></i> 大概 39 分钟</a> <a class="nexmoefont icon-appstore-fill -link" href="/categories/项目实战/">项目实战</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/email/">email</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/multi-druid/">multi druid</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/rocketmq/">rocketmq</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/skywalking/">skywalking</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/spring-cloud-alibaba/">spring cloud alibaba</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/swagger/">swagger</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/validate/">validate</a></div><article><p>基于spring cloud alibaba实战整合开发</p><a id="more"></a><h1 id="基础服务通用类"><a href="#基础服务通用类" class="headerlink" title="基础服务通用类"></a>基础服务通用类</h1><h2 id="com-ht-micro-record-commons"><a href="#com-ht-micro-record-commons" class="headerlink" title="com.ht.micro.record.commons"></a>com.ht.micro.record.commons</h2><p>dto.AbstractBaseDomain</p><pre><code class="less">@Data
+public abstract class AbstractBaseDomain implements Serializable {
+    /**
+     * 该注解需要保留，用于 tk.mybatis 回显 ID
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+
+    /**
+     * 格式化日期，由于是北京时间（我们是在东八区），所以时区 +8
+     */
+    @JsonFormat(pattern = &quot;yyyy-MM-dd HH:mm:ss&quot;, timezone = &quot;GMT+8&quot;)
+    private Date created;
+    @JsonFormat(pattern = &quot;yyyy-MM-dd HH:mm:ss&quot;, timezone = &quot;GMT+8&quot;)
+    private Date updated;
+}</code></pre><p>dto.AbstractBaseResult</p><pre><code class="scala">@Data
+public abstract class AbstractBaseResult implements Serializable {
+
+    /**
+     * 此为内部类,JsonInclude.Include.NON_NULL去掉返回值中为null的属性
+     */
+    @Data
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    protected static class Links {
+        private String self;
+        private String next;
+        private String last;
+    }
+
+    @Data
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    protected static class DataBean&lt;T extends AbstractBaseDomain&gt; {
+        private String type;
+        private Long id;
+        private T attributes;
+        private T relationships;
+        private Links links;
+    }
+}</code></pre><p>dto.BaseResultFactory</p><pre><code class="java">public class BaseResultFactory&lt;T extends AbstractBaseDomain&gt; {
+
+    /**
+     * 设置日志级别，用于限制发生错误时，是否显示调试信息(detail)
+     *
+     * @see ErrorResult#detail
+     */
+    public static final String LOGGER_LEVEL_DEBUG = &quot;DEBUG&quot;;
+
+    private static BaseResultFactory baseResultFactory;
+
+    private BaseResultFactory() {
+
+    }
+
+    // 设置通用的响应
+    private static HttpServletResponse response;
+
+    public static BaseResultFactory getInstance(HttpServletResponse response) {
+        if (baseResultFactory == null) {
+            synchronized (BaseResultFactory.class) {
+                if (baseResultFactory == null) {
+                    baseResultFactory = new BaseResultFactory();
+                }
+            }
+        }
+
+        BaseResultFactory.response = response;
+        // 设置通用响应
+        baseResultFactory.initResponse();
+        return baseResultFactory;
+    }
+
+    public static BaseResultFactory getInstance() {
+        if (baseResultFactory == null) {
+            synchronized (BaseResultFactory.class) {
+                if (baseResultFactory == null) {
+                    baseResultFactory = new BaseResultFactory();
+                }
+            }
+        }
+
+        return baseResultFactory;
+    }
+
+
+
+    /**
+     * 构建单笔数据结果集
+     *
+     * @param self 当前请求路径
+     * @return
+     */
+    public AbstractBaseResult build(String self, T attributes) {
+        return new SuccessResult(self, attributes);
+    }
+
+    /**
+     * 构建多笔数据结果集
+     *
+     * @param self 当前请求路径
+     * @param next 下一页的页码
+     * @param last 最后一页的页码
+     * @return
+     */
+    public AbstractBaseResult build(String self, int next, int last, List&lt;T&gt; attributes) {
+        return new SuccessResult(self, next, last, attributes);
+    }
+
+    /**
+     * 构建请求错误的响应结构，调试显示detail，上线不显示，通过配置日志级别
+     *
+     * @param code   HTTP 状态码
+     * @param title  错误信息
+     * @param detail 调试信息
+     * @param level  日志级别，只有 DEBUG 时才显示详情
+     * @return
+     */
+    public AbstractBaseResult build(int code, String title, String detail, String level) {
+        // 设置请求失败的响应码
+        response.setStatus(code);
+
+        if (LOGGER_LEVEL_DEBUG.equals(level)) {
+            return new ErrorResult(code, title, detail);
+        } else {
+            return new ErrorResult(code, title, null);
+        }
+    }
+
+    /**
+     * 初始化 HttpServletResponse
+     */
+    private void initResponse() {
+        // 需要符合 JSON API 规范
+        response.setHeader(&quot;Content-Type&quot;, &quot;application/vnd.api+json&quot;);
+    }
+}</code></pre><p>dto.ErrorResult</p><pre><code class="less">@Data
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = false)
+// JSON 不显示为 null 的属性
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class ErrorResult extends AbstractBaseResult {
+    private int code;
+    private String title;
+
+    /**
+     * 调试信息
+     */
+    private String detail;
+}</code></pre><p>dto.SuccessResult</p><pre><code class="zephir">@Data
+@EqualsAndHashCode(callSuper = false)
+public class SuccessResult&lt;T extends AbstractBaseDomain&gt; extends AbstractBaseResult {
+    private Links links;
+    private List&lt;DataBean&gt; data;
+
+    /**
+     * 请求的结果（单笔）
+     * @param self 当前请求路径
+     * @param attributes 领域模型
+     */
+    public SuccessResult(String self, T attributes) {
+        links = new Links();
+        links.setSelf(self);
+
+        createDataBean(null, attributes);
+    }
+
+    /**
+     * 请求的结果（分页）
+     * @param self 当前请求路径
+     * @param next 下一页的页码
+     * @param last 最后一页的页码
+     * @param attributes 领域模型集合
+     */
+    public SuccessResult(String self, int next, int last, List&lt;T&gt; attributes) {
+        links = new Links();
+        links.setSelf(self);
+        links.setNext(self + &quot;?page=&quot; + next);
+        links.setLast(self + &quot;?page=&quot; + last);
+
+        attributes.forEach(attribute -&gt; createDataBean(self, attribute));
+    }
+
+    /**
+     * 创建 DataBean
+     * @param self 当前请求路径
+     * @param attributes 领域模型
+     */
+    private void createDataBean(String self, T attributes) {
+        if (data == null) {
+            data = new ArrayList&lt;&gt;();
+        }
+
+        DataBean dataBean = new DataBean();
+        dataBean.setId(attributes.getId());
+        dataBean.setType(attributes.getClass().getSimpleName());
+        dataBean.setAttributes(attributes);
+
+        if (StringUtils.isNotBlank(self)) {
+            Links links = new Links();
+            links.setSelf(self + &quot;/&quot; + attributes.getId());
+            dataBean.setLinks(links);
+        }
+
+        data.add(dataBean);
+    }
+}</code></pre><p>utils.MapperUtils</p><pre><code class="php">public class MapperUtils {
+    private final static ObjectMapper objectMapper = new ObjectMapper();
+
+    public static ObjectMapper getInstance() {
+        return objectMapper;
+    }
+
+    /**
+     * 转换为 JSON 字符串
+     *
+     * @param obj
+     * @return
+     * @throws Exception
+     */
+    public static String obj2json(Object obj) throws Exception {
+        return objectMapper.writeValueAsString(obj);
+    }
+
+    /**
+     * 转换为 JSON 字符串，忽略空值
+     *
+     * @param obj
+     * @return
+     * @throws Exception
+     */
+    public static String obj2jsonIgnoreNull(Object obj) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        return mapper.writeValueAsString(obj);
+    }
+
+    /**
+     * 转换为 JavaBean
+     *
+     * @param jsonString
+     * @param clazz
+     * @return
+     * @throws Exception
+     */
+    public static &lt;T&gt; T json2pojo(String jsonString, Class&lt;T&gt; clazz) throws Exception {
+        objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+        return objectMapper.readValue(jsonString, clazz);
+    }
+
+    /**
+     * 字符串转换为 Map&lt;String, Object&gt;
+     *
+     * @param jsonString
+     * @return
+     * @throws Exception
+     */
+    public static &lt;T&gt; Map&lt;String, Object&gt; json2map(String jsonString) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        return mapper.readValue(jsonString, Map.class);
+    }
+
+    /**
+     * 字符串转换为 Map&lt;String, T&gt;
+     */
+    public static &lt;T&gt; Map&lt;String, T&gt; json2map(String jsonString, Class&lt;T&gt; clazz) throws Exception {
+        Map&lt;String, Map&lt;String, Object&gt;&gt; map = objectMapper.readValue(jsonString, new TypeReference&lt;Map&lt;String, T&gt;&gt;() {
+        });
+        Map&lt;String, T&gt; result = new HashMap&lt;String, T&gt;();
+        for (Map.Entry&lt;String, Map&lt;String, Object&gt;&gt; entry : map.entrySet()) {
+            result.put(entry.getKey(), map2pojo(entry.getValue(), clazz));
+        }
+        return result;
+    }
+
+    /**
+     * 深度转换 JSON 成 Map
+     *
+     * @param json
+     * @return
+     */
+    public static Map&lt;String, Object&gt; json2mapDeeply(String json) throws Exception {
+        return json2MapRecursion(json, objectMapper);
+    }
+
+    /**
+     * 把 JSON 解析成 List，如果 List 内部的元素存在 jsonString，继续解析
+     *
+     * @param json
+     * @param mapper 解析工具
+     * @return
+     * @throws Exception
+     */
+    private static List&lt;Object&gt; json2ListRecursion(String json, ObjectMapper mapper) throws Exception {
+        if (json == null) {
+            return null;
+        }
+
+        List&lt;Object&gt; list = mapper.readValue(json, List.class);
+
+        for (Object obj : list) {
+            if (obj != null &amp;&amp; obj instanceof String) {
+                String str = (String) obj;
+                if (str.startsWith(&quot;[&quot;)) {
+                    obj = json2ListRecursion(str, mapper);
+                } else if (obj.toString().startsWith(&quot;{&quot;)) {
+                    obj = json2MapRecursion(str, mapper);
+                }
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * 把 JSON 解析成 Map，如果 Map 内部的 Value 存在 jsonString，继续解析
+     *
+     * @param json
+     * @param mapper
+     * @return
+     * @throws Exception
+     */
+    private static Map&lt;String, Object&gt; json2MapRecursion(String json, ObjectMapper mapper) throws Exception {
+        if (json == null) {
+            return null;
+        }
+
+        Map&lt;String, Object&gt; map = mapper.readValue(json, Map.class);
+
+        for (Map.Entry&lt;String, Object&gt; entry : map.entrySet()) {
+            Object obj = entry.getValue();
+            if (obj != null &amp;&amp; obj instanceof String) {
+                String str = ((String) obj);
+
+                if (str.startsWith(&quot;[&quot;)) {
+                    List&lt;?&gt; list = json2ListRecursion(str, mapper);
+                    map.put(entry.getKey(), list);
+                } else if (str.startsWith(&quot;{&quot;)) {
+                    Map&lt;String, Object&gt; mapRecursion = json2MapRecursion(str, mapper);
+                    map.put(entry.getKey(), mapRecursion);
+                }
+            }
+        }
+
+        return map;
+    }
+
+    /**
+     * 将 JSON 数组转换为集合
+     *
+     * @param jsonArrayStr
+     * @param clazz
+     * @return
+     * @throws Exception
+     */
+    public static &lt;T&gt; List&lt;T&gt; json2list(String jsonArrayStr, Class&lt;T&gt; clazz) throws Exception {
+        JavaType javaType = getCollectionType(ArrayList.class, clazz);
+        List&lt;T&gt; list = (List&lt;T&gt;) objectMapper.readValue(jsonArrayStr, javaType);
+        return list;
+    }
+
+    /**
+     * 获取泛型的 Collection Type
+     *
+     * @param collectionClass 泛型的Collection
+     * @param elementClasses  元素类
+     * @return JavaType Java类型
+     * @since 1.0
+     */
+    public static JavaType getCollectionType(Class&lt;?&gt; collectionClass, Class&lt;?&gt;... elementClasses) {
+        return objectMapper.getTypeFactory().constructParametricType(collectionClass, elementClasses);
+    }
+
+    /**
+     * 将 Map 转换为 JavaBean
+     *
+     * @param map
+     * @param clazz
+     * @return
+     */
+    public static &lt;T&gt; T map2pojo(Map map, Class&lt;T&gt; clazz) {
+        return objectMapper.convertValue(map, clazz);
+    }
+
+    /**
+     * 将 Map 转换为 JSON
+     *
+     * @param map
+     * @return
+     */
+    public static String mapToJson(Map map) {
+        try {
+            return objectMapper.writeValueAsString(map);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return &quot;&quot;;
+    }
+
+    /**
+     * 将 JSON 对象转换为 JavaBean
+     *
+     * @param obj
+     * @param clazz
+     * @return
+     */
+    public static &lt;T&gt; T obj2pojo(Object obj, Class&lt;T&gt; clazz) {
+        return objectMapper.convertValue(obj, clazz);
+    }
+}</code></pre><p>utils.RegexpUtils</p><pre><code class="zephir">public class RegexpUtils {
+    /**
+     * 验证手机号
+     */
+    public static final String PHONE = &quot;^((13[0-9])|(15[^4,\\D])|(18[0,5-9]))\\d{8}$&quot;;
+
+    /**
+     * 验证邮箱地址
+     */
+    public static final String EMAIL = &quot;\\w+(\\.\\w)*@\\w+(\\.\\w{2,3}){1,3}&quot;;
+
+    /**
+     * 验证手机号
+     * @param phone
+     * @return
+     */
+    public static boolean checkPhone(String phone) {
+        return phone.matches(PHONE);
+    }
+
+    /**
+     * 验证邮箱
+     * @param email
+     * @return
+     */
+    public static boolean checkEmail(String email) {
+        return email.matches(EMAIL);
+    }
+}</code></pre><p>web.AbstractBaseController</p><pre><code class="aspectj">public abstract class AbstractBaseController&lt;T extends AbstractBaseDomain&gt; {
+
+    // 用于动态获取配置文件的属性值
+    private static final String ENVIRONMENT_LOGGING_LEVEL_MY_SHOP = &quot;logging.level.com.ht.micro.record&quot;;
+
+    @Resource
+    protected HttpServletRequest request;
+    @Resource
+    protected HttpServletResponse response;
+
+    @Autowired
+    private ConfigurableApplicationContext applicationContext;
+
+    @ModelAttribute
+    public void initReqAndRes(HttpServletRequest request, HttpServletResponse response) {
+        this.request = request;
+        this.response = response;
+    }
+
+    /**
+     * 请求成功
+     * @param self
+     * @param attribute
+     * @return
+     */
+    protected AbstractBaseResult success(String self, T attribute) {
+        return BaseResultFactory.getInstance(response).build(self, attribute);
+    }
+
+    /**
+     * 请求成功
+     * @param self
+     * @param next
+     * @param last
+     * @param attributes
+     * @return
+     */
+    protected AbstractBaseResult success(String self, int next, int last, List&lt;T&gt; attributes) {
+        return BaseResultFactory.getInstance(response).build(self, next, last, attributes);
+    }
+
+    /**
+     * 请求失败
+     * @param title
+     * @param detail
+     * @return
+     */
+    protected AbstractBaseResult error(String title, String detail) {
+        return error(HttpStatus.UNAUTHORIZED.value(), title, detail);
+    }
+
+    /**
+     * 请求失败
+     * @param code
+     * @param title
+     * @param detail
+     * @return
+     */
+    protected AbstractBaseResult error(int code, String title, String detail) {
+        return BaseResultFactory.getInstance(response).build(code, title, detail, applicationContext.getEnvironment().getProperty(ENVIRONMENT_LOGGING_LEVEL_MY_SHOP));
+    }
+}</code></pre><h2 id="ht-micro-record-commons-domain"><a href="#ht-micro-record-commons-domain" class="headerlink" title="ht-micro-record-commons-domain"></a>ht-micro-record-commons-domain</h2><p>domain.TbUser</p><pre><code class="typescript">@Table(name = &quot;tb_user&quot;)
+@JsonInclude(JsonInclude.Include.NON_NULL)
+public class TbUser extends AbstractBaseDomain {
+
+    /**
+     * 用户名
+     */
+    @NotNull(message = &quot;用户名不可为空&quot;)
+    @Length(min = 5, max = 20, message = &quot;用户名长度必须介于 5 和 20 之间&quot;)
+    private String username;
+
+    /**
+     * 密码，加密存储
+     */
+    @JsonIgnore
+    private String password;
+
+    /**
+     * 注册手机号
+     */
+    private String phone;
+
+    /**
+     * 注册邮箱
+     */
+    @NotNull(message = &quot;邮箱不可为空&quot;)
+    @Pattern(regexp = RegexpUtils.EMAIL, message = &quot;邮箱格式不正确&quot;)
+    private String email;
+
+    /**
+     * 获取用户名
+     *
+     * @return username - 用户名
+     */
+    public String getUsername() {
+        return username;
+    }
+
+    /**
+     * 设置用户名
+     *
+     * @param username 用户名
+     */
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    /**
+     * 获取密码，加密存储
+     *
+     * @return password - 密码，加密存储
+     */
+    public String getPassword() {
+        return password;
+    }
+
+    /**
+     * 设置密码，加密存储
+     *
+     * @param password 密码，加密存储
+     */
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    /**
+     * 获取注册手机号
+     *
+     * @return phone - 注册手机号
+     */
+    public String getPhone() {
+        return phone;
+    }
+
+    /**
+     * 设置注册手机号
+     *
+     * @param phone 注册手机号
+     */
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
+    /**
+     * 获取注册邮箱
+     *
+     * @return email - 注册邮箱
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * 设置注册邮箱
+     *
+     * @param email 注册邮箱
+     */
+    public void setEmail(String email) {
+        this.email = email;
+    }
+}</code></pre><p>validator.BeanValidator</p><pre><code class="processing">@Component
+public class BeanValidator {
+
+    @Autowired
+    private Validator validatorInstance;
+
+    private static Validator validator;
+
+    // 系统启动时将静态对象注入容器，不可用Autowire直接注入
+    @PostConstruct
+    public void init() {
+        BeanValidator.validator = validatorInstance;
+    }
+
+    /**
+     * 调用 JSR303 的 validate 方法, 验证失败时抛出 ConstraintViolationException.
+     */
+    private static void validateWithException(Validator validator, Object object, Class&lt;?&gt;... groups) throws ConstraintViolationException {
+        Set constraintViolations = validator.validate(object, groups);
+        if (!constraintViolations.isEmpty()) {
+            throw new ConstraintViolationException(constraintViolations);
+        }
+    }
+
+    /**
+     * 辅助方法, 转换 ConstraintViolationException 中的 Set&lt;ConstraintViolations&gt; 中为 List&lt;message&gt;.
+     */
+    private static List&lt;String&gt; extractMessage(ConstraintViolationException e) {
+        return extractMessage(e.getConstraintViolations());
+    }
+
+    /**
+     * 辅助方法, 转换 Set&lt;ConstraintViolation&gt; 为 List&lt;message&gt;
+     */
+    private static List&lt;String&gt; extractMessage(Set&lt;? extends ConstraintViolation&gt; constraintViolations) {
+        List&lt;String&gt; errorMessages = new ArrayList&lt;&gt;();
+        for (ConstraintViolation violation : constraintViolations) {
+            errorMessages.add(violation.getMessage());
+        }
+        return errorMessages;
+    }
+
+    /**
+     * 辅助方法, 转换 ConstraintViolationException 中的 Set&lt;ConstraintViolations&gt; 为 Map&lt;property, message&gt;.
+     */
+    private static Map&lt;String, String&gt; extractPropertyAndMessage(ConstraintViolationException e) {
+        return extractPropertyAndMessage(e.getConstraintViolations());
+    }
+
+    /**
+     * 辅助方法, 转换 Set&lt;ConstraintViolation&gt; 为 Map&lt;property, message&gt;.
+     */
+    private static Map&lt;String, String&gt; extractPropertyAndMessage(Set&lt;? extends ConstraintViolation&gt; constraintViolations) {
+        Map&lt;String, String&gt; errorMessages = new HashMap&lt;&gt;();
+        for (ConstraintViolation violation : constraintViolations) {
+            errorMessages.put(violation.getPropertyPath().toString(), violation.getMessage());
+        }
+        return errorMessages;
+    }
+
+    /**
+     * 辅助方法, 转换 ConstraintViolationException 中的 Set&lt;ConstraintViolations&gt; 为 List&lt;propertyPath message&gt;.
+     */
+    private static List&lt;String&gt; extractPropertyAndMessageAsList(ConstraintViolationException e) {
+        return extractPropertyAndMessageAsList(e.getConstraintViolations(), &quot; &quot;);
+    }
+
+    /**
+     * 辅助方法, 转换 Set&lt;ConstraintViolations&gt; 为 List&lt;propertyPath message&gt;.
+     */
+    private static List&lt;String&gt; extractPropertyAndMessageAsList(Set&lt;? extends ConstraintViolation&gt; constraintViolations) {
+        return extractPropertyAndMessageAsList(constraintViolations, &quot; &quot;);
+    }
+
+    /**
+     * 辅助方法, 转换 ConstraintViolationException 中的 Set&lt;ConstraintViolations&gt; 为 List&lt;propertyPath + separator + message&gt;.
+     */
+    private static List&lt;String&gt; extractPropertyAndMessageAsList(ConstraintViolationException e, String separator) {
+        return extractPropertyAndMessageAsList(e.getConstraintViolations(), separator);
+    }
+
+    /**
+     * 辅助方法, 转换 Set&lt;ConstraintViolation&gt; 为 List&lt;propertyPath + separator + message&gt;.
+     */
+    private static List&lt;String&gt; extractPropertyAndMessageAsList(Set&lt;? extends ConstraintViolation&gt; constraintViolations, String separator) {
+        List&lt;String&gt; errorMessages = new ArrayList&lt;&gt;();
+        for (ConstraintViolation violation : constraintViolations) {
+            errorMessages.add(violation.getPropertyPath() + separator + violation.getMessage());
+        }
+        return errorMessages;
+    }
+
+    /**
+     * 服务端参数有效性验证
+     *
+     * @param object 验证的实体对象
+     * @param groups 验证组
+     * @return 验证成功：返回 null；验证失败：返回错误信息
+     */
+    public static String validator(Object object, Class&lt;?&gt;... groups) {
+        try {
+            validateWithException(validator, object, groups);
+        } catch (ConstraintViolationException ex) {
+            List&lt;String&gt; list = extractMessage(ex);
+            list.add(0, &quot;数据验证失败：&quot;);
+
+            // 封装错误消息为字符串
+            StringBuilder sb = new StringBuilder();
+            for (int i = 0; i &lt; list.size(); i++) {
+                String exMsg = list.get(i);
+                if (i != 0) {
+                    sb.append(String.format(&quot;%s. %s&quot;, i, exMsg)).append(list.size() &gt; 1 ? &quot;&lt;br/&gt;&quot; : &quot;&quot;);
+                } else {
+                    sb.append(exMsg).append(list.size() &gt; 1 ? &quot;&lt;br/&gt;&quot; : &quot;&quot;);
+                }
+            }
+
+            return sb.toString();
+        }
+
+        return null;
+    }
+}</code></pre><h2 id="ht-micro-record-commons-mapper"><a href="#ht-micro-record-commons-mapper" class="headerlink" title="ht-micro-record-commons-mapper"></a>ht-micro-record-commons-mapper</h2><p>├─src<br>│ └─main<br>│ ├─java<br>│ │ ├─com<br>│ │ │ └─ht<br>│ │ │ └─micro<br>│ │ │ └─record<br>│ │ │ └─commons<br>│ │ │ └─mapper<br>│ │ │ ├─baseMapper<br>│ │ │ └─dicMapper<br>│ │ └─tk<br>│ │ └─mybatis<br>│ │ └─mapper<br>│ └─resources<br>│ ├─baseMapper<br>│ └─dicMapper<br>mapper分开存储用来识别多数据源<br>tk.mybatis.mapper.MyMapper</p><pre><code class="php">public interface MyMapper&lt;T&gt; extends Mapper&lt;T&gt;, MySqlMapper&lt;T&gt; {
+}</code></pre><h2 id="ht-micro-record-commons-service"><a href="#ht-micro-record-commons-service" class="headerlink" title="ht-micro-record-commons-service"></a>ht-micro-record-commons-service</h2><p>BaseCrudService</p><pre><code class="java">public interface BaseCrudService&lt;T extends AbstractBaseDomain&gt; {
+
+    /**
+     * 查询属性值是否唯一
+     *
+     * @param property
+     * @param value
+     * @return true/唯一，false/不唯一
+     */
+    default boolean unique(String property, String value) {
+        return false;
+    }
+
+    /**
+     * 保存
+     *
+     * @param domain
+     * @return
+     */
+    default T save(T domain) {
+        return null;
+    }
+
+    /**
+     * 分页查询
+     * @param domain
+     * @param pageNum
+     * @param pageSize
+     * @return
+     */
+    default PageInfo&lt;T&gt; page(T domain, int pageNum, int pageSize) {
+        return null;
+    }
+}</code></pre><p>impl.BaseCrudServiceImpl</p><pre><code class="scala">public class BaseCrudServiceImpl&lt;T extends AbstractBaseDomain, M extends MyMapper&lt;T&gt;&gt; implements BaseCrudService&lt;T&gt; {
+
+    @Autowired
+    protected M mapper;
+
+    private Class&lt;T&gt; entityClass = (Class&lt;T&gt;) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+
+    @Override
+    public boolean unique(String property, String value) {
+        Example example = new Example(entityClass);
+        example.createCriteria().andEqualTo(property, value);
+        int result = mapper.selectCountByExample(example);
+        if (result &gt; 0) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public T save(T domain) {
+        int result = 0;
+        Date currentDate = new Date();
+
+        // 创建
+        if (domain.getId() == null) { 
+
+            /**
+             * 用于自动回显 ID，领域模型中需要 @ID 注解的支持
+             * {@link AbstractBaseDomain}
+             */
+            result = mapper.insertUseGeneratedKeys(domain);
+        }
+
+        // 更新
+        else {
+            result = mapper.updateByPrimaryKey(domain);
+        }
+
+        // 保存数据成功
+        if (result &gt; 0) {
+            return domain;
+        }
+
+        // 保存数据失败
+        return null;
+    }
+
+    @Override
+    public PageInfo&lt;T&gt; page(T domain, int pageNum, int pageSize) {
+        Example example = new Example(entityClass);
+        example.createCriteria().andEqualTo(domain);
+
+        PageHelper.startPage(pageNum, pageSize);
+        PageInfo&lt;T&gt; pageInfo = new PageInfo&lt;&gt;(mapper.selectByExample(example));
+        return pageInfo;
+    }
+}</code></pre><p>TbUserService</p><pre><code class="java">public interface TbUserService extends BaseCrudService&lt;TbUser&gt; {
+
+    TbUser getById(long id);
+}</code></pre><p>impl.TbUserServiceImpl</p><pre><code class="scala">@Service
+public class TbUserServiceImpl extends BaseCrudServiceImpl&lt;TbUser, TbUserMapper&gt; implements TbUserService {
+
+    @Autowired
+    private TbUserMapper tbUserMapper;
+
+    public TbUser getById(long id){
+        return tbUserMapper.selectByPrimaryKey(id);
+    }
+
+}</code></pre><h2 id="ht-micro-record-service-user"><a href="#ht-micro-record-service-user" class="headerlink" title="ht-micro-record-service-user"></a>ht-micro-record-service-user</h2><pre><code class="dust"> &lt;parent&gt;
+        &lt;groupId&gt;com.htdc&lt;/groupId&gt;
+        &lt;artifactId&gt;ht-micro-record-dependencies&lt;/artifactId&gt;
+        &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+        &lt;relativePath/&gt;
+    &lt;/parent&gt;
+
+    &lt;artifactId&gt;ht-micro-record-service-user&lt;/artifactId&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+
+    &lt;name&gt;ht-micro-record-service-user&lt;/name&gt;
+    &lt;url&gt;http://www.htdatacloud.com/&lt;/url&gt;
+    &lt;inceptionYear&gt;2019-Now&lt;/inceptionYear&gt;
+
+    &lt;dependencies&gt;
+        &lt;!-- Spring Boot Begin --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
+            &lt;artifactId&gt;druid-spring-boot-starter&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;!-- Spring Boot End --&gt;
+
+        &lt;!-- Spring Cloud Begin --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-config&lt;/artifactId&gt;
+            &lt;exclusions&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
+                    &lt;artifactId&gt;fastjson&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;com.google.guava&lt;/groupId&gt;
+                    &lt;artifactId&gt;guava&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+            &lt;/exclusions&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-discovery&lt;/artifactId&gt;
+            &lt;exclusions&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;com.google.guava&lt;/groupId&gt;
+                    &lt;artifactId&gt;guava&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;com.google.code.findbugs&lt;/groupId&gt;
+                    &lt;artifactId&gt;jsr305&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;org.hdrhistogram&lt;/groupId&gt;
+                    &lt;artifactId&gt;HdrHistogram&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+            &lt;/exclusions&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-alibaba-sentinel&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt;
+            &lt;exclusions&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;com.google.guava&lt;/groupId&gt;
+                    &lt;artifactId&gt;guava&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;com.google.code.findbugs&lt;/groupId&gt;
+                    &lt;artifactId&gt;jsr305&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;org.hdrhistogram&lt;/groupId&gt;
+                    &lt;artifactId&gt;HdrHistogram&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+            &lt;/exclusions&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-stream-rocketmq&lt;/artifactId&gt;
+            &lt;exclusions&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
+                    &lt;artifactId&gt;fastjson&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+            &lt;/exclusions&gt;
+        &lt;/dependency&gt;
+        &lt;!-- Spring Cloud End --&gt;
+
+        &lt;!-- Projects Begin --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.htdc&lt;/groupId&gt;
+            &lt;artifactId&gt;ht-micro-record-commons-service&lt;/artifactId&gt;
+            &lt;version&gt;${project.parent.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+
+
+        &lt;!-- Projects End --&gt;
+
+
+    &lt;/dependencies&gt;
+
+    &lt;build&gt;
+        &lt;plugins&gt;
+
+            &lt;!-- docker的maven插件，官网 https://github.com/spotify/docker-maven-plugin --&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;com.spotify&lt;/groupId&gt;
+                &lt;artifactId&gt;docker-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;0.4.13&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;imageName&gt;192.168.2.7:5000/${project.artifactId}:${project.version}&lt;/imageName&gt;
+                    &lt;baseImage&gt;onejane-jdk1.8 &lt;/baseImage&gt;
+                    &lt;entryPoint&gt;[&quot;java&quot;, &quot;-jar&quot;,&quot;/${project.build.finalName}.jar&quot;]&lt;/entryPoint&gt;
+                    &lt;resources&gt;
+                        &lt;resource&gt;
+                            &lt;targetPath&gt;/&lt;/targetPath&gt;
+                            &lt;directory&gt;${project.build.directory}&lt;/directory&gt;
+                            &lt;include&gt;${project.build.finalName}.jar&lt;/include&gt;
+                        &lt;/resource&gt;
+                    &lt;/resources&gt;
+                    &lt;dockerHost&gt;http://192.168.2.7:2375&lt;/dockerHost&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+                &lt;configuration&gt;
+                    &lt;mainClass&gt;com.ht.micro.record.UserServiceApplication&lt;/mainClass&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+
+        &lt;/plugins&gt;
+    &lt;/build&gt;</code></pre><p>application.yml<br>配置多数据源及RocketMQ</p><pre><code class="less">spring:
+  cloud:
+    stream:
+      rocketmq:
+        binder:
+          name-server: 192.168.2.7:9876
+      bindings:
+        output:
+          content-type: application/json
+          destination: topic-email
+          producer:
+            group: group-email
+  datasource:
+      base:
+        #监控统计拦截的filters
+        filters: stat
+        type: com.alibaba.druid.pool.DruidDataSource
+        jdbc-url: jdbc:mysql://192.168.2.7:185/ht_micro_record?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false
+        username: root
+        password: 123456
+        driver-class-name: com.mysql.jdbc.Driver
+        max-idle: 10
+        max-wait: 10000
+        min-idle: 5
+        initial-size: 5
+        validation-query: SELECT 1
+        test-on-borrow: false
+        test-while-idle: true
+        time-between-eviction-runs-millis: 18800
+      dic:
+        #监控统计拦截的filters
+        filters: stat
+        type: com.alibaba.druid.pool.DruidDataSource
+        jdbc-url: jdbc:mysql://192.168.1.48:3306/ht_nlp?useUnicode=true&amp;characterEncoding=UTF-8&amp;useSSL=false
+        username: root
+        password: Sonar@1234
+        driver-class-name: com.mysql.jdbc.Driver
+        max-idle: 10
+        max-wait: 10000
+        min-idle: 5
+        initial-size: 5
+        validation-query: SELECT 1
+        test-on-borrow: false
+        test-while-idle: true
+        time-between-eviction-runs-millis: 18800</code></pre><p>bootstrap.properties</p><pre><code class="stylus">spring.application.name=ht-micro-record-service-user-config
+spring.cloud.nacos.config.file-extension=yaml
+spring.cloud.nacos.config.server-addr=192.168.2.7:8848,192.168.2.7:8849,192.168.2.7:8850
+logging.level.com.ht.micro.record=DEBUG</code></pre><p>nacos配置</p><pre><code class="less">spring:
+  application:
+    name: ht-micro-record-service-user
+
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.2.7:8848,192.168.2.7:8849,192.168.2.7:8850
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: 192.168.2.7:190
+
+
+server:
+  port: 9506
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: &quot;*&quot;</code></pre><p>com.ht.micro.record.UserServiceApplication</p><pre><code class="less">@SpringBootApplication(scanBasePackages = &quot;com.ht.micro.record&quot;,exclude = {DataSourceAutoConfiguration.class, DataSourceTransactionManagerAutoConfiguration.class, MybatisAutoConfiguration.class})
+@EnableDiscoveryClient
+@EnableBinding({Source.class})
+@MapperScan(basePackages = &quot;com.ht.micro.record.commons.mapper&quot;)
+@EnableAsync
+@EnableSwagger2
+public class UserServiceApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(UserServiceApplication.class, args);
+    }
+}</code></pre><p>com.ht.micro.record.user.config.BaseMybatisConfig</p><pre><code class="kotlin">@Configuration
+@MapperScan(basePackages = {&quot;com.ht.micro.record.commons.mapper.baseMapper&quot;}, sqlSessionTemplateRef = &quot;baseSqlSessionTemplate&quot;)
+public class BaseMybatisConfig {
+
+    @Value(&quot;${spring.datasource.base.filters}&quot;)
+    String filters;
+    @Value(&quot;${spring.datasource.base.driver-class-name}&quot;)
+    String driverClassName;
+    @Value(&quot;${spring.datasource.base.username}&quot;)
+    String username;
+    @Value(&quot;${spring.datasource.base.password}&quot;)
+    String password;
+    @Value(&quot;${spring.datasource.base.jdbc-url}&quot;)
+    String url;
+
+
+    @Bean(name=&quot;baseDataSource&quot;)
+    @Primary//必须加此注解，不然报错，下一个类则不需要添加 spring.datasource
+    @ConfigurationProperties(prefix=&quot;spring.datasource.base&quot;)//prefix值必须是application.properteis中对应属性的前缀
+    public DataSource baseDataSource() throws SQLException {
+
+
+        DruidDataSource druid = new DruidDataSource();
+        // 监控统计拦截的filters
+        druid.setFilters(filters);
+        // 配置基本属性
+        druid.setDriverClassName(driverClassName);
+        druid.setUsername(username);
+        druid.setPassword(password);
+        druid.setUrl(url);
+
+        return druid;
+    }
+
+
+    @Bean(name=&quot;baseSqlSessionFactory&quot;)
+    @Primary
+    public SqlSessionFactory baseSqlSessionFactory(@Qualifier(&quot;baseDataSource&quot;)DataSource dataSource)throws Exception{
+        // 创建Mybatis的连接会话工厂实例
+        SqlSessionFactoryBean bean=new SqlSessionFactoryBean();
+        bean.setDataSource(dataSource);//// 设置数据源bean
+        //添加XML目录
+        ResourcePatternResolver resolver=new PathMatchingResourcePatternResolver();
+        try{
+            bean.setMapperLocations(resolver.getResources(&quot;classpath:baseMapper/*Mapper.xml&quot;));//// 设置mapper文件路径
+            return bean.getObject();
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Bean(name=&quot;baseSqlSessionTemplate&quot;)
+    @Primary
+    public SqlSessionTemplate baseSqlSessionTemplate(@Qualifier(&quot;baseSqlSessionFactory&quot;)SqlSessionFactory sqlSessionFactory)throws Exception{
+        SqlSessionTemplate template=new SqlSessionTemplate(sqlSessionFactory);//使用上面配置的Factory
+        return  template;
+    }
+
+}</code></pre><p>com.ht.micro.record.user.config.DicMybatisConfig</p><pre><code class="kotlin">@Configuration
+@MapperScan(basePackages = {&quot;com.ht.micro.record.commons.mapper.dicMapper&quot;}, sqlSessionTemplateRef = &quot;dicSqlSessionTemplate&quot;)
+public class DicMybatisConfig {
+    @Value(&quot;${spring.datasource.dic.filters}&quot;)
+    String filters;
+    @Value(&quot;${spring.datasource.dic.driver-class-name}&quot;)
+    String driverClassName;
+    @Value(&quot;${spring.datasource.dic.username}&quot;)
+    String username;
+    @Value(&quot;${spring.datasource.dic.password}&quot;)
+    String password;
+    @Value(&quot;${spring.datasource.dic.jdbc-url}&quot;)
+    String url;
+
+
+    @Bean(name = &quot;dicDataSource&quot;)
+    @ConfigurationProperties(prefix=&quot;spring.datasource.dic&quot;)
+    public DataSource dicDataSource() throws SQLException {
+
+        DruidDataSource druid = new DruidDataSource();
+        // 监控统计拦截的filters
+       // druid.setFilters(filters);
+        // 配置基本属性
+        druid.setDriverClassName(driverClassName);
+        druid.setUsername(username);
+        druid.setPassword(password);
+        druid.setUrl(url);
+
+       /* //初始化时建立物理连接的个数
+        druid.setInitialSize(initialSize);
+        //最大连接池数量
+        druid.setMaxActive(maxActive);
+        //最小连接池数量
+        druid.setMinIdle(minIdle);
+        //获取连接时最大等待时间，单位毫秒。
+        druid.setMaxWait(maxWait);
+        //间隔多久进行一次检测，检测需要关闭的空闲连接
+        druid.setTimeBetweenEvictionRunsMillis(timeBetweenEvictionRunsMillis);
+        //一个连接在池中最小生存的时间
+        druid.setMinEvictableIdleTimeMillis(minEvictableIdleTimeMillis);
+        //用来检测连接是否有效的sql
+        druid.setValidationQuery(validationQuery);
+        //建议配置为true，不影响性能，并且保证安全性。
+        druid.setTestWhileIdle(testWhileIdle);
+        //申请连接时执行validationQuery检测连接是否有效
+        druid.setTestOnBorrow(testOnBorrow);
+        druid.setTestOnReturn(testOnReturn);
+        //是否缓存preparedStatement，也就是PSCache，oracle设为true，mysql设为false。分库分表较多推荐设置为false
+        druid.setPoolPreparedStatements(poolPreparedStatements);
+        // 打开PSCache时，指定每个连接上PSCache的大小
+        druid.setMaxPoolPreparedStatementPerConnectionSize(maxPoolPreparedStatementPerConnectionSize);
+*/
+        return druid;
+    }
+
+    @Bean(name = &quot;dicSqlSessionFactory&quot;)
+    public SqlSessionFactory dicSqlSessionFactory(@Qualifier(&quot;dicDataSource&quot;)DataSource dataSource)throws Exception{
+        SqlSessionFactoryBean bean=new SqlSessionFactoryBean();
+        bean.setDataSource(dataSource);
+        //添加XML目录
+        ResourcePatternResolver resolver=new PathMatchingResourcePatternResolver();
+        try{
+            bean.setMapperLocations(resolver.getResources(&quot;classpath:dicMapper/*Mapper.xml&quot;));
+            return bean.getObject();
+        }catch(Exception e){
+            e.printStackTrace();
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Bean(name=&quot;dicSqlSessionTemplate&quot;)
+    public SqlSessionTemplate dicSqlSessionTemplate(@Qualifier(&quot;dicSqlSessionFactory&quot;)SqlSessionFactory sqlSessionFactory)throws Exception{
+        SqlSessionTemplate template=new SqlSessionTemplate(sqlSessionFactory);//使用上面配置的Factory
+        return  template;
+    }
+
+}</code></pre><p>com.ht.micro.record.user.service.UserService</p><pre><code class="java">@Service
+public class UserService {
+
+
+    @Autowired
+    private MessageChannel output;
+
+
+    // @EnableAsync在Application中开启异步
+    @Async
+    public void sendEmail(TbUser tbUser) throws Exception {
+        output.send(MessageBuilder.withPayload(MapperUtils.obj2json(tbUser)).build());
+    }
+
+
+}</code></pre><p>com.ht.micro.record.user.controller.UserController</p><pre><code class="kotlin">@RestController
+@RequestMapping(value = &quot;user&quot;)
+public class UserController extends AbstractBaseController&lt;TbUser&gt; {
+    @Autowired
+    private TbUserService tbUserService;
+    @Autowired
+    private UserService userService;
+
+    // http://localhost:9506/user/2
+    //
+    @ApiOperation(value = &quot;查询用户&quot;, notes = &quot;根据id获取用户名&quot;)
+    @GetMapping(value = {&quot;{id}&quot;})
+    public String getName(@PathVariable long id){
+        return tbUserService.getById(id).getUsername();
+    }
+
+    @ApiOperation(value = &quot;用户注册&quot;, notes = &quot;参数为实体类，注意用户名和邮箱不要重复&quot;)
+    @PostMapping(value = &quot;reg&quot;)
+    public AbstractBaseResult reg(@ApiParam(name = &quot;tbUser&quot;, value = &quot;用户模型&quot;) TbUser tbUser) {
+        // 数据校验
+        String message = BeanValidator.validator(tbUser);
+        if (StringUtils.isNotBlank(message)) {
+            return error(message, null);
+        }
+
+
+        // 验证密码是否为空
+        if (StringUtils.isBlank(tbUser.getPassword())) {
+            return error(&quot;密码不可为空&quot;, null);
+        }
+
+
+        // 验证用户名是否重复
+        if (!tbUserService.unique(&quot;username&quot;, tbUser.getUsername())) {
+            return error(&quot;用户名已存在&quot;, null);
+        }
+
+
+        // 验证邮箱是否重复
+        if (!tbUserService.unique(&quot;email&quot;, tbUser.getEmail())) {
+            return error(&quot;邮箱重复，请重试&quot;, null);
+        }
+
+
+        // 注册用户
+        try {
+            tbUser.setPassword(DigestUtils.md5DigestAsHex(tbUser.getPassword().getBytes()));
+            TbUser user = tbUserService.save(tbUser);
+            if (user != null) {
+                userService.sendEmail(user);
+                response.setStatus(HttpStatus.CREATED.value());
+                return success(request.getRequestURI(), user);
+            }
+        } catch (Exception e) {
+            // 这里补一句，将 RegService 中的异常抛到 Controller 中，这样可以打印出调试信息
+            return error(HttpStatus.INTERNAL_SERVER_ERROR.value(), &quot;注册邮件发送失败&quot;, e.getMessage());
+        }
+
+
+        // 注册失败
+        return error(&quot;注册失败，请重试&quot;, null);
+    }
+}</code></pre><h2 id="ht-micro-record-service-sms"><a href="#ht-micro-record-service-sms" class="headerlink" title="ht-micro-record-service-sms"></a>ht-micro-record-service-sms</h2><pre><code class="dust">    &lt;parent&gt;
+        &lt;groupId&gt;com.htdc&lt;/groupId&gt;
+        &lt;artifactId&gt;ht-micro-record-dependencies&lt;/artifactId&gt;
+        &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+        &lt;relativePath&gt;../ht-micro-record-dependencies/pom.xml&lt;/relativePath&gt;
+    &lt;/parent&gt;
+
+    &lt;artifactId&gt;ht-micro-record-service-sms&lt;/artifactId&gt;
+    &lt;packaging&gt;jar&lt;/packaging&gt;
+
+    &lt;name&gt;ht-micro-record-service-sms&lt;/name&gt;
+    &lt;url&gt;http://www.htdatacloud.com/&lt;/url&gt;
+    &lt;inceptionYear&gt;2019-Now&lt;/inceptionYear&gt;
+
+    &lt;dependencies&gt;
+        &lt;!-- Spring Boot Begin --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-web&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-actuator&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+            &lt;scope&gt;test&lt;/scope&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-mail&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+
+        &lt;dependency&gt;
+            &lt;groupId&gt;net.sourceforge.nekohtml&lt;/groupId&gt;
+            &lt;artifactId&gt;nekohtml&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-thymeleaf&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;!-- Spring Boot End --&gt;
+
+        &lt;!-- Spring Cloud Begin --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-config&lt;/artifactId&gt;
+            &lt;exclusions&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
+                    &lt;artifactId&gt;fastjson&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;com.google.guava&lt;/groupId&gt;
+                    &lt;artifactId&gt;guava&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+            &lt;/exclusions&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-alibaba-nacos-discovery&lt;/artifactId&gt;
+            &lt;exclusions&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;com.google.guava&lt;/groupId&gt;
+                    &lt;artifactId&gt;guava&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+            &lt;/exclusions&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-alibaba-sentinel&lt;/artifactId&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-openfeign&lt;/artifactId&gt;
+            &lt;exclusions&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;com.google.guava&lt;/groupId&gt;
+                    &lt;artifactId&gt;guava&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;com.google.code.findbugs&lt;/groupId&gt;
+                    &lt;artifactId&gt;jsr305&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;org.hdrhistogram&lt;/groupId&gt;
+                    &lt;artifactId&gt;HdrHistogram&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+            &lt;/exclusions&gt;
+        &lt;/dependency&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.cloud&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-cloud-starter-stream-rocketmq&lt;/artifactId&gt;
+            &lt;exclusions&gt;
+                &lt;exclusion&gt;
+                    &lt;groupId&gt;com.alibaba&lt;/groupId&gt;
+                    &lt;artifactId&gt;fastjson&lt;/artifactId&gt;
+                &lt;/exclusion&gt;
+            &lt;/exclusions&gt;
+        &lt;/dependency&gt;
+        &lt;!-- Spring Cloud End --&gt;
+
+        &lt;!-- Projects Begin --&gt;
+        &lt;dependency&gt;
+            &lt;groupId&gt;com.htdc&lt;/groupId&gt;
+            &lt;artifactId&gt;ht-micro-record-commons-domain&lt;/artifactId&gt;
+            &lt;version&gt;${project.parent.version}&lt;/version&gt;
+        &lt;/dependency&gt;
+        &lt;!-- Projects End --&gt;
+    &lt;/dependencies&gt;
+
+
+    &lt;build&gt;
+        &lt;finalName&gt;ht-micro-record-service-sms&lt;/finalName&gt;
+        &lt;plugins&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+                &lt;artifactId&gt;spring-boot-maven-plugin&lt;/artifactId&gt;
+                &lt;configuration&gt;
+                    &lt;mainClass&gt;com.ht.micro.record.service.email.SmsServiceApplication&lt;/mainClass&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+            &lt;!-- docker的maven插件，官网 https://github.com/spotify/docker-maven-plugin --&gt;
+            &lt;plugin&gt;
+                &lt;groupId&gt;com.spotify&lt;/groupId&gt;
+                &lt;artifactId&gt;docker-maven-plugin&lt;/artifactId&gt;
+                &lt;version&gt;0.4.13&lt;/version&gt;
+                &lt;configuration&gt;
+                    &lt;imageName&gt;192.168.2.7:5000/${project.artifactId}:${project.version}&lt;/imageName&gt;
+                    &lt;baseImage&gt;jdk1.8&lt;/baseImage&gt;
+                    &lt;entryPoint&gt;[&quot;java&quot;, &quot;-jar&quot;,&quot;/${project.build.finalName}.jar&quot;]&lt;/entryPoint&gt;
+                    &lt;resources&gt;
+                        &lt;resource&gt;
+                            &lt;targetPath&gt;/&lt;/targetPath&gt;
+                            &lt;directory&gt;${project.build.directory}&lt;/directory&gt;
+                            &lt;include&gt;${project.build.finalName}.jar&lt;/include&gt;
+                        &lt;/resource&gt;
+                    &lt;/resources&gt;
+                    &lt;dockerHost&gt;http://192.168.2.7:2375&lt;/dockerHost&gt;
+                &lt;/configuration&gt;
+            &lt;/plugin&gt;
+        &lt;/plugins&gt;
+    &lt;/build&gt;</code></pre><p>application.yml</p><pre><code class="yaml">spring:
+  cloud:
+    stream:
+      rocketmq:
+        binder:
+          name-server: 192.168.2.7:9876
+        bindings:
+          input:
+            consumer:
+              orderly: true
+      bindings:
+        input:
+          destination: topic-email
+          content-type: application/json
+          group: group-email
+          consumer:
+            maxAttempts: 1
+  thymeleaf:
+    cache: false
+    mode: HTML
+    encoding: UTF-8
+    servlet:
+      content-type: text/html</code></pre><p>bootstrap.properties</p><pre><code class="stylus">spring.application.name=ht-micro-record-service-sms-config
+spring.cloud.nacos.config.file-extension=yaml
+spring.cloud.nacos.config.server-addr=192.168.2.7:8848,192.168.2.7:8849,192.168.2.7:8850</code></pre><p>nacos配置</p><pre><code class="less">spring:
+  application:
+    name: ht-micro-record-service-sms
+  mail:
+    host: smtp.163.com
+    port: 25
+    # 你的邮箱授权码
+    password: codewj123456
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+    # 发送邮件的邮箱地址
+    username: m15806204096@163.com
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 192.168.2.7:8848,192.168.2.7:8849,192.168.2.7:8850
+    sentinel:
+      transport:
+        port: 8719
+        dashboard: 192.168.2.7:190
+
+
+server:
+  port: 9507
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: &quot;*&quot;</code></pre><p>com.ht.micro.record.service.email.SmsServiceApplication</p><pre><code class="less">@SpringBootApplication(scanBasePackages = &quot;com.ht.micro.record&quot;)
+@EnableDiscoveryClient
+@EnableBinding({Sink.class})
+@EnableAsync
+public class SmsServiceApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(SmsServiceApplication.class, args);
+    }
+}</code></pre><p>com.ht.micro.record.service.email.service.EmailService</p><pre><code class="java">@Service
+public class EmailService {
+
+    @Autowired
+    private ConfigurableApplicationContext applicationContext;
+
+    @Autowired
+    private JavaMailSender javaMailSender;
+
+    @Autowired
+    private TemplateEngine templateEngine;
+
+    @StreamListener(&quot;input&quot;)
+    public void receive(String json) {
+        try {
+            // 发送普通邮件
+            TbUser tbUser = MapperUtils.json2pojo(json, TbUser.class);
+            sendEmail(&quot;欢迎注册&quot;, &quot;欢迎 &quot; + tbUser.getUsername() + &quot; 加入华通晟云！&quot;, tbUser.getEmail());
+
+            // 发送 HTML 模板邮件
+            Context context = new Context();
+            context.setVariable(&quot;username&quot;, tbUser.getUsername());
+            String emailTemplate = templateEngine.process(&quot;reg&quot;, context);
+            sendTemplateEmail(&quot;欢迎注册&quot;, emailTemplate, tbUser.getEmail());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 发送普通邮件
+     * @param subject
+     * @param body
+     * @param to
+     */
+    @Async
+    public void sendEmail(String subject, String body, String to) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(applicationContext.getEnvironment().getProperty(&quot;spring.mail.username&quot;));
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(body);
+        javaMailSender.send(message);
+    }
+
+    /**
+     * 发送 HTML 模板邮件
+     * @param subject
+     * @param body
+     * @param to
+     */
+    @Async
+    public void sendTemplateEmail(String subject, String body, String to) {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(message, true);
+            helper.setFrom(applicationContext.getEnvironment().getProperty(&quot;spring.mail.username&quot;));
+            helper.setTo(to);
+            helper.setSubject(subject);
+            helper.setText(body, true);
+            javaMailSender.send(message);
+        } catch (Exception e) {
+
+        }
+    }
+}</code></pre><p>templates/reg.html</p><pre><code class="dust">&lt;!DOCTYPE html SYSTEM &quot;http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd&quot;&gt;
+&lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot; xmlns:th=&quot;http://www.thymeleaf.org&quot;&gt;
+&lt;head&gt;
+    &lt;meta charset=&quot;UTF-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot;
+          content=&quot;width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0&quot;&gt;
+    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;ie=edge&quot;&gt;
+    &lt;title&gt;注册通知&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div&gt;
+        欢迎 &lt;span th:text=&quot;${username}&quot;&gt;&lt;/span&gt; 加入 华通晟云！！
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre><p>post <a href="http://localhost:9506/user/reg?password=123456&amp;username=codewj&amp;email=1051103813@qq.com" target="_blank" rel="noopener">http://localhost:9506/user/reg?password=123456&amp;username=codewj&amp;email=1051103813@qq.com</a> 实现注册</p><h1 id="集成Swagger2"><a href="#集成Swagger2" class="headerlink" title="集成Swagger2"></a>集成Swagger2</h1><p>ht-micro-record-commons/pom.xml</p><pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;io.springfox&lt;/groupId&gt;
+    &lt;artifactId&gt;springfox-swagger2&lt;/artifactId&gt;
+    &lt;exclusions&gt;
+        &lt;exclusion&gt;
+            &lt;groupId&gt;com.google.guava&lt;/groupId&gt;
+            &lt;artifactId&gt;guava&lt;/artifactId&gt;
+        &lt;/exclusion&gt;
+    &lt;/exclusions&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;io.springfox&lt;/groupId&gt;
+    &lt;artifactId&gt;springfox-swagger-ui&lt;/artifactId&gt;
+&lt;/dependency&gt;</code></pre><p>com.ht.micro.record.commons.config.Swagger2Configuration</p><pre><code>@Configuration
+public class Swagger2Configuration {
+    @Bean
+    public Docket createRestApi() {
+        return new Docket(DocumentationType.SWAGGER_2)
+                .apiInfo(apiInfo())
+                .select()
+                .apis(RequestHandlerSelectors.basePackage(&quot;com.ht.micro.record&quot;))  // 配置controller地址
+                .paths(PathSelectors.any())
+                .build();
+    }
+
+
+    private ApiInfo apiInfo() {
+        return new ApiInfoBuilder()
+                .title(&quot;微服务 API 文档&quot;)
+                .description(&quot;微服务 API 网关接口，http://www.htdatacloud.com/&quot;)
+                .termsOfServiceUrl(&quot;http://www.htdatacloud.com&quot;)
+                .version(&quot;1.0.0&quot;)
+                .build();
+    }
+}</code></pre><p>com.ht.micro.record.UserServiceApplication</p><pre><code class="stylus">@EnableSwagger2
+</code></pre><p>com.ht.micro.record.user.controller.UserController</p><pre><code class="less">@ApiOperation(value = &quot;用户注册&quot;, notes = &quot;参数为实体类，注意用户名和邮箱不要重复&quot;)
+@PostMapping</code></pre><h1 id="服务提供消费"><a href="#服务提供消费" class="headerlink" title="服务提供消费"></a>服务提供消费</h1><p>配置项目skywalking链路追踪并启动</p><pre><code>-javaagent:E:\Project\ht-micro-record\ht-micro-record-external-skywalking\agent\skywalking-agent.jar
+-Dskywalking.agent.service_name=ht-micro-record-service-user
+-Dskywalking.collector.backend_service=192.168.2.7:11800
+
+-javaagent:E:\Project\hello-spring-cloud-alibaba\hello-spring-cloud-external-skywalking\agent\skywalking-agent.jar
+-Dskywalking.agent.service_name=nacos-consumer-feign
+-Dskywalking.collector.backend_service=192.168.3.229:11800</code></pre><p><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1564815890566.png" alt="enter description here"><br><a href="http://192.168.3.233:9501/user/10" target="_blank" rel="noopener">http://192.168.3.233:9501/user/10</a> 调用服务<br><a href="http://192.168.2.7:193/#/monitor/dashboard" target="_blank" rel="noopener">http://192.168.2.7:193/#/monitor/dashboard</a> 查看skywalking的链路追踪<br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1565245719246.png" alt="enter description here"></p></article><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a> <span class="donate_txt">↑<br> 欢迎投食,求鼓励，求支持！</span><br></div><div id="donate_guide" class="donate_bar center hidden"> <img src="/images/alipay.png" alt="支付宝打赏"> <img src="/images/wechatpay.png" alt="微信打赏"></div><script type="text/javascript">document.getElementById("btn_donate").onclick=function(){$("#donate_board").addClass("hidden"),$("#donate_guide").removeClass("hidden")}</script></div><div class="nexmoe-post-copyright"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i> <strong>本文作者：</strong>OneJane<br> <strong>本文链接：</strong><a href="https://onejane.github.io/2019/08/21/Alibaba服务搭建/" title="https://onejane.github.io/2019/08/21/Alibaba服务搭建/" target="_blank" rel="noopener">https://onejane.github.io/2019/08/21/Alibaba服务搭建/</a><br> <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可</div><section class="nexmoe-comment"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css"><div id="gitalk"></div><script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script><script type="text/javascript">var gitalk=new Gitalk({clientID:"e677e59382e1c7a468fd",clientSecret:"717d041bc4ab749f069314862232cfb6ec8adc15",id:decodeURI(window.location.pathname),repo:"onejane.github.io",owner:"onejane",admin:"onejane"});gitalk.render("gitalk")</script></section></div></div></div><script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/smoothscroll-for-websites@1.4.9/SmoothScroll.min.js"></script><script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js"></script><script>hljs.initHighlightingOnLoad()</script><script src="/js/app.js?v=1566367773167"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.1.0/lazysizes.min.js"></script><div hidden><script type="text/javascript" src="https://js.users.51.la/20279757.js"></script></div></body><script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script></html>
