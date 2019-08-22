@@ -1,0 +1,440 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.9.0"><title>好客租房mybatisplus - OneJane</title><meta charset="UTF-8"><meta name="description" content><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="msvalidate.01" content="396E9693347B4D18AAE96D9E75B9B686"><link rel="shortcut icon" href="/images/a.ico" type="image/png"><meta name="description" content="基于dubbo react mybatisplus elk实战整合开发"><meta name="keywords" content="docker,mybatisplus,mysql"><meta property="og:type" content="article"><meta property="og:title" content="好客租房mybatisplus"><meta property="og:url" content="https://onejane.github.io/2019/08/22/好客租房mybatisplus/index.html"><meta property="og:site_name" content="OneJane"><meta property="og:description" content="基于dubbo react mybatisplus elk实战整合开发"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1566452133968.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1566452267845.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1566452323332.png"><meta property="og:updated_time" content="2019-08-22T06:48:41.255Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="好客租房mybatisplus"><meta name="twitter:description" content="基于dubbo react mybatisplus elk实战整合开发"><meta name="twitter:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1566452133968.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/css/mdui.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.15.8/styles/atom-one-dark.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1038733_0xvrvpg9c0r.css"><link rel="stylesheet" href="/css/style.css?v=1566468025585"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script></head><body class="mdui-drawer-body-left"><div id="nexmoe-background"><div class="nexmoe-bg" style="background-image:url(https://www.github.com/OneJane/blog/raw/master/小书匠/1566388885395.png)"></div><div class="mdui-appbar mdui-shadow-0"><div class="mdui-toolbar"> <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a><div class="mdui-toolbar-spacer"></div> <a href="/" title="OneJane" class="mdui-btn mdui-btn-icon"><img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388846021.png"></a></div></div></div><div id="nexmoe-header"><div class="nexmoe-drawer mdui-drawer" id="drawer"><div class="nexmoe-avatar mdui-ripple"> <a href="/" title="OneJane"><img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388846021.png" alt="OneJane"></a></div><div class="nexmoe-count"><div><span>文章</span>26</div><div><span>标签</span>42</div><div><span>分类</span>8</div></div><ul class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}"><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页"><i class="mdui-list-item-icon nexmoefont icon-home"></i><div class="mdui-list-item-content"> 回到首页</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="关于博客"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i><div class="mdui-list-item-content"> 关于博客</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/py.html" title="我的朋友"><i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i><div class="mdui-list-item-content"> 我的朋友</div></a></ul><aside id="nexmoe-sidebar"><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">社交按钮</h3><div class="nexmoe-widget nexmoe-social"><a class="mdui-ripple" href="https://www.zhihu.com/people/codewj/activities" target="_blank" mdui-tooltip="{content: 'zhihu'}" style="color:#e76a8d;background-color:rgba(231,106,141,.15)"><i class="nexmoefont icon-zhihu"></i></a><a class="mdui-ripple" href="https://github.com/OneJane" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color:#191717;background-color:rgba(25,23,23,.15)"><i class="nexmoefont icon-github"></i></a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章分类</h3><div class="nexmoe-widget"><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/定时器/">定时器</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/持续集成/">持续集成</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/注册中心/">注册中心</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/项目实战/">项目实战</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高可用/">高可用</a><span class="category-list-count">4</span></li></ul></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">标签云</h3><div class="nexmoe-widget tagcloud"> <a href="/tags/ant-design/" style="font-size:10px">ant design</a> <a href="/tags/ant-design-pro/" style="font-size:12.5px">ant design pro</a> <a href="/tags/docker/" style="font-size:17.5px">docker</a> <a href="/tags/dubbo/" style="font-size:12.5px">dubbo</a> <a href="/tags/elasticsearch/" style="font-size:10px">elasticsearch</a> <a href="/tags/elastisearch/" style="font-size:10px">elastisearch</a> <a href="/tags/email/" style="font-size:10px">email</a> <a href="/tags/es6/" style="font-size:10px">es6</a> <a href="/tags/feign/" style="font-size:10px">feign</a> <a href="/tags/freemarker/" style="font-size:10px">freemarker</a> <a href="/tags/gateway/" style="font-size:10px">gateway</a> <a href="/tags/gitlab/" style="font-size:12.5px">gitlab</a> <a href="/tags/haproxy/" style="font-size:10px">haproxy</a> <a href="/tags/jenkins/" style="font-size:12.5px">jenkins</a> <a href="/tags/keepalived/" style="font-size:10px">keepalived</a> <a href="/tags/linux/" style="font-size:10px">linux</a> <a href="/tags/maven/" style="font-size:12.5px">maven</a> <a href="/tags/multi-druid/" style="font-size:10px">multi druid</a> <a href="/tags/mybatis/" style="font-size:10px">mybatis</a> <a href="/tags/mybatisplus/" style="font-size:10px">mybatisplus</a> <a href="/tags/mysql/" style="font-size:10px">mysql</a> <a href="/tags/nacos/" style="font-size:12.5px">nacos</a> <a href="/tags/nexmoe/" style="font-size:10px">nexmoe</a> <a href="/tags/partition/" style="font-size:10px">partition</a> <a href="/tags/pxc/" style="font-size:10px">pxc</a> <a href="/tags/rabbitmq/" style="font-size:10px">rabbitmq</a> <a href="/tags/react/" style="font-size:12.5px">react</a> <a href="/tags/redis/" style="font-size:12.5px">redis</a> <a href="/tags/redis-cluster/" style="font-size:10px">redis-cluster</a> <a href="/tags/replication/" style="font-size:12.5px">replication</a> <a href="/tags/rocketmq/" style="font-size:12.5px">rocketmq</a> <a href="/tags/sentinel/" style="font-size:15px">sentinel</a> <a href="/tags/session/" style="font-size:10px">session</a> <a href="/tags/skywalking/" style="font-size:12.5px">skywalking</a> <a href="/tags/spring-cloud-alibaba/" style="font-size:20px">spring cloud alibaba</a> <a href="/tags/springboot/" style="font-size:15px">springboot</a> <a href="/tags/swagger/" style="font-size:10px">swagger</a> <a href="/tags/tk-mybatis/" style="font-size:10px">tk mybatis</a> <a href="/tags/umi/" style="font-size:10px">umi</a> <a href="/tags/validate/" style="font-size:10px">validate</a> <a href="/tags/xxl-job/" style="font-size:12.5px">xxl-job</a> <a href="/tags/zookeeper/" style="font-size:10px">zookeeper</a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章归档</h3><div class="nexmoe-widget"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul></div></div></aside><div class="nexmoe-copyright"> &copy; 2019 OneJane</div></div></div><div id="nexmoe-content"><div class="nexmoe-primary"><div class="nexmoe-post"><div class="nexmoe-post-cover"> <img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1d4f23ece60efbaaa417eb62a0460e1d_hd.jpg"><h1>好客租房mybatisplus</h1></div><div class="nexmoe-post-meta"><a><i class="nexmoefont icon-calendar-fill"></i> 2019年08月22日</a><a><i class="nexmoefont icon-areachart"></i> 2.4k 字</a><a><i class="nexmoefont icon-time-circle-fill"></i> 大概 13 分钟</a> <a class="nexmoefont icon-appstore-fill -link" href="/categories/项目实战/">项目实战</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/docker/">docker</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/mybatisplus/">mybatisplus</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/mysql/">mysql</a></div><article><p><a href="http://onejane.github.io">基于dubbo react mybatisplus elk实战整合开发</a></p><a id="more"></a><h1 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h1><pre><code class="sql">docker run -di --name=mysql -p 3306:3306 -e MYSQL_ROOT_PASSWORD=123456 docker.io/mysql
+mysql -u root -p
+ALTER USER &#39;root&#39;@&#39;%&#39; IDENTIFIED WITH mysql_native_password BY &#39;123456&#39;;
+docker logs -fn 500  mysql</code></pre><h2 id="MybatisPlus入门"><a href="#MybatisPlus入门" class="headerlink" title="MybatisPlus入门"></a>MybatisPlus入门</h2><p>执行建表 haoke.sql</p><p>mybatis-plus/pom.xml</p><pre><code class="xml">&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter&lt;/artifactId&gt;
+    &lt;/dependency&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+        &lt;artifactId&gt;spring-boot-starter-test&lt;/artifactId&gt;
+        &lt;scope&gt;test&lt;/scope&gt;
+    &lt;/dependency&gt;
+    &lt;!--mybatis-plus的springboot支持--&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;com.baomidou&lt;/groupId&gt;
+        &lt;artifactId&gt;mybatis-plus-boot-starter&lt;/artifactId&gt;
+        &lt;version&gt;3.0.5&lt;/version&gt;
+    &lt;/dependency&gt;
+    &lt;!--mysql驱动--&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;mysql&lt;/groupId&gt;
+        &lt;artifactId&gt;mysql-connector-java&lt;/artifactId&gt;
+        &lt;version&gt;5.1.47&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;</code></pre><p>application.properties</p><pre><code class="stylus">spring.application.name = itcast-mybatis-plus
+spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+spring.datasource.url=jdbc:mysql://192.168.3.237:3306/haoke?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;allowMultiQueries=true&amp;useSSL=false
+spring.datasource.username=root
+spring.datasource.password=123456</code></pre><p>com/onejane/mybatisplus/pojo/User.java</p><pre><code class="kotlin">@Data
+public class User {
+    @TableId(value = &quot;ID&quot;, type = IdType.AUTO)
+    private Long id;
+    private String name;
+    private Integer age;
+    private String email;
+}</code></pre><p>com/onejane/mybatisplus/mapper/UserMapper.java</p><pre><code class="php">public interface UserMapper extends BaseMapper&lt;User&gt; {
+}</code></pre><p>com/onejane/mybatisplus/MyApplication.java</p><pre><code class="less">@MapperScan(&quot;com.onejane.mybatisplus.mapper&quot;) //设置mapper接口的扫描包
+@SpringBootApplication
+public class MyApplication {
+    /**
+     * 分页插件
+     */
+    @Bean
+    public PaginationInterceptor paginationInterceptor() {
+        return new PaginationInterceptor();
+    }
+    public static void main(String[] args) {
+        SpringApplication.run(MyApplication.class, args);
+    }
+}</code></pre><p>com/onejane/mybatisplus/mapper/UserMaperTest.java</p><pre><code class="pf">@RunWith(SpringRunner.class)
+@SpringBootTest
+public class UserMaperTest {
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Test
+    public void testSelect(){
+        List&lt;User&gt; users = this.userMapper.selectList(null);
+        for (User user : users) {
+            System.out.println(user);
+        }
+    }
+
+    @Test
+    public void testSelectById(){
+        User user = this.userMapper.selectById(3L);
+        System.out.println(user);
+    }
+
+    @Test
+    public void testSelectByLike(){
+        QueryWrapper&lt;User&gt; wrapper = new QueryWrapper&lt;User&gt;();
+        wrapper.like(&quot;name&quot;, &quot;o&quot;);
+        List&lt;User&gt; list = this.userMapper.selectList(wrapper);
+        for (User user : list) {
+            System.out.println(user);
+        }
+    }
+
+    @Test
+    public void testSelectByLe(){
+        QueryWrapper&lt;User&gt; wrapper = new QueryWrapper&lt;User&gt;();
+        wrapper.le(&quot;age&quot;, 20);
+        List&lt;User&gt; list = this.userMapper.selectList(wrapper);
+        for (User user : list) {
+            System.out.println(user);
+        }
+    }
+
+    @Test
+    public void testSave(){
+        User user = new User();
+        user.setAge(25);
+        user.setEmail(&quot;zhangsan@qq.com&quot;);
+        user.setName(&quot;zhangsan&quot;);
+        int count = this.userMapper.insert(user);
+        System.out.println(&quot;新增数据成功! count =&gt; &quot; + count);
+    }
+
+    @Test
+    public void testDelete(){
+        this.userMapper.deleteById(7L);
+        System.out.println(&quot;删除成功!&quot;);
+    }
+
+    @Test
+    public void testUpdate(){
+        User user = new User();
+        user.setId(6L);
+        user.setName(&quot;lisi&quot;);
+        this.userMapper.updateById(user);
+        System.out.println(&quot;修改成功!&quot;);
+    }
+
+    @Test
+    public void testSelectPage() {
+        Page&lt;User&gt; page = new Page&lt;&gt;(2, 2);
+        IPage&lt;User&gt; userIPage = this.userMapper.selectPage(page, null);
+        System.out.println(&quot;总条数 ------&gt; &quot; + userIPage.getTotal());
+        System.out.println(&quot;当前页数 ------&gt; &quot; + userIPage.getCurrent());
+        System.out.println(&quot;当前每页显示数 ------&gt; &quot; + userIPage.getSize());
+        List&lt;User&gt; records = userIPage.getRecords();
+        for (User user : records) {
+            System.out.println(user);
+        }
+    }
+}</code></pre><p>兼容配置application.properties</p><pre><code class="crmsh">## 指定全局配置文件
+mybatis-plus.config-location = classpath:mybatis-config.xml
+# 指定mapper.xml文件
+mybatis-plus.mapper-locations = classpath*:mybatis/*.xml</code></pre><h2 id="Lombok"><a href="#Lombok" class="headerlink" title="Lombok"></a>Lombok</h2><pre><code class="xml">&lt;!--简化代码的工具包--&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.projectlombok&lt;/groupId&gt;
+    &lt;artifactId&gt;lombok&lt;/artifactId&gt;
+    &lt;optional&gt;true&lt;/optional&gt;
+    &lt;version&gt;1.18.4&lt;/version&gt;
+&lt;/dependency&gt;</code></pre><p>安装idea Lombok插件</p><ul><li>@Data：注解在类上；提供类所有属性的 getting 和 setting 方法，此外还提供了equals、canEqual、hashCode、toString 方法</li><li>@Setter setting 方法</li><li>@Getter：注解在属性上；为属性提供 getting 方法</li><li>@Slf4j：注解在类上；为类提供一个 属性名为log 的 slf4j日志对象</li><li>@NoArgsConstructor：注解在类上；为类提供一个无参的构造方法</li><li>@AllArgsConstructor：注解在类上；为类提供一个全参的构造方法</li><li>@Builder：使用Builder模式构建对象</li></ul><pre><code class="java">@Slf4j
+@Data
+@AllArgsConstructor
+@Builder
+public class Item {
+    private Long id;
+    private String title;
+    private Long price;
+    public Item() {
+        log.info(&quot;写日志。。。。。&quot;);
+    }
+    public static void main(String[] args) {
+        Item item1 = new Item(1L,&quot;哈哈哈&quot;,10L);
+        Item item2 =  Item.builder().price(100L)title(&quot;hello&quot;).id(1L).build();
+        System.out.println(item1.getId());
+    }
+}</code></pre><h1 id="搭建后台服务系统"><a href="#搭建后台服务系统" class="headerlink" title="搭建后台服务系统"></a>搭建后台服务系统</h1><p>haoke-manage<br>├─haoke-manage-api-server<br>├─haoke-manage-dubbo-server<br>│ ├─haoke-manage-dubbo-server-ad<br>│ ├─haoke-manage-dubbo-server-common<br>│ ├─haoke-manage-dubbo-server-generator MybatisPlus的AutoGenerator插件生成代码文件<br>│ ├─haoke-manage-dubbo-server-house-resources<br>│ │ ├─haoke-manage-dubbo-server-house-resources-dubbo-interface 对外提供的sdk包 只提供pojo实体以及接口，不提供实现类<br>│ │ ├─haoke-manage-dubbo-server-house-resources-dubbo-service 具体实现</p><p>cn.itcast.haoke.generator.CodeGenerator 配置数据源及账户密码，运行即可生成对应文件，并将pojo类拷贝到工程中备用<br>cn.itcast.haoke.dubbo.server.pojo.HouseResources<br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1566452133968.png" alt="enter description here"></p><p>cn.itcast.haoke.dubbo.server.pojo.BasePojo</p><pre><code class="groovy">@Data
+public abstract class BasePojo implements java.io.Serializable {
+    private Date created;
+    private Date updated;
+}</code></pre><p>cn.itcast.haoke.dubbo.server.api.ApiHouseResourcesService</p><pre><code class="java">public interface ApiHouseResourcesService {
+    /**
+     * 新增房源接口
+     *
+     * @param houseResources
+     *
+     * @return -1:输入的参数不符合要求，0：数据插入数据库失败，1：成功
+     */
+    int saveHouseResources(HouseResources houseResources);
+}</code></pre><p>itcast-haoke-manage-dubbo-server-house-resources-dubbo-service/application.properties</p><pre><code class="nix"># Spring boot application
+spring.application.name = itcast-haoke-manage-dubbo-server-house-resources
+
+# 数据库
+spring.datasource.driver-class-name=com.mysql.jdbc.Driver
+spring.datasource.url=jdbc:mysql://192.168.3.231:3306/haoke?useUnicode=true&amp;characterEncoding=utf8&amp;autoReconnect=true&amp;allowMultiQueries=true&amp;useSSL=false
+spring.datasource.username=root
+spring.datasource.password=123456
+
+# 服务的扫描包
+dubbo.scan.basePackages = cn.itcast.haoke.dubbo.server.api
+
+# 应用名称
+dubbo.application.name = dubbo-provider-house-resources
+
+# 协议以及端口
+dubbo.protocol.name = dubbo
+dubbo.protocol.port = 20880
+
+# zk注册中心
+dubbo.registry.address = zookeeper://192.168.3.231:2181
+dubbo.registry.client = zkclient</code></pre><p>itcast-haoke-manage-dubbo-server-house-resources-dubbo-service/cn.itcast.haoke.dubbo.server.mapper.HouseResourcesMapper</p><pre><code class="php">public interface HouseResourcesMapper extends BaseMapper&lt;HouseResources&gt; {}</code></pre><p>itcast-haoke-manage-dubbo-server-house-resources-dubbo-service/cn.itcast.haoke.dubbo.server.config.MybatisConfig</p><pre><code class="less">@MapperScan(&quot;cn.itcast.haoke.dubbo.server.mapper&quot;)
+@Configuration
+public class MybatisConfig {
+}</code></pre><p>itcast-haoke-manage-dubbo-server-house-resources-dubbo-service/cn.itcast.haoke.dubbo.server.service.impl.BaseServiceImpl</p><pre><code class="kotlin">public abstract class BaseServiceImpl&lt;T extends BasePojo&gt; {
+    // 编写基本服务的实现
+    @Autowired
+    private BaseMapper&lt;T&gt; mapper;
+
+    /**
+     * 根据id查询数据
+     *
+     * @param id
+     * @return
+     */
+    public T queryById(Long id) {
+        return this.mapper.selectById(id);
+    }
+
+    /**
+     * 查询所有数据
+     *
+     * @return
+     */
+    public List&lt;T&gt; queryAll() {
+        return this.mapper.selectList(null);
+    }
+
+    /**
+     * 根据条件查询一条数据
+     *
+     * @param record
+     * @return
+     */
+    public T queryOne(T record) {
+        return this.mapper.selectOne(new QueryWrapper&lt;&gt;(record));
+    }
+
+    /**
+     * 根据条件查询数据列表
+     *
+     * @param record
+     * @return
+     */
+    public List&lt;T&gt; queryListByWhere(T record) {
+        return this.mapper.selectList(new QueryWrapper&lt;&gt;(record));
+    }
+
+    /**
+     * 根据条件分页查询数据列表
+     *
+     * @param record
+     * @param page
+     * @param rows
+     * @return
+     */
+    public IPage&lt;T&gt; queryPageListByWhere(T record, Integer page, Integer rows) {
+        // 获取分页数据
+        return this.mapper.selectPage(new Page&lt;T&gt;(page, rows), new QueryWrapper&lt;&gt;
+                (record));
+    }
+
+    /**
+     * 保存数据
+     *
+     * @param record
+     * @return
+     */
+    public Integer save(T record) {
+        record.setCreated(new Date());
+        record.setUpdated(record.getCreated());
+        return this.mapper.insert(record);
+    }
+
+    /**
+     * 更新数据
+     *
+     * @param record
+     * @return
+     */
+    public Integer update(T record) {
+        record.setUpdated(new Date());
+        return this.mapper.updateById(record);
+    }
+
+    /**
+     * 根据id删除数据
+     *
+     * @param id
+     * @return
+     */
+    public Integer deleteById(Long id) {
+        return this.mapper.deleteById(id);
+    }
+
+    /**
+     * 根据ids批量删除数据
+     *
+     * @param ids
+     * @return
+     */
+    public Integer deleteByIds(List&lt;Long&gt; ids) {
+        return this.mapper.deleteBatchIds(ids);
+    }
+
+    /**
+     * 根据条件删除数据
+     *
+     * @param record
+     * @return
+     */
+    public Integer deleteByWhere(T record) {
+        return this.mapper.delete(new QueryWrapper&lt;&gt;(record));
+    }
+
+}</code></pre><p>itcast-haoke-manage-dubbo-server-house-resources-dubbo-service/cn.itcast.haoke.dubbo.server.service.HouseResourcesService</p><pre><code class="java">public interface HouseResourcesService {
+    /**
+     * @param houseResources
+     * Service是Spring的service，不是dubbo服务，因为需要控制事务以及一些逻辑
+     * @return -1:输入的参数不符合要求，0：数据插入数据库失败，1：成功
+     */
+    int saveHouseResources(HouseResources houseResources);
+}</code></pre><p>itcast-haoke-manage-dubbo-server-house-resources-dubbo-service/cn.itcast.haoke.dubbo.server.service.impl.HouseResourcesServiceImpl</p><pre><code class="scala">@Transactional
+@Service
+public class HouseResourcesServiceImpl extends BaseServiceImpl implements HouseResourcesService {
+
+
+    /**
+     * @param houseResources
+     * Spring的具体实现逻辑
+     * @return -1:输入的参数不符合要求，0：数据插入数据库失败，1：成功
+     */
+    @Override
+    public int saveHouseResources(HouseResources houseResources) {
+        // 添加校验或者是其他的一些逻辑
+        if(StringUtils.isBlank(houseResources.getTitle())){
+            // 不符合要求
+            return -1;
+        }
+        return super.save(houseResources);
+    }
+}</code></pre><p>cn.itcast.haoke.dubbo.server.api.ApiHouseResourcesServiceImpl</p><pre><code class="java">@Service(version = &quot;1.0.0&quot;)
+public class ApiHouseResourcesServiceImpl implements ApiHouseResourcesService {
+    // 实现dubbo服务 对外进行服务暴露
+    @Autowired
+    private HouseResourcesService houseResourcesService;
+
+    @Override
+    public int saveHouseResources(HouseResources houseResources) {
+        return this.houseResourcesService.saveHouseResources(houseResources);
+    }
+}</code></pre><p>启动dubbo服务，cn.itcast.haoke.dubbo.server.DubboProvider<br><a href="http://192.168.3.231:8080/#/service?filter=dubbo-provider-house-resources&amp;pattern=application即可查看" target="_blank" rel="noopener">http://192.168.3.231:8080/#/service?filter=dubbo-provider-house-resources&amp;pattern=application即可查看</a><br>itcast-haoke-manage/itcast-haoke-manage-api-server/pom.xml 引入服务接口以实现Restful</p><pre><code class="xml">&lt;dependency&gt;
+    &lt;groupId&gt;cn.itcast.haoke.manage&lt;/groupId&gt;
+    &lt;artifactId&gt;itcast-haoke-manage-dubbo-server-house-resources-dubbo-interface&lt;/artifactId&gt;
+    &lt;version&gt;1.0-SNAPSHOT&lt;/version&gt;
+&lt;/dependency&gt;</code></pre><p>itcast-haoke-manage-api-server/cn.itcast.haoke.dubbo.api.service.HouseResourcesService</p><pre><code class="java">@Service
+public class HouseResourcesService {
+
+    @Reference(version = &quot;1.0.0&quot;)        // 与服务提供版本一致，在此可设置负载均衡策略，用于调用dubbo服务
+    private ApiHouseResourcesService apiHouseResourcesService;
+
+    public boolean save(HouseResources houseResources) {
+        int result =
+                this.apiHouseResourcesService.saveHouseResources(houseResources);
+        return result == 1;
+    }
+}</code></pre><p>itcast-haoke-manage-api-server/cn.itcast.haoke.dubbo.api.controller.HouseResourcesController</p><pre><code class="kotlin">@Controller
+@RequestMapping(&quot;house/resources&quot;)
+public class HouseResourcesController {
+
+
+    @Autowired
+    private HouseResourcesService houseResourcesService;
+
+    /**
+     * 新增房源
+     *
+     * @param houseResources json数据
+     * @return
+     */
+    @PostMapping
+    @ResponseBody
+    public ResponseEntity&lt;Void&gt; save(@RequestBody HouseResources houseResources) {
+        try {
+            boolean bool = this.houseResourcesService.save(houseResources);
+            if (bool) {
+                return ResponseEntity.status(HttpStatus.CREATED).build();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+
+    /**
+     * test
+     *
+     * @return
+     */
+    @GetMapping
+    @ResponseBody
+    public ResponseEntity&lt;String&gt; get() {
+        return ResponseEntity.ok(&quot;ok&quot;);
+    }
+}</code></pre><p>itcast-haoke-manage-api-server/application.properties</p><pre><code class="nix"># Spring boot application
+spring.application.name = itcast-haoke-manage-api-server
+server.port = 18080
+#logging.level.root=DEBUG
+
+# 应用名称
+dubbo.application.name = dubbo-consumer-haoke-manage
+
+# zk注册中心
+dubbo.registry.address = zookeeper://192.168.3.231:2181
+dubbo.registry.client = zkclient</code></pre><p>启动itcast-haoke-manage-api-server/cn.itcast.haoke.dubbo.api.DubboApiApplication<br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1566452267845.png" alt="enter description here"></p><h1 id="整合前端"><a href="#整合前端" class="headerlink" title="整合前端"></a>整合前端</h1><p>src/pages/haoke/House/AddResource.js<br>添加标题及修改表单提交地址</p><pre><code class="xquery">&lt;FormItem {...formItemLayout} label=&quot;房源标题&quot;&gt;
+  {getFieldDecorator(&#39;title&#39;,{rules:[{ required: true, message:&quot;此项为必填项&quot; }]})(&lt;Input style={{ width: '100%' }}  /&gt;)}
+&lt;/FormItem&gt;
+
+dispatch({
+  type: &#39;house/submitHouseForm&#39;,
+  payload: values,
+});</code></pre><p>src/pages/haoke/House/models/form.js<br>增加model</p><pre><code class="xquery">import { routerRedux } from &#39;dva/router&#39;;
+import { message } from &#39;antd&#39;;
+import { addHouseResource } from &#39;@/services/haoke&#39;;
+export default {
+  namespace: &#39;house&#39;,
+  state: {
+  },
+  effects: {
+    *submitHouseForm({ payload }, { call }) {
+      yield call(addHouseResource, payload);
+      message.success(&#39;提交成功&#39;);
+    }
+  },
+  reducers: {
+    saveStepFormData(state, { payload }) {
+      return {
+        ...state
+      };
+    },
+  },
+};</code></pre><p>src/services/haoke.js<br>增加服务，请求服务并且处理业务逻辑</p><pre><code class="javascript">import request from &#39;@/utils/request&#39;;
+export async function addHouseResource(params) {
+  return request(&#39;/haoke/house/resources&#39;, {
+    method: &#39;POST&#39;,
+    body: params
+  });
+}</code></pre><p>由于我们前端系统和后台服务系统的端口不同，会导致跨域问题，我们通过umi提供的反向代理功能解决这个问题。</p><pre><code class="less">proxy: {
+  &#39;/haoke/&#39;: {
+    target: &#39;http://127.0.0.1:18080/&#39;,
+    changeOrigin: true,
+    pathRewrite: { &#39;^/haoke/&#39;: &#39;&#39; }
+  }
+},</code></pre><p>代理效果是这样的：以haoke开头的请求都会被代理<br>请求：<a href="http://localhost:8000/haoke/house/resources" target="_blank" rel="noopener">http://localhost:8000/haoke/house/resources</a><br>实际：<a href="http://127.0.0.1:18080/house/resources" target="_blank" rel="noopener">http://127.0.0.1:18080/house/resources</a><br>测试<br>启动前端：itcast-haoke-manage-web&gt;tyarn start<br>启动提供者：itcast-haoke-manage-dubbo-server-house-resources-dubbo-service/DubboProvider<br>启动消费者：tcast-haoke-manage/itcast-haoke-manage-api-server/DubboApiApplication<br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1566452323332.png" alt="enter description here"></p></article><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a> <span class="donate_txt">↑<br> 欢迎投食,求鼓励，求支持！</span><br></div><div id="donate_guide" class="donate_bar center hidden"> <img src="/images/alipay.png" alt="支付宝打赏"> <img src="/images/wechatpay.png" alt="微信打赏"></div><script type="text/javascript">document.getElementById("btn_donate").onclick=function(){$("#donate_board").addClass("hidden"),$("#donate_guide").removeClass("hidden")}</script></div><div class="nexmoe-post-copyright"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i> <strong>本文作者：</strong>OneJane<br> <strong>本文链接：</strong><a href="https://onejane.github.io/2019/08/22/好客租房mybatisplus/" title="https://onejane.github.io/2019/08/22/好客租房mybatisplus/" target="_blank" rel="noopener">https://onejane.github.io/2019/08/22/好客租房mybatisplus/</a><br> <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可</div><section class="nexmoe-comment"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css"><div id="gitalk"></div><script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script><script type="text/javascript">var gitalk=new Gitalk({clientID:"e677e59382e1c7a468fd",clientSecret:"717d041bc4ab749f069314862232cfb6ec8adc15",id:decodeURI(window.location.pathname),repo:"onejane.github.io",owner:"onejane",admin:"onejane"});gitalk.render("gitalk")</script></section></div></div></div><script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/smoothscroll-for-websites@1.4.9/SmoothScroll.min.js"></script><script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js"></script><script>hljs.initHighlightingOnLoad()</script><script src="/js/app.js?v=1566468025596"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.1.0/lazysizes.min.js"></script><div hidden><script type="text/javascript" src="https://js.users.51.la/20279757.js"></script></div></body><script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script></html>
