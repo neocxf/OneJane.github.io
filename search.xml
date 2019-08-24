@@ -3,7 +3,7 @@
   <entry>
     <title><![CDATA[scrapy爬取ssr链接]]></title>
     <url>%2F2019%2F08%2F23%2Fscrapy%E7%88%AC%E5%8F%96ssr%E9%93%BE%E6%8E%A5%2F</url>
-    <content type="text"><![CDATA[基于scrapy爬取ssr链接 环境搭建python3.5 虚拟环境virtualenvpip install virtualenv 提示pip版本太低 python -m pip install --upgrade pip pip install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com django 使用豆瓣源加速 pip uninstall django 卸载django virtualenv scrapytest 默认环境创建虚拟环境 cd scrapytest/Scripts &amp;&amp; activate.bat &amp;&amp; python 进入3.5虚拟环境 virtualenv -p D:\Python27\python.exe scrapytest cd scrapytest/Scripts &amp;&amp; activate.bat &amp;&amp; python 进入2.7虚拟环境 deactivate.bat 退出虚拟环境 apt-get install python-virtualenv 安装虚拟环境 virtualenv py2 &amp;&amp; cd py2 &amp;&amp; cd bin &amp;&amp; source activate &amp;&amp; python 进入2.7虚拟环境 virtualenv -p /usr/bin/python3 py3 &amp;&amp; &amp;&amp; cd py3 &amp;&amp; cd bin &amp;&amp; source activate &amp;&amp; python 进入3.5虚拟环境虚拟环境virtualenvwrapperpip install virtualenvwrapper pip install virtualenvwrapper-win 解决workon不是内部指令 workon 列出所有虚拟环境 新建环境变量 WORKON_HOME=E:\envs mkvirtualenv py3scrapy 新建并进入虚拟环境 deactivate 退出虚拟环境 workon py3scrapy 进入指定虚拟环境 pip install -i https://pypi.douban.com/simple scrapy 安装scrapy源 若缺少lxml出错https://www.lfd.uci.edu/~gohlke/pythonlibs/寻找对应版本的lxml的whl源 python -m pip install --upgrade pip 更新pip pip install lxml-4.1.1-cp35-cp35m-win_amd64.whl 若缺少Twisted出错http://www.lfd.uci.edu/~gohlke/pythonlibs/#lxml搜对应版本Twisted pip install Twisted‑17.9.0‑cp35‑cp35m‑win_amd64.whl mkvirtualenv --python=D:\Python27\python.exe py2scrapy 一般不会出问题 pip install -i https://pypi.douban.com/simple scrapy pip install virtualenvwrapper find / -name virualenvwrapper.sh vim ~/.bashrc export WORKON_HOME=$HOME/.virtualenvs source /home/wj/.local/bin/virtualenvwrapper.sh source ~/.bashrc mkvirtualenv py2scrapy 指向生成~/.virtualenv deactivate 退出虚拟环境 mkdirtualenv --python=/usr/bin/python3 py3scrapy项目实战pip install virtualenvwrapper-win mkvirtualenv --python=F:\Python\Python35\python.exe ssr pip install Twisted-17.9.0-cp35-cp35m-win_amd64.whl pip install -i https://pypi.douban.com/simple/ scrapy scrapy startproject ssr cd ssr scrapy genspider ssr https://freevpn-ss.tk/category/technology/ scrapy genspider --list scrapy genspider -t crawl lagou www.lagou.com 使用crawl模板 pycharm--新建项目---Pure Python---Interpreter为E:\envs\ssr\Scripts\python.exe pycharm--打开---ssr,修改settings--project Interpreter为D:\Envs\ss pip list pip install -i https://pypi.douban.com/simple pypiwin32 pillow requests redis fake-useragent pip install mysqlclient-1.4.4-cp35-cp35m-win_amd64.whl 或者pip install -i https://pypi.douban.com/simple mysqlclient 出错apt-get install libmysqlclient-dev 或者yum install python-devel mysql-devel scrapy crawl jobbole 修改settings.py ROBOTSTXT_OBEY = False scrapy shell http://blog.jobbole.com/ 可以在脚本中调试xpath或者chrome浏览器右键copy xpath,chrome浏览器右键copy selector scrapy shell -s USER_AGENT=&quot;Mozilla/5.0 (Windows NT 6.1; WOW64; rv:51.0) Gecko/20100101 Firefox/51.0&quot; https://www.zhihu.com/question/56320032 pip freeze &gt; requirements.txt 生成依赖到文件 pip install -r requirements.txt 一键安装依赖]]></content>
+    <content type="text"><![CDATA[基于scrapy爬取ssr链接 环境搭建python3.5 虚拟环境virtualenvpip install virtualenv 提示pip版本太低 python -m pip install --upgrade pip pip install -i https://pypi.doubanio.com/simple/ --trusted-host pypi.doubanio.com django 使用豆瓣源加速 pip uninstall django 卸载django virtualenv scrapytest 默认环境创建虚拟环境 cd scrapytest/Scripts &amp;&amp; activate.bat &amp;&amp; python 进入3.5虚拟环境 virtualenv -p D:\Python27\python.exe scrapytest cd scrapytest/Scripts &amp;&amp; activate.bat &amp;&amp; python 进入2.7虚拟环境 deactivate.bat 退出虚拟环境 apt-get install python-virtualenv 安装虚拟环境 virtualenv py2 &amp;&amp; cd py2 &amp;&amp; cd bin &amp;&amp; source activate &amp;&amp; python 进入2.7虚拟环境 virtualenv -p /usr/bin/python3 py3 &amp;&amp; &amp;&amp; cd py3 &amp;&amp; cd bin &amp;&amp; source activate &amp;&amp; python 进入3.5虚拟环境虚拟环境virtualenvwrapperpip install virtualenvwrapper pip install virtualenvwrapper-win 解决workon不是内部指令 workon 列出所有虚拟环境 新建环境变量 WORKON_HOME=E:\envs mkvirtualenv py3scrapy 新建并进入虚拟环境 deactivate 退出虚拟环境 workon py3scrapy 进入指定虚拟环境 pip install -i https://pypi.douban.com/simple scrapy 安装scrapy源 若缺少lxml出错https://www.lfd.uci.edu/~gohlke/pythonlibs/寻找对应版本的lxml的whl源 python -m pip install --upgrade pip 更新pip pip install lxml-4.1.1-cp35-cp35m-win_amd64.whl 若缺少Twisted出错http://www.lfd.uci.edu/~gohlke/pythonlibs/#lxml搜对应版本Twisted pip install Twisted‑17.9.0‑cp35‑cp35m‑win_amd64.whl mkvirtualenv --python=D:\Python27\python.exe py2scrapy 一般不会出问题 pip install -i https://pypi.douban.com/simple scrapy pip install virtualenvwrapper find / -name virualenvwrapper.sh vim ~/.bashrc export WORKON_HOME=$HOME/.virtualenvs source /home/wj/.local/bin/virtualenvwrapper.sh source ~/.bashrc mkvirtualenv py2scrapy 指向生成~/.virtualenv deactivate 退出虚拟环境 mkdirtualenv --python=/usr/bin/python3 py3scrapy项目实战项目搭建pip install virtualenvwrapper-win mkvirtualenv --python=F:\Python\Python35\python.exe ssr pip install Twisted-17.9.0-cp35-cp35m-win_amd64.whl pip install -i https://pypi.douban.com/simple/ scrapy scrapy startproject ssr cd ssr scrapy genspider ssr https://freevpn-ss.tk/category/technology/ scrapy genspider --list scrapy genspider -t crawl lagou www.lagou.com 使用crawl模板 pycharm--新建项目---Pure Python---Interpreter为E:\envs\ssr\Scripts\python.exe pycharm--打开---ssr,修改settings--project Interpreter为D:\Envs\ss pip list pip install -i https://pypi.douban.com/simple pypiwin32 pillow requests redis fake-useragent pip install mysqlclient-1.4.4-cp35-cp35m-win_amd64.whl 或者pip install -i https://pypi.douban.com/simple mysqlclient 出错apt-get install libmysqlclient-dev 或者yum install python-devel mysql-devel scrapy crawl jobbole 修改settings.py ROBOTSTXT_OBEY = False scrapy shell http://blog.jobbole.com/ 可以在脚本中调试xpath或者chrome浏览器右键copy xpath,chrome浏览器右键copy selector scrapy shell -s USER_AGENT=&quot;Mozilla/5.0 (Windows NT 6.1; WOW64; rv:51.0) Gecko/20100101 Firefox/51.0&quot; https://www.zhihu.com/question/56320032 pip freeze &gt; requirements.txt 生成依赖到文件 pip install -r requirements.txt 一键安装依赖爬虫开发scrapy shell https://freevpn-ss.tk/category/technology/ shell中查看节点]]></content>
       <categories>
         <category>爬虫</category>
       </categories>
@@ -33,8 +33,8 @@
         <category>项目实战</category>
       </categories>
       <tags>
-        <tag>dubbo</tag>
         <tag>ant design pro</tag>
+        <tag>dubbo</tag>
         <tag>zookeeper</tag>
       </tags>
   </entry>
@@ -47,8 +47,8 @@
       </categories>
       <tags>
         <tag>react</tag>
-        <tag>ant design pro</tag>
         <tag>ant design</tag>
+        <tag>ant design pro</tag>
       </tags>
   </entry>
   <entry>
@@ -282,8 +282,8 @@
         <category>系统</category>
       </categories>
       <tags>
-        <tag>partition</tag>
         <tag>sentinel</tag>
+        <tag>partition</tag>
       </tags>
   </entry>
   <entry>
