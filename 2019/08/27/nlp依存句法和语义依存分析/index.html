@@ -1,1 +1,517 @@
-<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.9.0"><title>nlp依存句法和语义依存分析 - OneJane</title><meta charset="UTF-8"><meta name="description" content="微服务,高可用,高并发,人工智能"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="msvalidate.01" content="396E9693347B4D18AAE96D9E75B9B686"><link rel="shortcut icon" href="/images/a.ico" type="image/png"><meta name="description" content="nlp依存句法和语义依存分析"><meta name="keywords" content="nlp"><meta property="og:type" content="article"><meta property="og:title" content="nlp依存句法和语义依存分析"><meta property="og:url" content="https://onejane.github.io/2019/08/27/nlp依存句法和语义依存分析/index.html"><meta property="og:site_name" content="OneJane"><meta property="og:description" content="nlp依存句法和语义依存分析"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2019-08-27T10:13:18.113Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="nlp依存句法和语义依存分析"><meta name="twitter:description" content="nlp依存句法和语义依存分析"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/css/mdui.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.15.8/styles/atom-one-dark.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1038733_0xvrvpg9c0r.css"><link rel="stylesheet" href="/css/style.css?v=1566943243136"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script></head><body class="mdui-drawer-body-left"><div id="nexmoe-background"><div class="nexmoe-bg" style="background-image:url(https://www.github.com/OneJane/blog/raw/master/小书匠/1566388885395.png)"></div><div class="mdui-appbar mdui-shadow-0"><div class="mdui-toolbar"> <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a><div class="mdui-toolbar-spacer"></div> <a href="/" title="OneJane" class="mdui-btn mdui-btn-icon"><img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388846021.png"></a></div></div></div><div id="nexmoe-header"><div class="nexmoe-drawer mdui-drawer" id="drawer"><div class="nexmoe-avatar mdui-ripple"> <a href="/" title="OneJane"><img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388846021.png" alt="OneJane"></a></div><div class="nexmoe-count"><div><span>文章</span>31</div><div><span>标签</span>52</div><div><span>分类</span>11</div></div><ul class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}"><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页"><i class="mdui-list-item-icon nexmoefont icon-home"></i><div class="mdui-list-item-content"> 回到首页</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="关于博客"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i><div class="mdui-list-item-content"> 关于博客</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/py.html" title="我的朋友"><i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i><div class="mdui-list-item-content"> 我的朋友</div></a></ul><aside id="nexmoe-sidebar"><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">社交按钮</h3><div class="nexmoe-widget nexmoe-social"><a class="mdui-ripple" href="https://www.zhihu.com/people/codewj/activities" target="_blank" mdui-tooltip="{content: 'zhihu'}" style="color:#e76a8d;background-color:rgba(231,106,141,.15)"><i class="nexmoefont icon-zhihu"></i></a><a class="mdui-ripple" href="https://github.com/OneJane" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color:#191717;background-color:rgba(25,23,23,.15)"><i class="nexmoefont icon-github"></i></a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章分类</h3><div class="nexmoe-widget"><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/人工智能/">人工智能</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/定时器/">定时器</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/持续集成/">持续集成</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/注册中心/">注册中心</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/测试/">测试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/爬虫/">爬虫</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/项目实战/">项目实战</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高可用/">高可用</a><span class="category-list-count">4</span></li></ul></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">标签云</h3><div class="nexmoe-widget tagcloud"> <a href="/tags/Gensim/" style="font-size:10px">Gensim</a> <a href="/tags/Hanlp/" style="font-size:10px">Hanlp</a> <a href="/tags/NLTK/" style="font-size:10px">NLTK</a> <a href="/tags/Stanford-NLP/" style="font-size:10px">Stanford NLP</a> <a href="/tags/Tensorflow/" style="font-size:10px">Tensorflow</a> <a href="/tags/ant-design/" style="font-size:10px">ant design</a> <a href="/tags/ant-design-pro/" style="font-size:12px">ant design pro</a> <a href="/tags/docker/" style="font-size:18px">docker</a> <a href="/tags/dubbo/" style="font-size:12px">dubbo</a> <a href="/tags/elasticsearch/" style="font-size:10px">elasticsearch</a> <a href="/tags/elastisearch/" style="font-size:10px">elastisearch</a> <a href="/tags/email/" style="font-size:10px">email</a> <a href="/tags/es6/" style="font-size:10px">es6</a> <a href="/tags/feign/" style="font-size:10px">feign</a> <a href="/tags/freemarker/" style="font-size:10px">freemarker</a> <a href="/tags/gateway/" style="font-size:10px">gateway</a> <a href="/tags/gitlab/" style="font-size:12px">gitlab</a> <a href="/tags/haproxy/" style="font-size:10px">haproxy</a> <a href="/tags/jenkins/" style="font-size:12px">jenkins</a> <a href="/tags/jmeter/" style="font-size:10px">jmeter</a> <a href="/tags/keepalived/" style="font-size:10px">keepalived</a> <a href="/tags/linux/" style="font-size:10px">linux</a> <a href="/tags/maven/" style="font-size:12px">maven</a> <a href="/tags/multi-druid/" style="font-size:10px">multi druid</a> <a href="/tags/mybatis/" style="font-size:10px">mybatis</a> <a href="/tags/mybatisplus/" style="font-size:10px">mybatisplus</a> <a href="/tags/mysql/" style="font-size:10px">mysql</a> <a href="/tags/nacos/" style="font-size:12px">nacos</a> <a href="/tags/nexmoe/" style="font-size:10px">nexmoe</a> <a href="/tags/nlp/" style="font-size:14px">nlp</a> <a href="/tags/numpy/" style="font-size:10px">numpy</a> <a href="/tags/partition/" style="font-size:10px">partition</a> <a href="/tags/pxc/" style="font-size:10px">pxc</a> <a href="/tags/rabbitmq/" style="font-size:10px">rabbitmq</a> <a href="/tags/react/" style="font-size:12px">react</a> <a href="/tags/redis/" style="font-size:12px">redis</a> <a href="/tags/redis-cluster/" style="font-size:10px">redis-cluster</a> <a href="/tags/replication/" style="font-size:12px">replication</a> <a href="/tags/rocketmq/" style="font-size:12px">rocketmq</a> <a href="/tags/scrapy/" style="font-size:10px">scrapy</a> <a href="/tags/selenium/" style="font-size:10px">selenium</a> <a href="/tags/sentinel/" style="font-size:16px">sentinel</a> <a href="/tags/session/" style="font-size:10px">session</a> <a href="/tags/skywalking/" style="font-size:12px">skywalking</a> <a href="/tags/spring-cloud-alibaba/" style="font-size:20px">spring cloud alibaba</a> <a href="/tags/springboot/" style="font-size:16px">springboot</a> <a href="/tags/swagger/" style="font-size:10px">swagger</a> <a href="/tags/tk-mybatis/" style="font-size:10px">tk mybatis</a> <a href="/tags/umi/" style="font-size:10px">umi</a> <a href="/tags/validate/" style="font-size:10px">validate</a> <a href="/tags/xxl-job/" style="font-size:12px">xxl-job</a> <a href="/tags/zookeeper/" style="font-size:10px">zookeeper</a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章归档</h3><div class="nexmoe-widget"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul></div></div></aside><div class="nexmoe-copyright"> &copy; 2019 OneJane</div></div></div><div id="nexmoe-content"><div class="nexmoe-primary"><div class="nexmoe-post"><div class="nexmoe-post-cover"> <img src="https://www.github.com/OneJane/blog/raw/master/小书匠/5caf2116b61be83e397644ec6dc92275_hd.jpg"><h1>nlp依存句法和语义依存分析</h1></div><div class="nexmoe-post-meta"><a><i class="nexmoefont icon-calendar-fill"></i> 2019年08月27日</a><a><i class="nexmoefont icon-areachart"></i> 12 字</a><a><i class="nexmoefont icon-time-circle-fill"></i> 大概 1 分钟</a> <a class="nexmoefont icon-appstore-fill -link" href="/categories/人工智能/">人工智能</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/nlp/">nlp</a></div><article><p> <a href="https://onejane.github.io/">nlp依存句法和语义依存分析</a></p><a id="more"></a></article><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a> <span class="donate_txt">↑<br> 欢迎投食,求鼓励，求支持！</span><br></div><div id="donate_guide" class="donate_bar center hidden"> <img src="/images/alipay.png" alt="支付宝打赏"> <img src="/images/wechatpay.png" alt="微信打赏"></div><script type="text/javascript">document.getElementById("btn_donate").onclick=function(){$("#donate_board").addClass("hidden"),$("#donate_guide").removeClass("hidden")}</script></div><div class="nexmoe-post-copyright"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i> <strong>本文作者：</strong>OneJane<br> <strong>本文链接：</strong><a href="https://onejane.github.io/2019/08/27/nlp依存句法和语义依存分析/" title="https://onejane.github.io/2019/08/27/nlp依存句法和语义依存分析/" target="_blank" rel="noopener">https://onejane.github.io/2019/08/27/nlp依存句法和语义依存分析/</a><br> <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可</div><section class="nexmoe-comment"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css"><div id="gitalk"></div><script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script><script type="text/javascript">var gitalk=new Gitalk({clientID:"e677e59382e1c7a468fd",clientSecret:"717d041bc4ab749f069314862232cfb6ec8adc15",id:decodeURI(window.location.pathname),repo:"onejane.github.io",owner:"onejane",admin:"onejane"});gitalk.render("gitalk")</script></section></div></div></div><script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/smoothscroll-for-websites@1.4.9/SmoothScroll.min.js"></script><script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js"></script><script>hljs.initHighlightingOnLoad()</script><script src="/js/app.js?v=1566943243150"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.1.0/lazysizes.min.js"></script><div hidden><script type="text/javascript" src="https://js.users.51.la/20279757.js"></script></div></body><script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script></html>
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.9.0"><title>nlp依存句法和语义依存分析 - OneJane</title><meta charset="UTF-8"><meta name="description" content="微服务,高可用,高并发,人工智能"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="msvalidate.01" content="396E9693347B4D18AAE96D9E75B9B686"><link rel="shortcut icon" href="/images/a.ico" type="image/png"><meta name="description" content="nlp依存句法和语义依存分析"><meta name="keywords" content="nlp"><meta property="og:type" content="article"><meta property="og:title" content="nlp依存句法和语义依存分析"><meta property="og:url" content="https://onejane.github.io/2019/08/27/nlp依存句法和语义依存分析/index.html"><meta property="og:site_name" content="OneJane"><meta property="og:description" content="nlp依存句法和语义依存分析"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1566963756045.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1566963741041.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1566963732685.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1566963718883.png"><meta property="og:updated_time" content="2019-08-28T03:50:18.332Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="nlp依存句法和语义依存分析"><meta name="twitter:description" content="nlp依存句法和语义依存分析"><meta name="twitter:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1566963756045.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/css/mdui.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.15.8/styles/atom-one-dark.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1038733_0xvrvpg9c0r.css"><link rel="stylesheet" href="/css/style.css?v=1566964856957"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script></head><body class="mdui-drawer-body-left"><div id="nexmoe-background"><div class="nexmoe-bg" style="background-image:url(https://www.github.com/OneJane/blog/raw/master/小书匠/1566388885395.png)"></div><div class="mdui-appbar mdui-shadow-0"><div class="mdui-toolbar"> <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a><div class="mdui-toolbar-spacer"></div> <a href="/" title="OneJane" class="mdui-btn mdui-btn-icon"><img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388846021.png"></a></div></div></div><div id="nexmoe-header"><div class="nexmoe-drawer mdui-drawer" id="drawer"><div class="nexmoe-avatar mdui-ripple"> <a href="/" title="OneJane"><img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388846021.png" alt="OneJane"></a></div><div class="nexmoe-count"><div><span>文章</span>31</div><div><span>标签</span>52</div><div><span>分类</span>11</div></div><ul class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}"><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页"><i class="mdui-list-item-icon nexmoefont icon-home"></i><div class="mdui-list-item-content"> 回到首页</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="关于博客"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i><div class="mdui-list-item-content"> 关于博客</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/py.html" title="我的朋友"><i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i><div class="mdui-list-item-content"> 我的朋友</div></a></ul><aside id="nexmoe-sidebar"><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">社交按钮</h3><div class="nexmoe-widget nexmoe-social"><a class="mdui-ripple" href="https://www.zhihu.com/people/codewj/activities" target="_blank" mdui-tooltip="{content: 'zhihu'}" style="color:#e76a8d;background-color:rgba(231,106,141,.15)"><i class="nexmoefont icon-zhihu"></i></a><a class="mdui-ripple" href="https://github.com/OneJane" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color:#191717;background-color:rgba(25,23,23,.15)"><i class="nexmoefont icon-github"></i></a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章分类</h3><div class="nexmoe-widget"><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/人工智能/">人工智能</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/定时器/">定时器</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/持续集成/">持续集成</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/注册中心/">注册中心</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/测试/">测试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/爬虫/">爬虫</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/项目实战/">项目实战</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高可用/">高可用</a><span class="category-list-count">4</span></li></ul></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">标签云</h3><div class="nexmoe-widget tagcloud"> <a href="/tags/Gensim/" style="font-size:10px">Gensim</a> <a href="/tags/Hanlp/" style="font-size:10px">Hanlp</a> <a href="/tags/NLTK/" style="font-size:10px">NLTK</a> <a href="/tags/Stanford-NLP/" style="font-size:10px">Stanford NLP</a> <a href="/tags/Tensorflow/" style="font-size:10px">Tensorflow</a> <a href="/tags/ant-design/" style="font-size:10px">ant design</a> <a href="/tags/ant-design-pro/" style="font-size:12px">ant design pro</a> <a href="/tags/docker/" style="font-size:18px">docker</a> <a href="/tags/dubbo/" style="font-size:12px">dubbo</a> <a href="/tags/elasticsearch/" style="font-size:10px">elasticsearch</a> <a href="/tags/elastisearch/" style="font-size:10px">elastisearch</a> <a href="/tags/email/" style="font-size:10px">email</a> <a href="/tags/es6/" style="font-size:10px">es6</a> <a href="/tags/feign/" style="font-size:10px">feign</a> <a href="/tags/freemarker/" style="font-size:10px">freemarker</a> <a href="/tags/gateway/" style="font-size:10px">gateway</a> <a href="/tags/gitlab/" style="font-size:12px">gitlab</a> <a href="/tags/haproxy/" style="font-size:10px">haproxy</a> <a href="/tags/jenkins/" style="font-size:12px">jenkins</a> <a href="/tags/jmeter/" style="font-size:10px">jmeter</a> <a href="/tags/keepalived/" style="font-size:10px">keepalived</a> <a href="/tags/linux/" style="font-size:10px">linux</a> <a href="/tags/maven/" style="font-size:12px">maven</a> <a href="/tags/multi-druid/" style="font-size:10px">multi druid</a> <a href="/tags/mybatis/" style="font-size:10px">mybatis</a> <a href="/tags/mybatisplus/" style="font-size:10px">mybatisplus</a> <a href="/tags/mysql/" style="font-size:10px">mysql</a> <a href="/tags/nacos/" style="font-size:12px">nacos</a> <a href="/tags/nexmoe/" style="font-size:10px">nexmoe</a> <a href="/tags/nlp/" style="font-size:14px">nlp</a> <a href="/tags/numpy/" style="font-size:10px">numpy</a> <a href="/tags/partition/" style="font-size:10px">partition</a> <a href="/tags/pxc/" style="font-size:10px">pxc</a> <a href="/tags/rabbitmq/" style="font-size:10px">rabbitmq</a> <a href="/tags/react/" style="font-size:12px">react</a> <a href="/tags/redis/" style="font-size:12px">redis</a> <a href="/tags/redis-cluster/" style="font-size:10px">redis-cluster</a> <a href="/tags/replication/" style="font-size:12px">replication</a> <a href="/tags/rocketmq/" style="font-size:12px">rocketmq</a> <a href="/tags/scrapy/" style="font-size:10px">scrapy</a> <a href="/tags/selenium/" style="font-size:10px">selenium</a> <a href="/tags/sentinel/" style="font-size:16px">sentinel</a> <a href="/tags/session/" style="font-size:10px">session</a> <a href="/tags/skywalking/" style="font-size:12px">skywalking</a> <a href="/tags/spring-cloud-alibaba/" style="font-size:20px">spring cloud alibaba</a> <a href="/tags/springboot/" style="font-size:16px">springboot</a> <a href="/tags/swagger/" style="font-size:10px">swagger</a> <a href="/tags/tk-mybatis/" style="font-size:10px">tk mybatis</a> <a href="/tags/umi/" style="font-size:10px">umi</a> <a href="/tags/validate/" style="font-size:10px">validate</a> <a href="/tags/xxl-job/" style="font-size:12px">xxl-job</a> <a href="/tags/zookeeper/" style="font-size:10px">zookeeper</a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章归档</h3><div class="nexmoe-widget"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul></div></div></aside><div class="nexmoe-copyright"> &copy; 2019 OneJane</div></div></div><div id="nexmoe-content"><div class="nexmoe-primary"><div class="nexmoe-post"><div class="nexmoe-post-cover"> <img src="https://www.github.com/OneJane/blog/raw/master/小书匠/5caf2116b61be83e397644ec6dc92275_hd.jpg"><h1>nlp依存句法和语义依存分析</h1></div><div class="nexmoe-post-meta"><a><i class="nexmoefont icon-calendar-fill"></i> 2019年08月27日</a><a><i class="nexmoefont icon-areachart"></i> 5k 字</a><a><i class="nexmoefont icon-time-circle-fill"></i> 大概 26 分钟</a> <a class="nexmoefont icon-appstore-fill -link" href="/categories/人工智能/">人工智能</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/nlp/">nlp</a></div><article><p> <a href="https://onejane.github.io/">nlp依存句法和语义依存分析</a></p><a id="more"></a><h1 id="依存句法分析"><a href="#依存句法分析" class="headerlink" title="依存句法分析"></a>依存句法分析</h1><blockquote><p>依存语法 (Dependency Parsing, DP) 通过分析语言单位内成分之间的依存关系揭示其句法结构。 直观来讲,依存句法分析识别句子中的“主谓宾”、“定状补”这些语法成分,并分析各成分之间的关系。</p></blockquote><h2 id="依存句法分析标注关系-共14种-及含义如下"><a href="#依存句法分析标注关系-共14种-及含义如下" class="headerlink" title="依存句法分析标注关系 (共14种) 及含义如下:"></a>依存句法分析标注关系 (共14种) 及含义如下:</h2><pre><code class="less">主谓关系 SBV subject-verb 我送她一束花 (我 &lt;– 送)
+动宾关系 VOB 直接宾语,verb-object 我送她一束花 (送 –&gt; 花)
+间宾关系 IOB 间接宾语,indirect-object 我送她一束花 (送 –&gt; 她)
+前置宾语 FOB 前置宾语,fronting-object 他什么乢都读 (乢 &lt;– 读)
+兼语 DBL double 他请我吃饭 (请 –&gt; 我)
+定中关系 ATT attribute 红苹果 (红 &lt;– 苹果)
+状中结构 ADV adverbial 非常美丽 (非常 &lt;– 美丽)
+动补结构 CMP complement 做完了作业 (做 –&gt; 完)
+并列关系 COO coordinate 大山和大海 (大山 –&gt; 大海)
+介宾关系 POB preposition-object 在贸易区内 (在 –&gt; 内)
+左附加关系 LAD left adjunct 大山和大海 (和 &lt;– 大海)
+右附加关系 RAD right adjunct 孩子们 (孩子 –&gt; 们)
+独立结构 IS independent structure 两个单句在结构上彼此独立
+核心关系 HED head 指整个句子的核心</code></pre><h2 id="依存句法树解析"><a href="#依存句法树解析" class="headerlink" title="依存句法树解析"></a>依存句法树解析</h2><p>recursionSearch.py</p><pre><code class="livecodeserver"># encoding=utf8
+import re, os, json
+from stanfordParse import pos
+from stanfordParse import parse_sentence
+from recursionSearch import search
+
+
+def split_long_sentence_by_pos(text):
+    del_flag = [&#39;DEC&#39;, &#39;AD&#39;, &#39;DEG&#39;, &#39;DER&#39;, &#39;DEV&#39;, &#39;SP&#39;, &#39;AS&#39;, &#39;ETC&#39;, &#39;SP&#39;, &#39;MSP&#39;, &#39;IJ&#39;, &#39;ON&#39;, &#39;JJ&#39;, &#39;FW&#39;, &#39;LB&#39;, &#39;SB&#39;,
+                &#39;BA&#39;, &#39;AD&#39;, &#39;PN&#39;, &#39;RB&#39;]
+    pos_tag = pos(text)
+    new_str = &#39;&#39;
+    for apos in pos_tag:
+        if apos[1] not in del_flag:
+            new_str += apos[0]
+    return new_str
+
+
+def extract_parallel(text):
+    parallel_text = []
+    pattern = re.compile(&#39;[，,][\u4e00-\u9fa5]{2,4}[，,]&#39;)
+    search_obj = pattern.search(text)
+    if search_obj:
+        start_start, end = search_obj.span()
+        rep = text[start_start:end - 2]
+        rep1 = text[start_start:end - 1]
+        if &#39;，&#39; in rep1:
+            rep1.replace(&#39;，&#39;, &#39;、&#39;)
+        if &#39;,&#39; in rep1:
+            rep1.replace(&#39;,&#39;, &#39;、&#39;)
+        text.replace(rep1, text)
+        parallel_text.append(rep[1:])
+        text_leave = text.replace(rep, &#39;&#39;)
+        while pattern.search(text_leave):
+            start, end = pattern.search(text_leave).span()
+            rep = text_leave[start:end - 2]
+            rep1 = text[start_start:end - 1]
+            if &#39;，&#39; in rep1:
+                rep1.replace(&#39;，&#39;, &#39;、&#39;)
+            if &#39;,&#39; in rep1:
+                rep1.replace(&#39;,&#39;, &#39;、&#39;)
+            text.replace(rep1, text)
+            text_leave = text_leave.replace(rep, &#39;&#39;)
+            parallel_text.append(rep[1:])
+
+        return parallel_text, text
+    else:
+        return None, text
+
+
+def split_long_sentence_by_sep(text):
+    segment = []
+    if &#39;。&#39; or &#39;.&#39; or &#39;!&#39; or &#39;！&#39; or &#39;?&#39; or &#39;？&#39; or &#39;;&#39; or &#39;；&#39; in text:
+        text = re.split(r&#39;[。.!！?？;；]&#39;, text)
+        for seg in text:
+            if seg == &#39;&#39; or seg == &#39; &#39;:
+                continue
+            para, seg = extract_parallel(seg)
+            if len(seg) &gt; 19:
+                seg = split_long_sentence_by_pos(seg)
+                if len(seg) &gt; 19:
+                    seg = re.split(&#39;[，,]&#39;, seg)
+                    if isinstance(seg, list) and &#39;&#39; in seg:
+                        seg = seg.remove(&#39;&#39;)
+                    if isinstance(seg, list) and &#39; &#39; in seg:
+                        seg = seg.remove(&#39; &#39;)
+            segment.append(seg)
+    return segment
+
+
+def read_data(path):
+    return open(path, &quot;r&quot;, encoding=&quot;utf8&quot;)
+
+
+def get_np_words(t):
+    noun_phrase_list = []
+    for tree in t.subtrees(lambda t: t.height() == 3):
+        if tree.label() == &#39;NP&#39; and len(tree.leaves()) &gt; 1:
+            noun_phrase = &#39;&#39;.join(tree.leaves())
+            noun_phrase_list.append(noun_phrase)
+    return noun_phrase_list
+
+
+def get_n_v_pair(t):
+    for tree in t.subtrees(lambda t: t.height() == 3):
+        if tree.label() == &#39;NP&#39; and len(tree.leaves()) &gt; 1:
+            noun_phrase = &#39;&#39;.join(tree.leaves())
+
+
+if __name__ == &quot;__main__&quot;:
+    out = open(&quot;dependency.txt&quot;, &#39;w&#39;, encoding=&#39;utf8&#39;)
+    itera = read_data(&#39;text.txt&#39;)
+    for it in itera:
+        s = parse_sentence(it)  # 通过Stanfordnlp依存句法分析得到一个句法树 用nltk包装成树的结构
+        res = search(s)  # 使用nltk遍历树，然后把短语合并
+        print(res)</code></pre><p>stanfordParse.py</p><pre><code># encoding=utf8
+from stanfordcorenlp import StanfordCoreNLP
+from nltk import Tree, ProbabilisticTree
+
+nlp = StanfordCoreNLP(&#39;E:/stanford-corenlp-full-2018-10-05&#39;, lang=&#39;zh&#39;)
+import nltk, re
+
+grammer = &quot;NP: {&lt;DT&gt;?&lt;JJ&gt;*&lt;NN&gt;}&quot;
+cp = nltk.RegexpParser(grammer)  # 生成规则
+pattern = re.compile(u&#39;[^a-zA-Z\u4E00-\u9FA5]&#39;)
+pattern_del = re.compile(&#39;(\a-zA-Z0-9+)&#39;)
+
+
+def _replace_c(text):
+    &quot;&quot;&quot;
+    将英文标点符号替换成中文标点符号，并去除html语言的一些标志等噪音
+    :param text:
+    :return:
+    &quot;&quot;&quot;
+    intab = &quot;,?!()&quot;
+    outtab = &quot;，？！（）&quot;
+    deltab = &quot; \n&lt;li&gt;&lt; li&gt;+_-.&gt;&lt;li \U0010fc01 _&quot;
+    trantab = text.maketrans(intab, outtab, deltab)
+    return text.translate(trantab)
+
+
+def parse_sentence(text):
+    text = _replace_c(text)  # 文本去噪
+    try:
+        if len(text.strip()) &gt; 6:  # 判断，文本是否大于6个字，小于6个字的我们认为不是句子
+            return Tree.fromstring(
+                nlp.parse(text.strip()))  # nlp.parse(text.strip())：是将句子变成依存句法树  Tree.fromstring是将str类型的树转换成nltk的结构的树
+    except:
+        pass
+
+
+def pos(text):
+    text = _replace_c(text)
+    if len(text.strip()) &gt; 6:
+        return nlp.pos_tag(text)
+    else:
+        return False
+
+
+def denpency_parse(text):
+    return nlp.dependency_parse(text)
+
+
+from nltk.chunk.regexp import *
+</code></pre><p>sentenceSplit_host.py</p><pre><code class="livecodeserver"># encoding=utf8
+import re, os, json
+from stanfordParse import pos
+from stanfordParse import parse_sentence
+from recursionSearch import search
+
+
+def split_long_sentence_by_pos(text):
+    del_flag = [&#39;DEC&#39;, &#39;AD&#39;, &#39;DEG&#39;, &#39;DER&#39;, &#39;DEV&#39;, &#39;SP&#39;, &#39;AS&#39;, &#39;ETC&#39;, &#39;SP&#39;, &#39;MSP&#39;, &#39;IJ&#39;, &#39;ON&#39;, &#39;JJ&#39;, &#39;FW&#39;, &#39;LB&#39;, &#39;SB&#39;,
+                &#39;BA&#39;, &#39;AD&#39;, &#39;PN&#39;, &#39;RB&#39;]
+    pos_tag = pos(text)
+    new_str = &#39;&#39;
+    for apos in pos_tag:
+        if apos[1] not in del_flag:
+            new_str += apos[0]
+    return new_str
+
+
+def extract_parallel(text):
+    parallel_text = []
+    pattern = re.compile(&#39;[，,][\u4e00-\u9fa5]{2,4}[，,]&#39;)
+    search_obj = pattern.search(text)
+    if search_obj:
+        start_start, end = search_obj.span()
+        rep = text[start_start:end - 2]
+        rep1 = text[start_start:end - 1]
+        if &#39;，&#39; in rep1:
+            rep1.replace(&#39;，&#39;, &#39;、&#39;)
+        if &#39;,&#39; in rep1:
+            rep1.replace(&#39;,&#39;, &#39;、&#39;)
+        text.replace(rep1, text)
+        parallel_text.append(rep[1:])
+        text_leave = text.replace(rep, &#39;&#39;)
+        while pattern.search(text_leave):
+            start, end = pattern.search(text_leave).span()
+            rep = text_leave[start:end - 2]
+            rep1 = text[start_start:end - 1]
+            if &#39;，&#39; in rep1:
+                rep1.replace(&#39;，&#39;, &#39;、&#39;)
+            if &#39;,&#39; in rep1:
+                rep1.replace(&#39;,&#39;, &#39;、&#39;)
+            text.replace(rep1, text)
+            text_leave = text_leave.replace(rep, &#39;&#39;)
+            parallel_text.append(rep[1:])
+
+        return parallel_text, text
+    else:
+        return None, text
+
+
+def split_long_sentence_by_sep(text):
+    segment = []
+    if &#39;。&#39; or &#39;.&#39; or &#39;!&#39; or &#39;！&#39; or &#39;?&#39; or &#39;？&#39; or &#39;;&#39; or &#39;；&#39; in text:
+        text = re.split(r&#39;[。.!！?？;；]&#39;, text)
+        for seg in text:
+            if seg == &#39;&#39; or seg == &#39; &#39;:
+                continue
+            para, seg = extract_parallel(seg)
+            if len(seg) &gt; 19:
+                seg = split_long_sentence_by_pos(seg)
+                if len(seg) &gt; 19:
+                    seg = re.split(&#39;[，,]&#39;, seg)
+                    if isinstance(seg, list) and &#39;&#39; in seg:
+                        seg = seg.remove(&#39;&#39;)
+                    if isinstance(seg, list) and &#39; &#39; in seg:
+                        seg = seg.remove(&#39; &#39;)
+            segment.append(seg)
+    return segment
+
+
+def read_data(path):
+    return open(path, &quot;r&quot;, encoding=&quot;utf8&quot;)
+
+
+def get_np_words(t):
+    noun_phrase_list = []
+    for tree in t.subtrees(lambda t: t.height() == 3):
+        if tree.label() == &#39;NP&#39; and len(tree.leaves()) &gt; 1:
+            noun_phrase = &#39;&#39;.join(tree.leaves())
+            noun_phrase_list.append(noun_phrase)
+    return noun_phrase_list
+
+
+def get_n_v_pair(t):
+    for tree in t.subtrees(lambda t: t.height() == 3):
+        if tree.label() == &#39;NP&#39; and len(tree.leaves()) &gt; 1:
+            noun_phrase = &#39;&#39;.join(tree.leaves())
+
+
+if __name__ == &quot;__main__&quot;:
+    out = open(&quot;dependency.txt&quot;, &#39;w&#39;, encoding=&#39;utf8&#39;)
+    itera = read_data(&#39;text.txt&#39;)
+    for it in itera:
+        s = parse_sentence(it)  # 通过Stanfordnlp依存句法分析得到一个句法树 用nltk包装成树的结构
+        res = search(s)  # 使用nltk遍历树，然后把短语合并
+        print(res)</code></pre><h1 id="语义依存分析"><a href="#语义依存分析" class="headerlink" title="语义依存分析"></a>语义依存分析</h1><blockquote><p>语义依存分析：分析句子各个语言单位之间的语义关联,并将语义关联以依存结构呈现。使用语义依存刻画句子语义,好处在于丌需要去抽象词汇本身,而是通过词汇所承受的语义框架来描述该词汇,而论元的数目相对词汇来说数量总是少了很多的。语义依存分析目标是跨越句子表层句法结构的束缚,直接获取深层的语义信息。 例如以下三个句子,用不同的表达方式表达了同一个语义信息,即张三实施了一个吃的动作,吃的动作是对苹果实施的。</p></blockquote><p>• 语义依存分析不受句法结构的影响,将具有直接语义关联的语言单元直接连接依存弧并标记上相应的语义关系。这也是语义依存分析不句法依存分析的重要区别。</p><p>• 语义依存关系分为三类,分别是主要语义角色,每一种语义角色对应存在一个嵌套关系和反关系;事件关系,描述两个事件间的关系;语义依附标记,标记说话者语气等依附性信息。</p><h2 id="语义依存分析标注关系及含义如下"><a href="#语义依存分析标注关系及含义如下" class="headerlink" title="语义依存分析标注关系及含义如下:"></a>语义依存分析标注关系及含义如下:</h2><pre><code class="xl">关系类型 Tag  Description  Example
+施事关系 Agt  Agent        我送她一束花 (我 &lt;-- 送)
+当事关系 Exp  Experiencer  我跑得快 (跑 --&gt; 我)
+感事关系 Aft  Affection    我思念家乡 (思念 --&gt; 我)
+领事关系 Poss Possessor    他有一本好读 (他 &lt;-- 有)
+受事关系 Pat  Patient      他打了小明 (打 --&gt; 小明)
+客事关系 Cont Content      他听到鞭炮声 (听 --&gt; 鞭炮声)
+成事关系 Prod Product      他写了本小说 (写 --&gt; 小说)
+源事关系 Orig Origin       我军缴获敌人四辆坦克 (缴获 --&gt; 坦克)
+涉事关系 Datv Dative       他告诉我个秘密 ( 告诉 --&gt; 我 )
+比较角色 Comp Comitative   他成绩比我好 (他 --&gt; 我)
+属事角色 Belg Belongings   老赵有俩女儿 (老赵 &lt;-- 有)
+类事角色 Clas Classification 他是中学生 (是 --&gt; 中学生)
+依据角色 Accd According    本庭依法宣判 (依法 &lt;-- 宣判)
+缘故角色 Reas Reason       他在愁女儿婚事 (愁 --&gt; 婚事)
+
+。。。。。。</code></pre><h2 id="名词短语块挖掘"><a href="#名词短语块挖掘" class="headerlink" title="名词短语块挖掘"></a>名词短语块挖掘</h2><pre><code class="gherkin"># encoding=utf8
+import os, json, nltk, re
+from jpype import *
+from tokenizer import cut_hanlp
+
+huanhang = set([&#39;。&#39;, &#39;？&#39;, &#39;！&#39;, &#39;?&#39;])
+keep_pos = &quot;q,qg,qt,qv,s,t,tg,g,gb,gbc,gc,gg,gm,gp,mg,Mg,n,an,ude1,nr,ns,nt,nz,nb,nba,nbc,nbp,nf,ng,nh,nhd,o,nz,nx,ntu,nts,nto,nth,ntch,ntcf,ntcb,ntc,nt,nsf,ns,nrj,nrf,nr2,nr1,nr,nnt,nnd,nn,nmc,nm,nl,nit,nis,nic,ni,nhm,nhd&quot;
+keep_pos_nouns = set(keep_pos.split(&quot;,&quot;))
+keep_pos_v = &quot;v,vd,vg,vf,vl,vshi,vyou,vx,vi,vn&quot;
+keep_pos_v = set(keep_pos_v.split(&quot;,&quot;))
+keep_pos_p = set([&#39;p&#39;, &#39;pbei&#39;, &#39;pba&#39;])
+merge_pos = keep_pos_p | keep_pos_v
+keep_flag = set(
+    [&#39;：&#39;, &#39;，&#39;, &#39;？&#39;, &#39;。&#39;, &#39;！&#39;, &#39;；&#39;, &#39;、&#39;, &#39;-&#39;, &#39;.&#39;, &#39;!&#39;, &#39;,&#39;, &#39;:&#39;, &#39;;&#39;, &#39;?&#39;, &#39;(&#39;, &#39;)&#39;, &#39;（&#39;, &#39;）&#39;, &#39;&lt;&#39;, &#39;&gt;&#39;, &#39;《&#39;, &#39;》&#39;])
+drop_pos_set = set(
+    [&#39;xu&#39;, &#39;xx&#39;, &#39;y&#39;, &#39;yg&#39;, &#39;wh&#39;, &#39;wky&#39;, &#39;wkz&#39;, &#39;wp&#39;, &#39;ws&#39;, &#39;wyy&#39;, &#39;wyz&#39;, &#39;wb&#39;, &#39;u&#39;, &#39;ud&#39;, &#39;ude1&#39;, &#39;ude2&#39;, &#39;ude3&#39;,
+     &#39;udeng&#39;, &#39;udh&#39;])
+
+
+def getNodes(parent, model_tagged_file):  # 使用for循环遍历树
+    text = &#39;&#39;
+    for node in parent:
+        if type(node) is nltk.Tree:  # 如果是NP或者VP的合并分词
+            if node.label() == &#39;NP&#39;:
+                text += &#39;&#39;.join(node_child[0].strip() for node_child in node.leaves()) + &quot;/NP&quot; + 3 * &quot; &quot;
+            if node.label() == &#39;VP&#39;:
+                text += &#39;&#39;.join(node_child[0].strip() for node_child in node.leaves()) + &quot;/VP&quot; + 3 * &quot; &quot;
+        else:  # 不是树的，就是叶子节点，我们直接表解词PP或者其他O
+            if node[1] in keep_pos_p:
+                text += node[0].strip() + &quot;/PP&quot; + 3 * &quot; &quot;
+            if node[0] in huanhang:
+                text += node[0].strip() + &quot;/O&quot; + 3 * &quot; &quot;
+            if node[1] not in merge_pos:
+                text += node[0].strip() + &quot;/O&quot; + 3 * &quot; &quot;
+                # print(&quot;hh&quot;)
+    model_tagged_file.write(text + &quot;\n&quot;)
+
+
+def grammer(sentence, model_tagged_file):  # {内/f 训/v 师/ng 单/b 柜/ng}
+    &quot;&quot;&quot;
+    input sentences shape like :[(&#39;工作&#39;, &#39;vn&#39;), (&#39;描述&#39;, &#39;v&#39;), (&#39;：&#39;, &#39;w&#39;), (&#39;我&#39;, &#39;rr&#39;), (&#39;曾&#39;, &#39;d&#39;), (&#39;在&#39;, &#39;p&#39;)]
+    &quot;&quot;&quot;
+    # 定义名词块 “&lt; &gt;”:一个单元       “*”：匹配零次或多次    “+”：匹配一次或多次  “&lt;ude1&gt;?”： “的”出现零次或一次
+    grammar1 = r&quot;&quot;&quot;NP:   
+        {&lt;m|mg|Mg|mq|q|qg|qt|qv|s|&gt;*&lt;a|an|ag&gt;*&lt;s|g|gb|gbc|gc|gg|gm|gp|n|an|nr|ns|nt|nz|nb|nba|nbc|nbp|nf|ng|nh|nhd|o|nz|nx|ntu|nts|nto|nth|ntch|ntcf|ntcb|ntc|nt|nsf|ns|nrj|nrf|nr2|nr1|nr|nnt|nnd|nn|nmc|nm|nl|nit|nis|nic|ni|nhm|nhd&gt;+&lt;f&gt;?&lt;ude1&gt;?&lt;g|gb|gbc|gc|gg|gm|gp|n|an|nr|ns|nt|nz|nb|nba|nbc|nbp|nf|ng|nh|nhd|o|nz|nx|ntu|nts|nto|nth|ntch|ntcf|ntcb|ntc|nt|nsf|ns|nrj|nrf|nr2|nr1|nr|nnt|nnd|nn|nmc|nm|nl|nit|nis|nic|ni|nhm|nhd&gt;+}
+        {&lt;n|an|nr|ns|nt|nz|nb|nba|nbc|nbp|nf|ng|nh|nhd|nz|nx|ntu|nts|nto|nth|ntch|ntcf|ntcb|ntc|nt|nsf|ns|nrj|nrf|nr2|nr1|nr|nnt|nnd|nn|nmc|nm|nl|nit|nis|nic|ni|nhm|nhd&gt;+&lt;cc&gt;+&lt;n|an|nr|ns|nt|nz|nb|nba|nbc|nbp|nf|ng|nh|nhd|nz|nx|ntu|nts|nto|nth|ntch|ntcf|ntcb|ntc|nt|nsf|ns|nrj|nrf|nr2|nr1|nr|nnt|nnd|nn|nmc|nm|nl|nit|nis|nic|ni|nhm|nhd&gt;+}
+        {&lt;m|mg|Mg|mq|q|qg|qt|qv|s|&gt;*&lt;q|qg|qt|qv&gt;*&lt;f|b&gt;*&lt;vi|v|vn|vg|vd&gt;+&lt;ude1&gt;+&lt;n|an|nr|ns|nt|nz|nb|nba|nbc|nbp|nf|ng|nh|nhd|nz|nx|ntu|nts|nto|nth|ntch|ntcf|ntcb|ntc|nt|nsf|ns|nrj|nrf|nr2|nr1|nr|nnt|nnd|nn|nmc|nm|nl|nit|nis|nic|ni|nhm|nhd&gt;+}
+        {&lt;g|gb|gbc|gc|gg|gm|gp|n|an|nr|ns|nt|nz|nb|nba|nbc|nbp|nf|ng|nh|nhd|nz|nx|ntu|nts|nto|nth|ntch|ntcf|ntcb|ntc|nt|nsf|ns|nrj|nrf|nr2|nr1|nr|nnt|nnd|nn|nmc|nm|nl|nit|nis|nic|ni|nhm|nhd&gt;+&lt;vi&gt;?}
+        VP:{&lt;v|vd|vg|vf|vl|vshi|vyou|vx|vi|vn&gt;+}   
+        &quot;&quot;&quot;  # 动词短语块
+    cp = nltk.RegexpParser(grammar1)
+    try:
+        result = cp.parse(sentence)  # nltk的依存语法分析，输出是以grammer设置的名词块为单位的树
+    except:
+        pass
+    else:
+        getNodes(result, model_tagged_file)  # 使用 getNodes 遍历树【这个是使用for循环，上一个是使用栈动态添加】
+
+
+def data_read():
+    fout = open(&#39;nvp.txt&#39;, &#39;w&#39;, encoding=&#39;utf8&#39;)
+    for line in open(&#39;text.txt&#39;, &#39;r&#39;, encoding=&#39;utf8&#39;):
+        line = line.strip()
+        grammer(cut_hanlp(line), fout)  # 先进行hanlp进行分词，在使用grammer进行合并短语
+    fout.close()
+
+
+if __name__ == &#39;__main__&#39;:
+    data_read()</code></pre><h1 id="自定义语法与CFG"><a href="#自定义语法与CFG" class="headerlink" title="自定义语法与CFG"></a>自定义语法与CFG</h1><p>什么是语法解析?</p><p>• 在自然语言学习过程中,每个人一定都学过语法,例如句子可以用主语、谓语、宾语来表示。在自然语言的处理过程中,有许多应用场景都需要考虑句子的语法,因此研究语法解析变得非常重要。</p><p> • 语法解析有两个主要的问题,其一是句子语法在计算机中的表达与存储方法,以及语料数据集;其二是语法解析的算法。</p><h2 id="句子语法在计算机中的表达与存储方法"><a href="#句子语法在计算机中的表达与存储方法" class="headerlink" title="句子语法在计算机中的表达与存储方法"></a>句子语法在计算机中的表达与存储方法</h2><p>• 对于第一个问题,我们可以用树状结构图来表示,如下图所示,S表示句子;NP、VP、PP是名词、动词、介词短语(短语级别);N、V、P分别是名词、动词、介词。</p><p><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1566963756045.png" alt="enter description here"></p><h3 id="语法解析的算法"><a href="#语法解析的算法" class="headerlink" title="语法解析的算法"></a>语法解析的算法</h3><h4 id="上下文无关语法-Context-Free-Grammer"><a href="#上下文无关语法-Context-Free-Grammer" class="headerlink" title="上下文无关语法(Context-Free Grammer)"></a>上下文无关语法(Context-Free Grammer)</h4><pre><code>• 为了生成句子的语法树,我们可以定义如下的一套上下文无关语法。
+• 1)N表示一组非叶子节点的标注,例如{S、NP、VP、N...}
+• 2)Σ表示一组叶子结点的标注,例如{boeing、is...}
+• 3)R表示一组觃则,每条规则可以表示为</code></pre><p><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1566963741041.png" alt="enter description here"></p><pre><code>• 4)S表示语法树开始的标注
+• 举例来说,语法的一个语法子集可以表示为下图所示。
+当给定一个句子时,我们便可以按照从左到右的顺序来解析语法。
+例如,句子the man sleeps就可以表示为(S (NP (DT the) (NN man)) (VP sleeps))。</code></pre><p><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1566963732685.png" alt="enter description here"></p><h3 id="概率分布的上下文无关语法-Probabilistic-Context-Free-Grammar"><a href="#概率分布的上下文无关语法-Probabilistic-Context-Free-Grammar" class="headerlink" title="概率分布的上下文无关语法(Probabilistic Context-Free Grammar)"></a>概率分布的上下文无关语法(Probabilistic Context-Free Grammar)</h3><pre><code>• 上下文无关的语法可以很容易的推导出一个句子的语法结构,但是缺点是推导出的结构可能存在二义性。
+
+• 由于语法的解析存在二义性,我们就需要找到一种方法从多种可能的语法树中找出最可能的一棵树。
+一种常见的方法既是PCFG (Probabilistic Context-Free Grammar)。
+如下图所示,除了常见的语法规则以外,我们还对每一条规则赋予了一个概率。
+对于每一棵生成的语法树,我们将其中所有规则的概率的乘积作为语法树的出现概率。</code></pre><p><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1566963718883.png" alt="enter description here"></p><p>当我们获得多颗语法树时,我们可以分别计算每颗语法树的概率p(t),<br>出现概率最大的那颗语法树就是我们希望得到的结果,即arg max p(t)。</p><h3 id="训练算法"><a href="#训练算法" class="headerlink" title="训练算法"></a>训练算法</h3><pre><code>• 我们已经定义了语法解析的算法,而这个算法依赖于CFG中对于N、Σ、
+R、S的定义以及PCFG中的p(x)。上文中我们提到了Penn Treebank通
+过手工的方法已经提供了一个非常大的语料数据集,我们的任务就是从
+语料库中训练出PCFG所需要的参数。
+• 1)统计出语料库中所有的N与Σ;
+• 2)利用语料库中的所有规则作为R;
+• 3)针对每个规则A -&gt; B,从语料库中估算p(x) = p(A -&gt; B) / p(A);
+• 在CFG的定义的基础上,我们重新定义一种叫Chomsky的语法格式。
+这种格式要求每条规则只能是X -&gt; Y1 Y2或者X -&gt; Y的格式。实际上
+Chomsky语法格式保证生产的语法树总是二叉树的格式,同时任意一
+棵语法树总是能够转化成Chomsky语法格式。</code></pre><h3 id="语法树预测算法"><a href="#语法树预测算法" class="headerlink" title="语法树预测算法"></a>语法树预测算法</h3><pre><code>• 假设我们已经有一个PCFG的模型,包含N、Σ、R、S、p(x)等参数,并
+且语法树总是Chomsky语法格式。当输入一个句子x1, x2, ... , xn时,
+我们要如何计算句子对应的语法树呢?
+
+• 第一种方法是暴力遍历的方法,每个单词x可能有m = len(N)种取值,
+句子长度是n,每种情况至少存在n个规则,所以在时间复杂度O(m n n)
+的情况下,我们可以判断出所有可能的语法树并计算出最佳的那个。
+
+• 第二种方法当然是动态规划,我们定义w[i, j, X]是第i个单词至第j个单
+词由标注X来表示的最大概率。直观来讲,例如xi, xi+1, ... , xj,当
+X=PP时,子树可能是多种解释方式,如(P NP)或者(PP PP),但是w[i,
+j, PP]代表的是继续往上一层递归时,我们只选择当前概率最大的组合
+方式。
+</code></pre><p>语法解析按照上述的算法过程便完成了。虽说PCFG也有一些缺点,例<br>如:1)缺乏词法信息;2)连续短语(如名词、介词)的处理等。但总体来讲它给语法解析提供了一种非常有效的实现方法。</p><pre><code class="python"># encoding=utf8
+
+def exec_cmd(cmd):
+    p = subprocess.Popen(
+        cmd,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE,
+        shell=True,
+        env=ENVIRON)
+    out, err = p.communicate()
+    return out, err
+
+
+import nltk, os, jieba
+from nltk.tree import Tree
+from nltk.draw import TreeWidget
+from nltk.draw.tree import TreeView
+from nltk.draw.util import CanvasFrame
+from nltk.parse import RecursiveDescentParser
+
+
+class Cfg():
+    &#39;&#39;&#39;
+    &#39;&#39;&#39;
+
+    def setUp(self):
+        pass
+
+    def tearDown(self):
+        pass
+
+    def test_sample(self):
+        print(&quot;test_sample&quot;)
+        # This is a CFG grammar, where:
+        # Start Symbol : S
+        # Nonterminal : NP,VP,DT,NN,VB
+        # Terminal : &quot;I&quot;, &quot;a&quot; ,&quot;saw&quot; ,&quot;dog&quot;
+        grammar = nltk.grammar.CFG.fromstring(&quot;&quot;&quot;
+            S -&gt; NP VP
+            NP -&gt; DT NN | NN
+            VP -&gt; VB NP
+            DT -&gt; &quot;a&quot;
+            NN -&gt; &quot;I&quot; | &quot;dog&quot;
+            VB -&gt; &quot;saw&quot;
+        &quot;&quot;&quot;)
+        sentence = &quot;I saw a dog&quot;.split()
+        parser = RecursiveDescentParser(grammar)
+        final_tree = parser.parse(sentence)
+
+        for i in final_tree:
+            print(i)
+
+    def test_nltk_cfg_qtype(self):
+        print(&quot;test_nltk_cfg_qtype&quot;)
+        gfile = os.path.join(
+            curdir,
+            os.path.pardir,
+            &quot;config&quot;,
+            &quot;grammar.question-type.cfg&quot;)
+        question_grammar = nltk.data.load(&#39;file:%s&#39; % gfile)
+
+        def get_missing_words(grammar, tokens):
+            &quot;&quot;&quot;
+            Find list of missing tokens not covered by grammar
+            &quot;&quot;&quot;
+            missing = [tok for tok in tokens
+                       if not grammar._lexical_index.get(tok)]
+            return missing
+
+        sentence = &quot;what is your name&quot;
+
+        sent = sentence.split()
+        missing = get_missing_words(question_grammar, sent)
+        target = []
+        for x in sent:
+            if x in missing:
+                continue
+            target.append(x)
+
+        rd_parser = RecursiveDescentParser(question_grammar)
+        result = []
+        print(&quot;target: &quot;, target)
+        for tree in rd_parser.parse(target):
+            result.append(x)
+            print(&quot;Question Type\n&quot;, tree)
+
+        if len(result) == 0:
+            print(&quot;Not Question Type&quot;)
+
+    def cfg_en(self):
+        print(&quot;test_nltk_cfg_en&quot;)  # 定义英文语法规则
+        grammar = nltk.CFG.fromstring(&quot;&quot;&quot;
+         S -&gt; NP VP
+         VP -&gt; V NP | V NP PP
+         V -&gt; &quot;saw&quot; | &quot;ate&quot;
+         NP -&gt; &quot;John&quot; | &quot;Mary&quot; | &quot;Bob&quot; | Det N | Det N PP
+         Det -&gt; &quot;a&quot; | &quot;an&quot; | &quot;the&quot; | &quot;my&quot;
+         N -&gt; &quot;dog&quot; | &quot;cat&quot; | &quot;cookie&quot; | &quot;park&quot;
+         PP -&gt; P NP
+         P -&gt; &quot;in&quot; | &quot;on&quot; | &quot;by&quot; | &quot;with&quot;
+         &quot;&quot;&quot;)
+
+        sent = &quot;Mary saw Bob&quot;.split()
+
+        rd_parser = RecursiveDescentParser(grammar)
+
+        result = []
+
+        for i, tree in enumerate(rd_parser.parse(sent)):
+            result.append(tree)
+
+        assert len(result) &gt; 0, &quot; CFG tree parse fail.&quot;
+
+        print(result)
+
+    def cfg_zh(self):
+
+        grammar = nltk.CFG.fromstring(&quot;&quot;&quot;
+             S -&gt; N VP
+             VP -&gt; V NP | V NP | V N
+             V -&gt; &quot;尊敬&quot;
+             N -&gt; &quot;我们&quot; | &quot;老师&quot; 
+             &quot;&quot;&quot;)
+
+        sent = &quot;我们 尊敬 老师&quot;.split()
+        rd_parser = RecursiveDescentParser(grammar)
+
+        result = []
+
+        for i, tree in enumerate(rd_parser.parse(sent)):
+            result.append(tree)
+            print(&quot;Tree [%s]: %s&quot; % (i + 1, tree))
+
+        assert len(result) &gt; 0, &quot;Can not recognize CFG tree.&quot;
+        if len(result) == 1:
+            print(&quot;Draw tree with Display ...&quot;)
+            result[0].draw()
+        else:
+            print(&quot;WARN: Get more then one trees.&quot;)
+
+        print(result)
+
+
+if __name__ == &#39;__main__&#39;:
+    cfg = Cfg()
+    cfg.cfg_en()
+    cfg.cfg_zh()</code></pre></article><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a> <span class="donate_txt">↑<br> 欢迎投食,求鼓励，求支持！</span><br></div><div id="donate_guide" class="donate_bar center hidden"> <img src="/images/alipay.png" alt="支付宝打赏"> <img src="/images/wechatpay.png" alt="微信打赏"></div><script type="text/javascript">document.getElementById("btn_donate").onclick=function(){$("#donate_board").addClass("hidden"),$("#donate_guide").removeClass("hidden")}</script></div><div class="nexmoe-post-copyright"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i> <strong>本文作者：</strong>OneJane<br> <strong>本文链接：</strong><a href="https://onejane.github.io/2019/08/27/nlp依存句法和语义依存分析/" title="https://onejane.github.io/2019/08/27/nlp依存句法和语义依存分析/" target="_blank" rel="noopener">https://onejane.github.io/2019/08/27/nlp依存句法和语义依存分析/</a><br> <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可</div><section class="nexmoe-comment"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css"><div id="gitalk"></div><script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script><script type="text/javascript">var gitalk=new Gitalk({clientID:"e677e59382e1c7a468fd",clientSecret:"717d041bc4ab749f069314862232cfb6ec8adc15",id:decodeURI(window.location.pathname),repo:"onejane.github.io",owner:"onejane",admin:"onejane"});gitalk.render("gitalk")</script></section></div></div></div><script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/smoothscroll-for-websites@1.4.9/SmoothScroll.min.js"></script><script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js"></script><script>hljs.initHighlightingOnLoad()</script><script src="/js/app.js?v=1566964856976"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.1.0/lazysizes.min.js"></script><div hidden><script type="text/javascript" src="https://js.users.51.la/20279757.js"></script></div></body><script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script></html>
