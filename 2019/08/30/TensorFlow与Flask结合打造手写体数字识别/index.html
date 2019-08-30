@@ -1,0 +1,264 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.9.0"><title>TensorFlow与Flask结合打造手写体数字识别 - OneJane</title><meta charset="UTF-8"><meta name="description" content="微服务,高可用,高并发,人工智能"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="msvalidate.01" content="396E9693347B4D18AAE96D9E75B9B686"><link rel="shortcut icon" href="/images/a.ico" type="image/png"><meta name="description" content="TensorFlow与Flask结合打造手写体数字识别"><meta name="keywords" content="flask,Tensorflow"><meta property="og:type" content="article"><meta property="og:title" content="TensorFlow与Flask结合打造手写体数字识别"><meta property="og:url" content="https://onejane.github.io/2019/08/30/TensorFlow与Flask结合打造手写体数字识别/index.html"><meta property="og:site_name" content="OneJane"><meta property="og:description" content="TensorFlow与Flask结合打造手写体数字识别"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1567137547305.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1567136759920.png"><meta property="og:updated_time" content="2019-08-30T03:59:36.474Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="TensorFlow与Flask结合打造手写体数字识别"><meta name="twitter:description" content="TensorFlow与Flask结合打造手写体数字识别"><meta name="twitter:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1567137547305.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/css/mdui.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.15.8/styles/atom-one-dark.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1038733_0xvrvpg9c0r.css"><link rel="stylesheet" href="/css/style.css?v=1567137629040"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script></head><body class="mdui-drawer-body-left"><div id="nexmoe-background"><div class="nexmoe-bg" style="background-image:url(https://www.github.com/OneJane/blog/raw/master/小书匠/1566388885395.png)"></div><div class="mdui-appbar mdui-shadow-0"><div class="mdui-toolbar"> <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a><div class="mdui-toolbar-spacer"></div> <a href="/" title="OneJane" class="mdui-btn mdui-btn-icon"><img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388846021.png"></a></div></div></div><div id="nexmoe-header"><div class="nexmoe-drawer mdui-drawer" id="drawer"><div class="nexmoe-avatar mdui-ripple"> <a href="/" title="OneJane"><img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388846021.png" alt="OneJane"></a></div><div class="nexmoe-count"><div><span>文章</span>32</div><div><span>标签</span>53</div><div><span>分类</span>11</div></div><ul class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}"><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页"><i class="mdui-list-item-icon nexmoefont icon-home"></i><div class="mdui-list-item-content"> 回到首页</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="关于博客"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i><div class="mdui-list-item-content"> 关于博客</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/py.html" title="我的朋友"><i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i><div class="mdui-list-item-content"> 我的朋友</div></a></ul><aside id="nexmoe-sidebar"><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">社交按钮</h3><div class="nexmoe-widget nexmoe-social"><a class="mdui-ripple" href="https://www.zhihu.com/people/codewj/activities" target="_blank" mdui-tooltip="{content: 'zhihu'}" style="color:#e76a8d;background-color:rgba(231,106,141,.15)"><i class="nexmoefont icon-zhihu"></i></a><a class="mdui-ripple" href="https://github.com/OneJane" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color:#191717;background-color:rgba(25,23,23,.15)"><i class="nexmoefont icon-github"></i></a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章分类</h3><div class="nexmoe-widget"><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/人工智能/">人工智能</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/定时器/">定时器</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/持续集成/">持续集成</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/注册中心/">注册中心</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/测试/">测试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/爬虫/">爬虫</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/项目实战/">项目实战</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高可用/">高可用</a><span class="category-list-count">4</span></li></ul></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">标签云</h3><div class="nexmoe-widget tagcloud"> <a href="/tags/Gensim/" style="font-size:10px">Gensim</a> <a href="/tags/Hanlp/" style="font-size:10px">Hanlp</a> <a href="/tags/NLTK/" style="font-size:10px">NLTK</a> <a href="/tags/Stanford-NLP/" style="font-size:10px">Stanford NLP</a> <a href="/tags/Tensorflow/" style="font-size:12px">Tensorflow</a> <a href="/tags/ant-design/" style="font-size:10px">ant design</a> <a href="/tags/ant-design-pro/" style="font-size:12px">ant design pro</a> <a href="/tags/docker/" style="font-size:18px">docker</a> <a href="/tags/dubbo/" style="font-size:12px">dubbo</a> <a href="/tags/elasticsearch/" style="font-size:10px">elasticsearch</a> <a href="/tags/elastisearch/" style="font-size:10px">elastisearch</a> <a href="/tags/email/" style="font-size:10px">email</a> <a href="/tags/es6/" style="font-size:10px">es6</a> <a href="/tags/feign/" style="font-size:10px">feign</a> <a href="/tags/flask/" style="font-size:10px">flask</a> <a href="/tags/freemarker/" style="font-size:10px">freemarker</a> <a href="/tags/gateway/" style="font-size:10px">gateway</a> <a href="/tags/gitlab/" style="font-size:12px">gitlab</a> <a href="/tags/haproxy/" style="font-size:10px">haproxy</a> <a href="/tags/jenkins/" style="font-size:12px">jenkins</a> <a href="/tags/jmeter/" style="font-size:10px">jmeter</a> <a href="/tags/keepalived/" style="font-size:10px">keepalived</a> <a href="/tags/linux/" style="font-size:10px">linux</a> <a href="/tags/maven/" style="font-size:12px">maven</a> <a href="/tags/multi-druid/" style="font-size:10px">multi druid</a> <a href="/tags/mybatis/" style="font-size:10px">mybatis</a> <a href="/tags/mybatisplus/" style="font-size:10px">mybatisplus</a> <a href="/tags/mysql/" style="font-size:10px">mysql</a> <a href="/tags/nacos/" style="font-size:12px">nacos</a> <a href="/tags/nexmoe/" style="font-size:10px">nexmoe</a> <a href="/tags/nlp/" style="font-size:14px">nlp</a> <a href="/tags/numpy/" style="font-size:10px">numpy</a> <a href="/tags/partition/" style="font-size:10px">partition</a> <a href="/tags/pxc/" style="font-size:10px">pxc</a> <a href="/tags/rabbitmq/" style="font-size:10px">rabbitmq</a> <a href="/tags/react/" style="font-size:12px">react</a> <a href="/tags/redis/" style="font-size:12px">redis</a> <a href="/tags/redis-cluster/" style="font-size:10px">redis-cluster</a> <a href="/tags/replication/" style="font-size:12px">replication</a> <a href="/tags/rocketmq/" style="font-size:12px">rocketmq</a> <a href="/tags/scrapy/" style="font-size:10px">scrapy</a> <a href="/tags/selenium/" style="font-size:10px">selenium</a> <a href="/tags/sentinel/" style="font-size:16px">sentinel</a> <a href="/tags/session/" style="font-size:10px">session</a> <a href="/tags/skywalking/" style="font-size:12px">skywalking</a> <a href="/tags/spring-cloud-alibaba/" style="font-size:20px">spring cloud alibaba</a> <a href="/tags/springboot/" style="font-size:16px">springboot</a> <a href="/tags/swagger/" style="font-size:10px">swagger</a> <a href="/tags/tk-mybatis/" style="font-size:10px">tk mybatis</a> <a href="/tags/umi/" style="font-size:10px">umi</a> <a href="/tags/validate/" style="font-size:10px">validate</a> <a href="/tags/xxl-job/" style="font-size:12px">xxl-job</a> <a href="/tags/zookeeper/" style="font-size:10px">zookeeper</a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章归档</h3><div class="nexmoe-widget"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul></div></div></aside><div class="nexmoe-copyright"> &copy; 2019 OneJane</div></div></div><div id="nexmoe-content"><div class="nexmoe-primary"><div class="nexmoe-post"><div class="nexmoe-post-cover"> <img src="https://www.github.com/OneJane/blog/raw/master/小书匠/6a94371c5ffae5f93b270db695f15ef8_hd.jpg"><h1>TensorFlow与Flask结合打造手写体数字识别</h1></div><div class="nexmoe-post-meta"><a><i class="nexmoefont icon-calendar-fill"></i> 2019年08月30日</a><a><i class="nexmoefont icon-areachart"></i> 1.4k 字</a><a><i class="nexmoefont icon-time-circle-fill"></i> 大概 8 分钟</a> <a class="nexmoefont icon-appstore-fill -link" href="/categories/人工智能/">人工智能</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/Tensorflow/">Tensorflow</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/flask/">flask</a></div><article><p><a href="https://onejane.github.io/">TensorFlow与Flask结合打造手写体数字识别</a></p><a id="more"></a><h1 id="Anaconda"><a href="#Anaconda" class="headerlink" title="Anaconda"></a>Anaconda</h1><p>Anaconda Navigator搭建环境<br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1567137547305.png" alt="enter description here"></p><h1 id="定义模型model"><a href="#定义模型model" class="headerlink" title="定义模型model"></a>定义模型model</h1><p>mnist_testdemo/mnist/model.py</p><h2 id="线性模型"><a href="#线性模型" class="headerlink" title="线性模型"></a>线性模型</h2><pre><code class="vim">import tensorflow as tf
+
+
+# Y=W*x+b 线性模型
+def regression(x):
+    W = tf.Variable(tf.zeros([784, 10]), name=&quot;W&quot;)
+    b = tf.Variable(tf.zeros([10]), name=&quot;b&quot;)
+    y = tf.nn.softmax(tf.matmul(x, W) + b)
+
+    return y, [W, b]</code></pre><h2 id="卷积模型"><a href="#卷积模型" class="headerlink" title="卷积模型"></a>卷积模型</h2><pre><code class="nix"># 卷积模型
+def convolutional(x, keep_prob):
+    # 卷积层
+    def conv2d(x, W):
+        return tf.nn.conv2d(x, W, [1, 1, 1, 1], padding=&#39;SAME&#39;)
+
+    # 池化层
+    def max_pool_2x2(x):
+        return tf.nn.max_pool(x, ksize=[1, 2, 2, 1], strides=[1, 2, 2, 1], padding=&#39;SAME&#39;)
+
+    # 定义权重
+    def weight_variable(shape):
+        initial = tf.truncated_normal(shape, stddev=0.1)
+        return tf.Variable(initial)
+
+    # 边
+    def bias_variable(shape):
+        initial = tf.constant(0.1, shape=shape)
+        return tf.Variable(initial)
+
+    x_image = tf.reshape(x, [-1, 28, 28, 1])
+    W_conv1 = weight_variable([5, 5, 1, 32])
+    b_conv1 = bias_variable([32])
+    h_conv1 = tf.nn.relu(conv2d(x_image, W_conv1) + b_conv1)
+    h_pool1 = max_pool_2x2(h_conv1)
+
+    W_conv2 = weight_variable([5, 5, 32, 64])
+    b_conv2 = bias_variable([64])
+    h_conv2 = tf.nn.relu(conv2d(h_pool1, W_conv2) + b_conv2)
+    h_pool2 = max_pool_2x2(h_conv2)
+
+    # full connection
+    W_fc1 = weight_variable([7 * 7 * 64, 1024])
+    b_fc1 = bias_variable([1024])
+    h_pool2_flat = tf.reshape(h_pool2, [-1, 7 * 7 * 64])
+    h_fc1 = tf.nn.relu(tf.matmul(h_pool2_flat, W_fc1) + b_fc1)
+
+    h_fc1_drop = tf.nn.dropout(h_fc1, keep_prob)
+
+    W_fc2 = weight_variable([1024, 10])
+    b_fc2 = bias_variable([10])
+    y = tf.nn.softmax(tf.matmul(h_fc1_drop, W_fc2) + b_fc2)
+
+    return y, [W_conv1, b_conv1, W_conv2, b_conv2, W_fc1, b_fc1, W_fc2, b_fc2]</code></pre><h1 id="定义数据"><a href="#定义数据" class="headerlink" title="定义数据"></a>定义数据</h1><p>mnist_testdemo/mnist/input_data.py</p><pre><code class="haskell">from __future__ import absolute_import
+from __future__ import division
+from __future__ import print_function
+
+import gzip
+import os
+import tempfile
+
+import numpy
+from six.moves import urllib
+from six.moves import xrange
+import tensorflow as tf
+from tensorflow.contrib.learn.python.learn.datasets.mnist import read_data_sets</code></pre><h1 id="训练线性模型"><a href="#训练线性模型" class="headerlink" title="训练线性模型"></a>训练线性模型</h1><pre><code class="nix">import os
+
+import input_data
+import model
+import tensorflow as tf
+
+# 从input_data中下载数据到MNIST_data
+data = input_data.read_data_sets(&#39;MNIST_data&#39;, one_hot=True)
+
+# create model
+with tf.variable_scope(&quot;regression&quot;):
+    # 用户输入占位符
+    x = tf.placeholder(tf.float32, [None, 784])
+    y, variables = model.regression(x)
+
+# train
+y_ = tf.placeholder(&quot;float&quot;, [None, 10])
+cross_entropy = -tf.reduce_sum(y_ * tf.log(y))
+# 训练步骤
+train_step = tf.train.GradientDescentOptimizer(0.01).minimize(cross_entropy)
+# 预测
+correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
+# 准确度
+accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+
+# 保存训练变量参数
+saver = tf.train.Saver(variables)
+# 开始训练
+with tf.Session() as sess:
+    sess.run(tf.global_variables_initializer())
+    for _ in range(20000):
+        batch_xs, batch_ys = data.train.next_batch(100)
+        sess.run(train_step, feed_dict={x: batch_xs, y_: batch_ys})
+
+    # 打印测试集和训练集的精准度
+    print((sess.run(accuracy, feed_dict={x:data.test.images, y_:data.test.labels})))
+
+    # 保存训练好的模型
+    path = saver.save(
+        sess,os.path.join(os.path.dirname(__file__),&#39;data&#39;,&#39;regression.ckpt&#39;),
+        write_meta_graph=False,write_state=False)
+    print(&quot;Saved:&quot;, path)</code></pre><blockquote><p>生成mnist_testdemo/mnist/data/regression.ckpt.data-00000-of-00001和mnist_testdemo/mnist/data/regression.ckpt.index</p></blockquote><h1 id="训练卷积模型"><a href="#训练卷积模型" class="headerlink" title="训练卷积模型"></a>训练卷积模型</h1><pre><code class="vim">import os
+import model
+import tensorflow as tf
+import input_data
+
+data = input_data.read_data_sets(&#39;MNIST_data&#39;, one_hot=True)
+
+#model
+with tf.variable_scope(&quot;convolutional&quot;):
+    x = tf.placeholder(tf.float32, [None, 784], name=&#39;x&#39;)
+    keep_prob = tf.placeholder(tf.float32)
+    y, variables = model.convolutional(x, keep_prob)
+
+#train
+y_ = tf.placeholder(tf.float32, [None, 10], name=&#39;y&#39;)
+cross_entropy = -tf.reduce_sum(y_ * tf.log(y))
+# 随机梯度下降
+train_step = tf.train.AdamOptimizer(1e-4).minimize(cross_entropy)
+correct_prediction = tf.equal(tf.argmax(y, 1), tf.argmax(y_, 1))
+accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
+
+saver = tf.train.Saver(variables)
+
+with tf.Session() as sess:
+    merged_summary_op = tf.summary.merge_all()
+    summay_writer = tf.summary.FileWriter(&#39;./mnist_log/1&#39;, sess.graph)
+    summay_writer.add_graph(sess.graph)
+    sess.run(tf.global_variables_initializer())
+
+    for i in range(20000):
+        batch = data.train.next_batch(50)
+        if i % 100 == 0:
+            train_accuracy = accuracy.eval(feed_dict={x: batch[0], y_: batch[1], keep_prob: 1.0})
+            print(&quot;step %d, training accuracy %g&quot; % (i, train_accuracy))
+        sess.run(train_step, feed_dict={x: batch[0], y_: batch[1], keep_prob: 0.5})
+
+    print(sess.run(accuracy, feed_dict={x: data.test.images, y_: data.test.labels, keep_prob: 1.0}))
+
+    path = saver.save(
+        sess, os.path.join(os.path.dirname(__file__), &#39;data&#39;, &#39;convalutional.ckpt&#39;),
+        write_meta_graph=False, write_state=False)
+
+    print(&quot;Saved:&quot;, path)</code></pre><blockquote><p>生成 mnist_testdemo/mnist/data/convalutional.ckpt.data-00000-of-00001和mnist_testdemo/mnist/data/convalutional.ckpt.index</p></blockquote><h1 id="集成flask"><a href="#集成flask" class="headerlink" title="集成flask"></a>集成flask</h1><p>mnist_testdemo/main.py</p><pre><code class="python"># -*- coding:utf-8 -*-
+import numpy as np
+import tensorflow as tf
+from flask import Flask, jsonify, render_template, request
+import pprint
+
+from mnist import model
+
+x = tf.placeholder(&quot;float&quot;, [None, 784])
+sess = tf.Session()
+
+# 取出训练好的线性模型
+with tf.variable_scope(&quot;regression&quot;):
+    y1, variables = model.regression(x)
+
+saver = tf.train.Saver(variables)
+saver.restore(sess, &quot;mnist/data/regression.ckpt&quot;)
+
+# 取出训练好的卷积模型
+with tf.variable_scope(&quot;convolutional&quot;):
+    keep_prob = tf.placeholder(&quot;float&quot;)
+    y2, variables = model.convolutional(x, keep_prob)
+
+saver = tf.train.Saver(variables)
+saver.restore(sess, &quot;mnist/data/convalutional.ckpt&quot;)
+
+
+# 根据输入调用线性模型并返回识别结果
+def regression(input):
+    return sess.run(y1, feed_dict={x: input}).flatten().tolist()
+
+
+# 根据输入调用卷积模型并返回识别结果
+def convolutional(input):
+    return sess.run(y2, feed_dict={x: input, keep_prob: 1.0}).flatten().tolist()
+
+
+app = Flask(__name__)
+
+
+@app.route(&#39;/api/mnist&#39;, methods=[&#39;POST&#39;])
+def mnist():
+    # pprint.pprint(request.json)
+    input = ((255 - np.array(request.json, dtype=np.uint8)) / 255.0).reshape(1, 784)
+    output1 = regression(input)
+    output2 = convolutional(input)
+    pprint.pprint(output1)
+    pprint.pprint(output2)
+    return jsonify(results=[output1, output2])
+
+
+@app.route(&#39;/&#39;)
+def main():
+    return render_template(&#39;index.html&#39;)
+
+
+if __name__ == &#39;__main__&#39;:
+    app.debug = True
+    app.run(host=&#39;0.0.0.0&#39;, port=8889)</code></pre><h1 id="js核心代码"><a href="#js核心代码" class="headerlink" title="js核心代码"></a>js核心代码</h1><pre><code class="typescript">drawInput() {
+        var ctx = this.input.getContext(&#39;2d&#39;);
+        var img = new Image();
+        img.onload = () =&gt; {
+            var inputs = [];
+            var small = document.createElement(&#39;canvas&#39;).getContext(&#39;2d&#39;);
+            small.drawImage(img, 0, 0, img.width, img.height, 0, 0, 28, 28);
+            var data = small.getImageData(0, 0, 28, 28).data;
+            for (var i = 0; i &lt; 28; i++) {
+                for (var j = 0; j &lt; 28; j++) {
+                    var n = 4 * (i * 28 + j);
+                    inputs[i * 28 + j] = (data[n + 0] + data[n + 1] + data[n + 2]) / 3;
+                    ctx.fillStyle = &#39;rgb(&#39; + [data[n + 0], data[n + 1], data[n + 2]].join(&#39;,&#39;) + &#39;)&#39;;
+                    ctx.fillRect(j * 5, i * 5, 5, 5);
+                }
+            }
+            if (Math.min(...inputs) === 255) {
+                return;
+            }
+            $.ajax({
+                url: &#39;/api/mnist&#39;,
+                type: &#39;POST&#39;,
+                contentType: &#39;application/json&#39;,
+                data: JSON.stringify(inputs),
+                success: (data) =&gt; {
+                    data = JSON.parse(data);
+                    for (let i = 0; i &lt; 2; i++) {
+                        var max = 0;
+                        var max_index = 0;
+                        for (let j = 0; j &lt; 10; j++) {
+
+                            var value = Math.round(data.results[i][j] * 1000);
+                            if (value &gt; max) {
+                                max = value;
+                                max_index = j;
+                            }
+                            var digits = String(value).length;
+                            for (var k = 0; k &lt; 3 - digits; k++) {
+                                value = &#39;0&#39; + value;
+                            }
+                            var text = &#39;0.&#39; + value;
+                            if (value &gt; 999) {
+                                text = &#39;1.000&#39;;
+                            }
+                            $(&#39;#output tr&#39;).eq(j + 1).find(&#39;td&#39;).eq(i).text(text);
+                        }
+                        for (let j = 0; j &lt; 10; j++) {
+                            if (j === max_index) {
+                                $(&#39;#output tr&#39;).eq(j + 1).find(&#39;td&#39;).eq(i).addClass(&#39;success&#39;);
+                            } else {
+                                $(&#39;#output tr&#39;).eq(j + 1).find(&#39;td&#39;).eq(i).removeClass(&#39;success&#39;);
+                            }
+                        }
+                    }
+                }
+            });
+        };
+        img.src = this.canvas.toDataURL();
+    }</code></pre><ul><li>前端将数据inputs以json传入/api/mnist</li><li>regression(input)和convolutional(input)调用模型feed_dict喂参数返回结果</li></ul><p><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1567136759920.png" alt="enter description here"></p></article><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a> <span class="donate_txt">↑<br> 欢迎投食,求鼓励，求支持！</span><br></div><div id="donate_guide" class="donate_bar center hidden"> <img src="/images/alipay.png" alt="支付宝打赏"> <img src="/images/wechatpay.png" alt="微信打赏"></div><script type="text/javascript">document.getElementById("btn_donate").onclick=function(){$("#donate_board").addClass("hidden"),$("#donate_guide").removeClass("hidden")}</script></div><div class="nexmoe-post-copyright"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i> <strong>本文作者：</strong>OneJane<br> <strong>本文链接：</strong><a href="https://onejane.github.io/2019/08/30/TensorFlow与Flask结合打造手写体数字识别/" title="https://onejane.github.io/2019/08/30/TensorFlow与Flask结合打造手写体数字识别/" target="_blank" rel="noopener">https://onejane.github.io/2019/08/30/TensorFlow与Flask结合打造手写体数字识别/</a><br> <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可</div><section class="nexmoe-comment"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css"><div id="gitalk"></div><script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script><script type="text/javascript">var gitalk=new Gitalk({clientID:"e677e59382e1c7a468fd",clientSecret:"717d041bc4ab749f069314862232cfb6ec8adc15",id:decodeURI(window.location.pathname),repo:"onejane.github.io",owner:"onejane",admin:"onejane"});gitalk.render("gitalk")</script></section></div></div></div><script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/smoothscroll-for-websites@1.4.9/SmoothScroll.min.js"></script><script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js"></script><script>hljs.initHighlightingOnLoad()</script><script src="/js/app.js?v=1567137629057"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.1.0/lazysizes.min.js"></script><div hidden><script type="text/javascript" src="https://js.users.51.la/20279757.js"></script></div></body><script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script></html>
