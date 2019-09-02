@@ -1,0 +1,130 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.9.0"><title>OpenCV与TensorFlow 入门人工智能图像处理 - OneJane</title><meta charset="UTF-8"><meta name="description" content="微服务,高可用,高并发,人工智能"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="msvalidate.01" content="396E9693347B4D18AAE96D9E75B9B686"><link rel="shortcut icon" href="/images/a.ico" type="image/png"><meta name="description" content="OpenCV与TensorFlow 入门人工智能图像处理"><meta name="keywords" content="OpenCV,Tensorflow"><meta property="og:type" content="article"><meta property="og:title" content="OpenCV与TensorFlow 入门人工智能图像处理"><meta property="og:url" content="https://onejane.github.io/2019/09/02/OpenCV与TensorFlow 入门人工智能图像处理/index.html"><meta property="og:site_name" content="OneJane"><meta property="og:description" content="OpenCV与TensorFlow 入门人工智能图像处理"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1567137547305.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1567386694044.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1567386038380.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1567388566792.png"><meta property="og:updated_time" content="2019-09-02T03:57:32.642Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="OpenCV与TensorFlow 入门人工智能图像处理"><meta name="twitter:description" content="OpenCV与TensorFlow 入门人工智能图像处理"><meta name="twitter:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1567137547305.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/css/mdui.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.15.8/styles/atom-one-dark.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1038733_0xvrvpg9c0r.css"><link rel="stylesheet" href="/css/style.css?v=1567396826921"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script></head><body class="mdui-drawer-body-left"><div id="nexmoe-background"><div class="nexmoe-bg" style="background-image:url(https://www.github.com/OneJane/blog/raw/master/小书匠/1566388885395.png)"></div><div class="mdui-appbar mdui-shadow-0"><div class="mdui-toolbar"> <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a><div class="mdui-toolbar-spacer"></div> <a href="/" title="OneJane" class="mdui-btn mdui-btn-icon"><img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388846021.png"></a></div></div></div><div id="nexmoe-header"><div class="nexmoe-drawer mdui-drawer" id="drawer"><div class="nexmoe-avatar mdui-ripple"> <a href="/" title="OneJane"><img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388846021.png" alt="OneJane"></a></div><div class="nexmoe-count"><div><span>文章</span>33</div><div><span>标签</span>54</div><div><span>分类</span>11</div></div><ul class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}"><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页"><i class="mdui-list-item-icon nexmoefont icon-home"></i><div class="mdui-list-item-content"> 回到首页</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="关于博客"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i><div class="mdui-list-item-content"> 关于博客</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/py.html" title="我的朋友"><i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i><div class="mdui-list-item-content"> 我的朋友</div></a></ul><aside id="nexmoe-sidebar"><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">社交按钮</h3><div class="nexmoe-widget nexmoe-social"><a class="mdui-ripple" href="https://www.zhihu.com/people/codewj/activities" target="_blank" mdui-tooltip="{content: 'zhihu'}" style="color:#e76a8d;background-color:rgba(231,106,141,.15)"><i class="nexmoefont icon-zhihu"></i></a><a class="mdui-ripple" href="https://github.com/OneJane" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color:#191717;background-color:rgba(25,23,23,.15)"><i class="nexmoefont icon-github"></i></a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章分类</h3><div class="nexmoe-widget"><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/人工智能/">人工智能</a><span class="category-list-count">5</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/定时器/">定时器</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/持续集成/">持续集成</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/注册中心/">注册中心</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/测试/">测试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/爬虫/">爬虫</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/项目实战/">项目实战</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高可用/">高可用</a><span class="category-list-count">4</span></li></ul></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">标签云</h3><div class="nexmoe-widget tagcloud"> <a href="/tags/Gensim/" style="font-size:10px">Gensim</a> <a href="/tags/Hanlp/" style="font-size:10px">Hanlp</a> <a href="/tags/NLTK/" style="font-size:10px">NLTK</a> <a href="/tags/OpenCV/" style="font-size:10px">OpenCV</a> <a href="/tags/Stanford-NLP/" style="font-size:10px">Stanford NLP</a> <a href="/tags/Tensorflow/" style="font-size:14px">Tensorflow</a> <a href="/tags/ant-design/" style="font-size:10px">ant design</a> <a href="/tags/ant-design-pro/" style="font-size:12px">ant design pro</a> <a href="/tags/docker/" style="font-size:18px">docker</a> <a href="/tags/dubbo/" style="font-size:12px">dubbo</a> <a href="/tags/elasticsearch/" style="font-size:10px">elasticsearch</a> <a href="/tags/elastisearch/" style="font-size:10px">elastisearch</a> <a href="/tags/email/" style="font-size:10px">email</a> <a href="/tags/es6/" style="font-size:10px">es6</a> <a href="/tags/feign/" style="font-size:10px">feign</a> <a href="/tags/flask/" style="font-size:10px">flask</a> <a href="/tags/freemarker/" style="font-size:10px">freemarker</a> <a href="/tags/gateway/" style="font-size:10px">gateway</a> <a href="/tags/gitlab/" style="font-size:12px">gitlab</a> <a href="/tags/haproxy/" style="font-size:10px">haproxy</a> <a href="/tags/jenkins/" style="font-size:12px">jenkins</a> <a href="/tags/jmeter/" style="font-size:10px">jmeter</a> <a href="/tags/keepalived/" style="font-size:10px">keepalived</a> <a href="/tags/linux/" style="font-size:10px">linux</a> <a href="/tags/maven/" style="font-size:12px">maven</a> <a href="/tags/multi-druid/" style="font-size:10px">multi druid</a> <a href="/tags/mybatis/" style="font-size:10px">mybatis</a> <a href="/tags/mybatisplus/" style="font-size:10px">mybatisplus</a> <a href="/tags/mysql/" style="font-size:10px">mysql</a> <a href="/tags/nacos/" style="font-size:12px">nacos</a> <a href="/tags/nexmoe/" style="font-size:10px">nexmoe</a> <a href="/tags/nlp/" style="font-size:14px">nlp</a> <a href="/tags/numpy/" style="font-size:10px">numpy</a> <a href="/tags/partition/" style="font-size:10px">partition</a> <a href="/tags/pxc/" style="font-size:10px">pxc</a> <a href="/tags/rabbitmq/" style="font-size:10px">rabbitmq</a> <a href="/tags/react/" style="font-size:12px">react</a> <a href="/tags/redis/" style="font-size:12px">redis</a> <a href="/tags/redis-cluster/" style="font-size:10px">redis-cluster</a> <a href="/tags/replication/" style="font-size:12px">replication</a> <a href="/tags/rocketmq/" style="font-size:12px">rocketmq</a> <a href="/tags/scrapy/" style="font-size:10px">scrapy</a> <a href="/tags/selenium/" style="font-size:10px">selenium</a> <a href="/tags/sentinel/" style="font-size:16px">sentinel</a> <a href="/tags/session/" style="font-size:10px">session</a> <a href="/tags/skywalking/" style="font-size:12px">skywalking</a> <a href="/tags/spring-cloud-alibaba/" style="font-size:20px">spring cloud alibaba</a> <a href="/tags/springboot/" style="font-size:16px">springboot</a> <a href="/tags/swagger/" style="font-size:10px">swagger</a> <a href="/tags/tk-mybatis/" style="font-size:10px">tk mybatis</a> <a href="/tags/umi/" style="font-size:10px">umi</a> <a href="/tags/validate/" style="font-size:10px">validate</a> <a href="/tags/xxl-job/" style="font-size:12px">xxl-job</a> <a href="/tags/zookeeper/" style="font-size:10px">zookeeper</a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章归档</h3><div class="nexmoe-widget"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul></div></div></aside><div class="nexmoe-copyright"> &copy; 2019 OneJane</div></div></div><div id="nexmoe-content"><div class="nexmoe-primary"><div class="nexmoe-post"><div class="nexmoe-post-cover"> <img src="https://www.github.com/OneJane/blog/raw/master/小书匠/6c981a07390b86fd2ed9d195d50dd156_hd.jpg"><h1>OpenCV与TensorFlow 入门人工智能图像处理</h1></div><div class="nexmoe-post-meta"><a><i class="nexmoefont icon-calendar-fill"></i> 2019年09月02日</a><a><i class="nexmoefont icon-areachart"></i> 960 字</a><a><i class="nexmoefont icon-time-circle-fill"></i> 大概 5 分钟</a> <a class="nexmoefont icon-appstore-fill -link" href="/categories/人工智能/">人工智能</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/OpenCV/">OpenCV</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/Tensorflow/">Tensorflow</a></div><article><p><a href="https://onejane.github.io/">OpenCV与TensorFlow 入门人工智能图像处理</a></p><a id="more"></a><h1 id="Anaconda"><a href="#Anaconda" class="headerlink" title="Anaconda"></a>Anaconda</h1><p>Anaconda Navigator新建Env环境,添加channels</p><pre><code>https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/</code></pre><p>tensorflow和opencv，并进入Home安装Jupyter notebook<br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1567137547305.png" alt="enter description here"><br>点击进入Jupyter Launch</p><h2 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h2><pre><code>conda update conda
+conda info --envs
+conda create --name tensorflow36
+activate tensorflow36
+conda deactivate
+conda config --set show_channel_urls yes          设置搜索时显示通道地址
+conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
+conda config --remove channels https://mirrors.tuna.tsinghua.edu.cn/tensorflow/linux/cpu/
+conda list</code></pre><h1 id="opencv入门"><a href="#opencv入门" class="headerlink" title="opencv入门"></a>opencv入门</h1><h2 id="opencv图片读取与展示"><a href="#opencv图片读取与展示" class="headerlink" title="opencv图片读取与展示"></a>opencv图片读取与展示</h2><p><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1567386694044.png" alt="enter description here"><br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1567386038380.png" alt="enter description here"></p><pre><code class="vala"># 引入opencv2
+import cv2 
+
+# 文件读取-封装格式解析-数据解码-数据加载
+img = cv2.imread(&#39;a.jpg&#39;,1)
+cv2.imshow(&#39;image&#39;,img)
+# jpg png是文件封装格式，文件头（数据解码信息，附加信息，解码器根据附加信息将文件数据还原成最原始的数据）+文件数据（非文件原始数据，是压缩编码后的数据）
+# stop
+cv2.waitKey (0)</code></pre><h2 id="opencv图片写入"><a href="#opencv图片写入" class="headerlink" title="opencv图片写入"></a>opencv图片写入</h2><pre><code class="xl">import cv2
+img = cv2.imread(&#39;image0.jpg&#39;,1)
+cv2.imwrite(&#39;image1.jpg&#39;,img) # 1 name 2 data </code></pre><h2 id="opencv图像质量"><a href="#opencv图像质量" class="headerlink" title="opencv图像质量"></a>opencv图像质量</h2><h3 id="jpg有损压缩"><a href="#jpg有损压缩" class="headerlink" title="jpg有损压缩"></a>jpg有损压缩</h3><pre><code class="stylus">import cv2
+img = cv2.imread(&#39;image0.jpg&#39;,1)
+cv2.imwrite(&#39;imageTest.jpg&#39;,img,[cv2.IMWRITE_JPEG_QUALITY,50])
+# 1M 100k 10k 0-100 
+# jpg RGB颜色分量组成 1.14M=720*547*3*8 bit/8 (b)=1.14M</code></pre><h3 id="png无损压缩"><a href="#png无损压缩" class="headerlink" title="png无损压缩"></a>png无损压缩</h3><pre><code class="lsl"># 透明度属性
+import cv2
+img = cv2.imread(&#39;image0.jpg&#39;,1)
+cv2.imwrite(&#39;imageTest.png&#39;,img,[cv2.IMWRITE_PNG_COMPRESSION,0])
+# jpg 0 压缩比高0-100 png 0 压缩比低0-9
+# png RGB alpha</code></pre><h2 id="opencv像素操作"><a href="#opencv像素操作" class="headerlink" title="opencv像素操作"></a>opencv像素操作</h2><pre><code class="python">import cv2
+img = cv2.imread(&#39;image0.jpg&#39;,1)
+(b,g,r) = img[100,100]
+print(b,g,r)# bgr
+#10 100 --- 110 100
+for i in range(1,100):
+    img[10+i,100] = (255,0,0)
+cv2.imshow(&#39;image&#39;,img)
+cv2.waitKey(0) #1000 ms</code></pre><h1 id="tensorflow入门"><a href="#tensorflow入门" class="headerlink" title="tensorflow入门"></a>tensorflow入门</h1><p><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1567388566792.png" alt="enter description here"></p><h2 id="tf-常量变量"><a href="#tf-常量变量" class="headerlink" title="tf_常量变量"></a>tf_常量变量</h2><p>所有变量必须初始化完成</p><pre><code class="python">#opencv tensorflow
+#类比 语法 api 原理 
+#基础数据类型 运算符 流程 字典 数组 
+import tensorflow as tf
+data1 = tf.constant(2,dtype=tf.int32)
+data2 = tf.Variable(10,name=&#39;var&#39;)
+print(data1)
+print(data2)
+&#39;&#39;&#39;
+sess = tf.Session()
+print(sess.run(data1))
+init = tf.global_variables_initializer()
+sess.run(init)
+print(sess.run(data2))
+sess.close()
+# 本质 tf = tensor + 计算图
+# tensor 数据
+# op 
+# graphs 数据操作
+# session
+&#39;&#39;&#39;
+init = tf.global_variables_initializer()
+sess = tf.Session()
+with sess:
+    sess.run(init)
+    print(sess.run(data2))</code></pre><h2 id="tf-四则运算"><a href="#tf-四则运算" class="headerlink" title="tf_四则运算"></a>tf_四则运算</h2><h3 id="常量"><a href="#常量" class="headerlink" title="常量"></a>常量</h3><pre><code class="vim">import tensorflow as tf
+data1 = tf.constant(6)
+data2 = tf.constant(2)
+dataAdd = tf.add(data1,data2)
+dataMul = tf.multiply(data1,data2)
+dataSub = tf.subtract(data1,data2)
+dataDiv = tf.divide(data1,data2)
+with tf.Session() as sess:
+    print(sess.run(dataAdd))
+    print(sess.run(dataMul))
+    print(sess.run(dataSub))
+    print(sess.run(dataDiv))
+print(&#39;end!&#39;)</code></pre><h3 id="变量"><a href="#变量" class="headerlink" title="变量"></a>变量</h3><pre><code class="vim">import tensorflow as tf
+data1 = tf.constant(6)
+data2 = tf.Variable(2)
+dataAdd = tf.add(data1,data2)
+dataCopy = tf.assign(data2,dataAdd)# dataAdd -&gt;data2
+dataMul = tf.multiply(data1,data2)
+dataSub = tf.subtract(data1,data2)
+dataDiv = tf.divide(data1,data2)
+init = tf.global_variables_initializer()
+with tf.Session() as sess:
+    sess.run(init) # 所有变量必须完成初始化
+    print(sess.run(dataAdd))
+    print(sess.run(dataMul))
+    print(sess.run(dataSub))
+    print(sess.run(dataDiv))
+    print(&#39;sess.run(dataCopy)&#39;,sess.run(dataCopy))#8-&gt;data2
+    print(&#39;dataCopy.eval()&#39;,dataCopy.eval())#8+6-&gt;14-&gt;data2 = 14
+    print(&#39;tf.get_default_session()&#39;,tf.get_default_session().run(dataCopy))
+print(&#39;end!&#39;)</code></pre><h2 id="tf矩阵基础1"><a href="#tf矩阵基础1" class="headerlink" title="tf矩阵基础1"></a>tf矩阵基础1</h2><h3 id="占位"><a href="#占位" class="headerlink" title="占位"></a>占位</h3><pre><code class="vim">#placehold
+import tensorflow as tf
+data1 = tf.placeholder(tf.float32)
+data2 = tf.placeholder(tf.float32)
+dataAdd = tf.add(data1,data2)
+with tf.Session() as sess:
+    print(sess.run(dataAdd,feed_dict={data1:6,data2:2}))
+    # 1 dataAdd 2 data (feed_dict = {1:6,2:2})
+print(&#39;end!&#39;)</code></pre><h3 id="矩阵打印"><a href="#矩阵打印" class="headerlink" title="矩阵打印"></a>矩阵打印</h3><pre><code class="lua">#类比 数组 M行N列 []   内部[]  [里面 列数据]   [] 中括号整体 行数
+#[[6,6]] [[6,6]]
+import tensorflow as tf
+data1 = tf.constant([[6,6]])
+data2 = tf.constant([[2],
+                     [2]])
+data3 = tf.constant([[3,3]])
+data4 = tf.constant([[1,2],
+                     [3,4],
+                     [5,6]])
+print(data4.shape)# 维度
+with tf.Session() as sess:
+    print(sess.run(data4)) #打印整体
+    print(sess.run(data4[0]))# 打印某一行
+    print(sess.run(data4[:,0]))#打印某列
+    print(sess.run(data4[0,1]))# 1 1  MN = 0 32 = M012 N01</code></pre><h3 id="矩阵计算"><a href="#矩阵计算" class="headerlink" title="矩阵计算"></a>矩阵计算</h3><pre><code class="lua">import tensorflow as tf
+data1 = tf.constant([[6,6]])
+data2 = tf.constant([[2],
+                     [2]])
+data3 = tf.constant([[3,3]])
+data4 = tf.constant([[1,2],
+                     [3,4],
+                     [5,6]])
+matMul = tf.matmul(data1,data2)
+matMul2 = tf.multiply(data1,data2)
+matAdd = tf.add(data1,data3)
+with tf.Session() as sess:
+    print(sess.run(matMul))#1 维 M=1 N2. 1X2(MK) 2X1(KN) = 1
+    print(sess.run(matAdd))#1行2列
+    print(sess.run(matMul2))# 1x2 2x1 = 2x2
+    print(sess.run([matMul,matAdd]))</code></pre></article><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a> <span class="donate_txt">↑<br> 欢迎投食,求鼓励，求支持！</span><br></div><div id="donate_guide" class="donate_bar center hidden"> <img src="/images/alipay.png" alt="支付宝打赏"> <img src="/images/wechatpay.png" alt="微信打赏"></div><script type="text/javascript">document.getElementById("btn_donate").onclick=function(){$("#donate_board").addClass("hidden"),$("#donate_guide").removeClass("hidden")}</script></div><div class="nexmoe-post-copyright"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i> <strong>本文作者：</strong>OneJane<br> <strong>本文链接：</strong><a href="https://onejane.github.io/2019/09/02/OpenCV与TensorFlow 入门人工智能图像处理/" title="https://onejane.github.io/2019/09/02/OpenCV与TensorFlow 入门人工智能图像处理/" target="_blank" rel="noopener">https://onejane.github.io/2019/09/02/OpenCV与TensorFlow 入门人工智能图像处理/</a><br> <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可</div><section class="nexmoe-comment"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css"><div id="gitalk"></div><script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script><script type="text/javascript">var gitalk=new Gitalk({clientID:"e677e59382e1c7a468fd",clientSecret:"717d041bc4ab749f069314862232cfb6ec8adc15",id:decodeURI(window.location.pathname),repo:"onejane.github.io",owner:"onejane",admin:"onejane"});gitalk.render("gitalk")</script></section></div></div></div><script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/smoothscroll-for-websites@1.4.9/SmoothScroll.min.js"></script><script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js"></script><script>hljs.initHighlightingOnLoad()</script><script src="/js/app.js?v=1567396826941"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.1.0/lazysizes.min.js"></script><div hidden><script type="text/javascript" src="https://js.users.51.la/20279757.js"></script></div></body><script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script></html>
