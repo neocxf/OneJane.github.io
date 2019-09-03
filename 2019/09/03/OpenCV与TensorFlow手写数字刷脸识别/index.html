@@ -1,4 +1,4 @@
-<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.9.0"><title>OpenCV与TensorFlow手写数字刷脸识别 - OneJane</title><meta charset="UTF-8"><meta name="description" content="微服务,高可用,高并发,人工智能"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="msvalidate.01" content="396E9693347B4D18AAE96D9E75B9B686"><link rel="shortcut icon" href="/images/a.ico" type="image/png"><meta name="description" content="OpenCV与TensorFlow手写数字刷脸识别"><meta name="keywords" content="OpenCV,Tensorflow"><meta property="og:type" content="article"><meta property="og:title" content="OpenCV与TensorFlow手写数字刷脸识别"><meta property="og:url" content="https://onejane.github.io/2019/09/03/OpenCV与TensorFlow手写数字刷脸识别/index.html"><meta property="og:site_name" content="OneJane"><meta property="og:description" content="OpenCV与TensorFlow手写数字刷脸识别"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2019-09-03T02:43:23.161Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="OpenCV与TensorFlow手写数字刷脸识别"><meta name="twitter:description" content="OpenCV与TensorFlow手写数字刷脸识别"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/css/mdui.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.15.8/styles/atom-one-dark.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1038733_0xvrvpg9c0r.css"><link rel="stylesheet" href="/css/style.css?v=1567483253555"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script></head><body class="mdui-drawer-body-left"><div id="nexmoe-background"><div class="nexmoe-bg" style="background-image:url(https://www.github.com/OneJane/blog/raw/master/小书匠/1566388885395.png)"></div><div class="mdui-appbar mdui-shadow-0"><div class="mdui-toolbar"> <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a><div class="mdui-toolbar-spacer"></div> <a href="/" title="OneJane" class="mdui-btn mdui-btn-icon"><img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388846021.png"></a></div></div></div><div id="nexmoe-header"><div class="nexmoe-drawer mdui-drawer" id="drawer"><div class="nexmoe-avatar mdui-ripple"> <a href="/" title="OneJane"><img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388846021.png" alt="OneJane"></a></div><div class="nexmoe-count"><div><span>文章</span>35</div><div><span>标签</span>54</div><div><span>分类</span>11</div></div><ul class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}"><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页"><i class="mdui-list-item-icon nexmoefont icon-home"></i><div class="mdui-list-item-content"> 回到首页</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="关于博客"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i><div class="mdui-list-item-content"> 关于博客</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/py.html" title="我的朋友"><i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i><div class="mdui-list-item-content"> 我的朋友</div></a></ul><aside id="nexmoe-sidebar"><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">社交按钮</h3><div class="nexmoe-widget nexmoe-social"><a class="mdui-ripple" href="https://www.zhihu.com/people/codewj/activities" target="_blank" mdui-tooltip="{content: 'zhihu'}" style="color:#e76a8d;background-color:rgba(231,106,141,.15)"><i class="nexmoefont icon-zhihu"></i></a><a class="mdui-ripple" href="https://github.com/OneJane" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color:#191717;background-color:rgba(25,23,23,.15)"><i class="nexmoefont icon-github"></i></a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章分类</h3><div class="nexmoe-widget"><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/人工智能/">人工智能</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/定时器/">定时器</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/持续集成/">持续集成</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/注册中心/">注册中心</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/测试/">测试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/爬虫/">爬虫</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/项目实战/">项目实战</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高可用/">高可用</a><span class="category-list-count">4</span></li></ul></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">标签云</h3><div class="nexmoe-widget tagcloud"> <a href="/tags/Gensim/" style="font-size:10px">Gensim</a> <a href="/tags/Hanlp/" style="font-size:10px">Hanlp</a> <a href="/tags/NLTK/" style="font-size:10px">NLTK</a> <a href="/tags/OpenCV/" style="font-size:13.33px">OpenCV</a> <a href="/tags/Stanford-NLP/" style="font-size:10px">Stanford NLP</a> <a href="/tags/Tensorflow/" style="font-size:16.67px">Tensorflow</a> <a href="/tags/ant-design/" style="font-size:10px">ant design</a> <a href="/tags/ant-design-pro/" style="font-size:11.67px">ant design pro</a> <a href="/tags/docker/" style="font-size:18.33px">docker</a> <a href="/tags/dubbo/" style="font-size:11.67px">dubbo</a> <a href="/tags/elasticsearch/" style="font-size:10px">elasticsearch</a> <a href="/tags/elastisearch/" style="font-size:10px">elastisearch</a> <a href="/tags/email/" style="font-size:10px">email</a> <a href="/tags/es6/" style="font-size:10px">es6</a> <a href="/tags/feign/" style="font-size:10px">feign</a> <a href="/tags/flask/" style="font-size:10px">flask</a> <a href="/tags/freemarker/" style="font-size:10px">freemarker</a> <a href="/tags/gateway/" style="font-size:10px">gateway</a> <a href="/tags/gitlab/" style="font-size:11.67px">gitlab</a> <a href="/tags/haproxy/" style="font-size:10px">haproxy</a> <a href="/tags/jenkins/" style="font-size:11.67px">jenkins</a> <a href="/tags/jmeter/" style="font-size:10px">jmeter</a> <a href="/tags/keepalived/" style="font-size:10px">keepalived</a> <a href="/tags/linux/" style="font-size:10px">linux</a> <a href="/tags/maven/" style="font-size:11.67px">maven</a> <a href="/tags/multi-druid/" style="font-size:10px">multi druid</a> <a href="/tags/mybatis/" style="font-size:10px">mybatis</a> <a href="/tags/mybatisplus/" style="font-size:10px">mybatisplus</a> <a href="/tags/mysql/" style="font-size:10px">mysql</a> <a href="/tags/nacos/" style="font-size:11.67px">nacos</a> <a href="/tags/nexmoe/" style="font-size:10px">nexmoe</a> <a href="/tags/nlp/" style="font-size:13.33px">nlp</a> <a href="/tags/numpy/" style="font-size:10px">numpy</a> <a href="/tags/partition/" style="font-size:10px">partition</a> <a href="/tags/pxc/" style="font-size:10px">pxc</a> <a href="/tags/rabbitmq/" style="font-size:10px">rabbitmq</a> <a href="/tags/react/" style="font-size:11.67px">react</a> <a href="/tags/redis/" style="font-size:11.67px">redis</a> <a href="/tags/redis-cluster/" style="font-size:10px">redis-cluster</a> <a href="/tags/replication/" style="font-size:11.67px">replication</a> <a href="/tags/rocketmq/" style="font-size:11.67px">rocketmq</a> <a href="/tags/scrapy/" style="font-size:10px">scrapy</a> <a href="/tags/selenium/" style="font-size:10px">selenium</a> <a href="/tags/sentinel/" style="font-size:15px">sentinel</a> <a href="/tags/session/" style="font-size:10px">session</a> <a href="/tags/skywalking/" style="font-size:11.67px">skywalking</a> <a href="/tags/spring-cloud-alibaba/" style="font-size:20px">spring cloud alibaba</a> <a href="/tags/springboot/" style="font-size:15px">springboot</a> <a href="/tags/swagger/" style="font-size:10px">swagger</a> <a href="/tags/tk-mybatis/" style="font-size:10px">tk mybatis</a> <a href="/tags/umi/" style="font-size:10px">umi</a> <a href="/tags/validate/" style="font-size:10px">validate</a> <a href="/tags/xxl-job/" style="font-size:11.67px">xxl-job</a> <a href="/tags/zookeeper/" style="font-size:10px">zookeeper</a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章归档</h3><div class="nexmoe-widget"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul></div></div></aside><div class="nexmoe-copyright"> &copy; 2019 OneJane</div></div></div><div id="nexmoe-content"><div class="nexmoe-primary"><div class="nexmoe-post"><div class="nexmoe-post-cover"> <img src="https://www.github.com/OneJane/blog/raw/master/小书匠/81cb6cca40c296e1f1baa8ae366a5e58_hd.jpg"><h1>OpenCV与TensorFlow手写数字刷脸识别</h1></div><div class="nexmoe-post-meta"><a><i class="nexmoefont icon-calendar-fill"></i> 2019年09月03日</a><a><i class="nexmoefont icon-areachart"></i> 789 字</a><a><i class="nexmoefont icon-time-circle-fill"></i> 大概 4 分钟</a> <a class="nexmoefont icon-appstore-fill -link" href="/categories/人工智能/">人工智能</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/OpenCV/">OpenCV</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/Tensorflow/">Tensorflow</a></div><article><p><a href="https://onejane.github.io/">OpenCV与TensorFlow手写数字刷脸识别</a></p><a id="more"></a><p><a href="http://yann.lecun.com/exdb/mnist/" target="_blank" rel="noopener">http://yann.lecun.com/exdb/mnist/</a></p><h1 id="KNN最近领域"><a href="#KNN最近领域" class="headerlink" title="KNN最近领域"></a>KNN最近领域</h1><pre><code class="bash"># 1 重要
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.9.0"><title>OpenCV与TensorFlow手写数字刷脸识别 - OneJane</title><meta charset="UTF-8"><meta name="description" content="微服务,高可用,高并发,人工智能"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="msvalidate.01" content="396E9693347B4D18AAE96D9E75B9B686"><link rel="shortcut icon" href="/images/a.ico" type="image/png"><meta name="description" content="OpenCV与TensorFlow手写数字刷脸识别"><meta name="keywords" content="OpenCV,Tensorflow"><meta property="og:type" content="article"><meta property="og:title" content="OpenCV与TensorFlow手写数字刷脸识别"><meta property="og:url" content="https://onejane.github.io/2019/09/03/OpenCV与TensorFlow手写数字刷脸识别/index.html"><meta property="og:site_name" content="OneJane"><meta property="og:description" content="OpenCV与TensorFlow手写数字刷脸识别"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2019-09-03T08:48:20.448Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="OpenCV与TensorFlow手写数字刷脸识别"><meta name="twitter:description" content="OpenCV与TensorFlow手写数字刷脸识别"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/css/mdui.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.15.8/styles/atom-one-dark.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1038733_0xvrvpg9c0r.css"><link rel="stylesheet" href="/css/style.css?v=1567504825604"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script></head><body class="mdui-drawer-body-left"><div id="nexmoe-background"><div class="nexmoe-bg" style="background-image:url(https://www.github.com/OneJane/blog/raw/master/小书匠/1566388885395.png)"></div><div class="mdui-appbar mdui-shadow-0"><div class="mdui-toolbar"> <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a><div class="mdui-toolbar-spacer"></div> <a href="/" title="OneJane" class="mdui-btn mdui-btn-icon"><img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388846021.png"></a></div></div></div><div id="nexmoe-header"><div class="nexmoe-drawer mdui-drawer" id="drawer"><div class="nexmoe-avatar mdui-ripple"> <a href="/" title="OneJane"><img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388846021.png" alt="OneJane"></a></div><div class="nexmoe-count"><div><span>文章</span>35</div><div><span>标签</span>54</div><div><span>分类</span>11</div></div><ul class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}"><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页"><i class="mdui-list-item-icon nexmoefont icon-home"></i><div class="mdui-list-item-content"> 回到首页</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="关于博客"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i><div class="mdui-list-item-content"> 关于博客</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/py.html" title="我的朋友"><i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i><div class="mdui-list-item-content"> 我的朋友</div></a></ul><aside id="nexmoe-sidebar"><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">社交按钮</h3><div class="nexmoe-widget nexmoe-social"><a class="mdui-ripple" href="https://www.zhihu.com/people/codewj/activities" target="_blank" mdui-tooltip="{content: 'zhihu'}" style="color:#e76a8d;background-color:rgba(231,106,141,.15)"><i class="nexmoefont icon-zhihu"></i></a><a class="mdui-ripple" href="https://github.com/OneJane" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color:#191717;background-color:rgba(25,23,23,.15)"><i class="nexmoefont icon-github"></i></a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章分类</h3><div class="nexmoe-widget"><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/人工智能/">人工智能</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/定时器/">定时器</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/持续集成/">持续集成</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/注册中心/">注册中心</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/测试/">测试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/爬虫/">爬虫</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/项目实战/">项目实战</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高可用/">高可用</a><span class="category-list-count">4</span></li></ul></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">标签云</h3><div class="nexmoe-widget tagcloud"> <a href="/tags/Gensim/" style="font-size:10px">Gensim</a> <a href="/tags/Hanlp/" style="font-size:10px">Hanlp</a> <a href="/tags/NLTK/" style="font-size:10px">NLTK</a> <a href="/tags/OpenCV/" style="font-size:13.33px">OpenCV</a> <a href="/tags/Stanford-NLP/" style="font-size:10px">Stanford NLP</a> <a href="/tags/Tensorflow/" style="font-size:16.67px">Tensorflow</a> <a href="/tags/ant-design/" style="font-size:10px">ant design</a> <a href="/tags/ant-design-pro/" style="font-size:11.67px">ant design pro</a> <a href="/tags/docker/" style="font-size:18.33px">docker</a> <a href="/tags/dubbo/" style="font-size:11.67px">dubbo</a> <a href="/tags/elasticsearch/" style="font-size:10px">elasticsearch</a> <a href="/tags/elastisearch/" style="font-size:10px">elastisearch</a> <a href="/tags/email/" style="font-size:10px">email</a> <a href="/tags/es6/" style="font-size:10px">es6</a> <a href="/tags/feign/" style="font-size:10px">feign</a> <a href="/tags/flask/" style="font-size:10px">flask</a> <a href="/tags/freemarker/" style="font-size:10px">freemarker</a> <a href="/tags/gateway/" style="font-size:10px">gateway</a> <a href="/tags/gitlab/" style="font-size:11.67px">gitlab</a> <a href="/tags/haproxy/" style="font-size:10px">haproxy</a> <a href="/tags/jenkins/" style="font-size:11.67px">jenkins</a> <a href="/tags/jmeter/" style="font-size:10px">jmeter</a> <a href="/tags/keepalived/" style="font-size:10px">keepalived</a> <a href="/tags/linux/" style="font-size:10px">linux</a> <a href="/tags/maven/" style="font-size:11.67px">maven</a> <a href="/tags/multi-druid/" style="font-size:10px">multi druid</a> <a href="/tags/mybatis/" style="font-size:10px">mybatis</a> <a href="/tags/mybatisplus/" style="font-size:10px">mybatisplus</a> <a href="/tags/mysql/" style="font-size:10px">mysql</a> <a href="/tags/nacos/" style="font-size:11.67px">nacos</a> <a href="/tags/nexmoe/" style="font-size:10px">nexmoe</a> <a href="/tags/nlp/" style="font-size:13.33px">nlp</a> <a href="/tags/numpy/" style="font-size:10px">numpy</a> <a href="/tags/partition/" style="font-size:10px">partition</a> <a href="/tags/pxc/" style="font-size:10px">pxc</a> <a href="/tags/rabbitmq/" style="font-size:10px">rabbitmq</a> <a href="/tags/react/" style="font-size:11.67px">react</a> <a href="/tags/redis/" style="font-size:11.67px">redis</a> <a href="/tags/redis-cluster/" style="font-size:10px">redis-cluster</a> <a href="/tags/replication/" style="font-size:11.67px">replication</a> <a href="/tags/rocketmq/" style="font-size:11.67px">rocketmq</a> <a href="/tags/scrapy/" style="font-size:10px">scrapy</a> <a href="/tags/selenium/" style="font-size:10px">selenium</a> <a href="/tags/sentinel/" style="font-size:15px">sentinel</a> <a href="/tags/session/" style="font-size:10px">session</a> <a href="/tags/skywalking/" style="font-size:11.67px">skywalking</a> <a href="/tags/spring-cloud-alibaba/" style="font-size:20px">spring cloud alibaba</a> <a href="/tags/springboot/" style="font-size:15px">springboot</a> <a href="/tags/swagger/" style="font-size:10px">swagger</a> <a href="/tags/tk-mybatis/" style="font-size:10px">tk mybatis</a> <a href="/tags/umi/" style="font-size:10px">umi</a> <a href="/tags/validate/" style="font-size:10px">validate</a> <a href="/tags/xxl-job/" style="font-size:11.67px">xxl-job</a> <a href="/tags/zookeeper/" style="font-size:10px">zookeeper</a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章归档</h3><div class="nexmoe-widget"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul></div></div></aside><div class="nexmoe-copyright"> &copy; 2019 OneJane</div></div></div><div id="nexmoe-content"><div class="nexmoe-primary"><div class="nexmoe-post"><div class="nexmoe-post-cover"> <img src="https://www.github.com/OneJane/blog/raw/master/小书匠/81cb6cca40c296e1f1baa8ae366a5e58_hd.jpg"><h1>OpenCV与TensorFlow手写数字刷脸识别</h1></div><div class="nexmoe-post-meta"><a><i class="nexmoefont icon-calendar-fill"></i> 2019年09月03日</a><a><i class="nexmoefont icon-areachart"></i> 2.2k 字</a><a><i class="nexmoefont icon-time-circle-fill"></i> 大概 12 分钟</a> <a class="nexmoefont icon-appstore-fill -link" href="/categories/人工智能/">人工智能</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/OpenCV/">OpenCV</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/Tensorflow/">Tensorflow</a></div><article><p><a href="https://onejane.github.io/">OpenCV与TensorFlow手写数字刷脸识别</a></p><a id="more"></a><p><a href="http://yann.lecun.com/exdb/mnist/" target="_blank" rel="noopener">http://yann.lecun.com/exdb/mnist/</a></p><h1 id="手写数字识别"><a href="#手写数字识别" class="headerlink" title="手写数字识别"></a>手写数字识别</h1><h2 id="KNN最近领域"><a href="#KNN最近领域" class="headerlink" title="KNN最近领域"></a>KNN最近领域</h2><pre><code class="bash"># 1 重要
 # 2 KNN最近领域 CNN卷积神经网络 2种
 # 3 样本 
 # 4 旧瓶装新酒 ：数字识别的不同
@@ -42,7 +42,7 @@ trainLabelInput = tf.placeholder(shape=[None,10],dtype=tf.float32)
 testDataInput = tf.placeholder(shape=[None,784],dtype=tf.float32)
 testLabelInput = tf.placeholder(shape=[None,10],dtype=tf.float32)
 #knn distance 5*785.  5*1*784
-# 5 500 784 (3D) 2500*784
+# 5测试图片 500训练图片 784 (3D) 2500*784
 f1 = tf.expand_dims(testDataInput,1) # 维度扩展
 f2 = tf.subtract(trainDataInput,f1)# 784 sum(784)
 f3 = tf.reduce_sum(tf.abs(f2),reduction_indices=2)# 完成数据累加 784 abs
@@ -98,4 +98,179 @@ for i in range(0,5):
     if p10[i] == p9[i]:
         j = j+1
 print(&#39;ac=&#39;,j*100/5)
-</code></pre></article><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a> <span class="donate_txt">↑<br> 欢迎投食,求鼓励，求支持！</span><br></div><div id="donate_guide" class="donate_bar center hidden"> <img src="/images/alipay.png" alt="支付宝打赏"> <img src="/images/wechatpay.png" alt="微信打赏"></div><script type="text/javascript">document.getElementById("btn_donate").onclick=function(){$("#donate_board").addClass("hidden"),$("#donate_guide").removeClass("hidden")}</script></div><div class="nexmoe-post-copyright"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i> <strong>本文作者：</strong>OneJane<br> <strong>本文链接：</strong><a href="https://onejane.github.io/2019/09/03/OpenCV与TensorFlow手写数字刷脸识别/" title="https://onejane.github.io/2019/09/03/OpenCV与TensorFlow手写数字刷脸识别/" target="_blank" rel="noopener">https://onejane.github.io/2019/09/03/OpenCV与TensorFlow手写数字刷脸识别/</a><br> <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可</div><section class="nexmoe-comment"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css"><div id="gitalk"></div><script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script><script type="text/javascript">var gitalk=new Gitalk({clientID:"e677e59382e1c7a468fd",clientSecret:"717d041bc4ab749f069314862232cfb6ec8adc15",id:decodeURI(window.location.pathname),repo:"onejane.github.io",owner:"onejane",admin:"onejane"});gitalk.render("gitalk")</script></section></div></div></div><script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/smoothscroll-for-websites@1.4.9/SmoothScroll.min.js"></script><script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js"></script><script>hljs.initHighlightingOnLoad()</script><script src="/js/app.js?v=1567483253571"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.1.0/lazysizes.min.js"></script><div hidden><script type="text/javascript" src="https://js.users.51.la/20279757.js"></script></div></body><script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script></html>
+</code></pre><h2 id="CNN卷积神经网络"><a href="#CNN卷积神经网络" class="headerlink" title="CNN卷积神经网络"></a>CNN卷积神经网络</h2><pre><code class="nix">#cnn : 1 卷积
+# ABC 
+# A: 激励函数+矩阵 乘法加法
+# A CNN :  pool（激励函数+矩阵 卷积 加法）
+# C：激励函数+矩阵 乘法加法（A-》B）
+# C：激励函数+矩阵 乘法加法（A-》B） + softmax（矩阵 乘法加法）
+# loss：tf.reduce_mean(tf.square(y-layer2))
+# loss：code
+#1 import 
+import tensorflow as tf
+import numpy as np
+from tensorflow.examples.tutorials.mnist import input_data
+# 2 load data
+mnist = input_data.read_data_sets(&#39;MNIST_data&#39;,one_hot = True)
+# 3 input
+imageInput = tf.placeholder(tf.float32,[None,784]) # 28*28 
+labeInput = tf.placeholder(tf.float32,[None,10]) # 10 列数
+# 4 data reshape
+# [None,784]-&gt;M*28*28*1  2D-&gt;4D  28*28 wh 1 channel 
+imageInputReshape = tf.reshape(imageInput,[-1,28,28,1])
+# 5 卷积 w0 : 卷积内核 5*5 out:32  in:1 
+w0 = tf.Variable(tf.truncated_normal([5,5,1,32],stddev = 0.1))
+b0 = tf.Variable(tf.constant(0.1,shape=[32]))
+# 6 # layer1：激励函数+卷积运算
+# imageInputReshape : M*28*28*1  w0:5,5,1,32  
+layer1 = tf.nn.relu(tf.nn.conv2d(imageInputReshape,w0,strides=[1,1,1,1],padding=&#39;SAME&#39;)+b0)
+# M*28*28*32
+# pool 采样 数据量减少很多M*28*28*32 =&gt; M*7*7*32
+layer1_pool = tf.nn.max_pool(layer1,ksize=[1,4,4,1],strides=[1,4,4,1],padding=&#39;SAME&#39;)
+# [1 2 3 4]-&gt;[4]
+# 7 layer2 out : 激励函数+乘加运算：  softmax（激励函数 + 乘加运算）
+# [7*7*32,1024]
+w1 = tf.Variable(tf.truncated_normal([7*7*32,1024],stddev=0.1))
+b1 = tf.Variable(tf.constant(0.1,shape=[1024]))
+h_reshape = tf.reshape(layer1_pool,[-1,7*7*32])# M*7*7*32 -&gt; N*N1
+# [N*7*7*32]  [7*7*32,1024] = N*1024
+h1 = tf.nn.relu(tf.matmul(h_reshape,w1)+b1)
+# 7.1 softMax
+w2 = tf.Variable(tf.truncated_normal([1024,10],stddev=0.1))
+b2 = tf.Variable(tf.constant(0.1,shape=[10]))
+pred = tf.nn.softmax(tf.matmul(h1,w2)+b2)# N*1024  1024*10 = N*10
+# N*10( 概率 )N1【0.1 0.2 0.4 0.1 0.2 。。。】
+# label。        【0 0 0 0 1 0 0 0.。。】
+loss0 = labeInput*tf.log(pred)
+loss1 = 0
+# 7.2 
+for m in range(0,500):#  test 100
+    for n in range(0,10):
+        loss1 = loss1 - loss0[m,n]
+loss = loss1/500
+
+# 8 train
+train = tf.train.GradientDescentOptimizer(0.01).minimize(loss)
+# 9 run
+with tf.Session() as sess:
+    sess.run(tf.global_variables_initializer())
+    for i in range(100):
+        images,labels = mnist.train.next_batch(500)
+        sess.run(train,feed_dict={imageInput:images,labeInput:labels})
+
+        pred_test = sess.run(pred,feed_dict={imageInput:mnist.test.images,labeInput:labels})
+        acc = tf.equal(tf.arg_max(pred_test,1),tf.arg_max(mnist.test.labels,1))
+        acc_float = tf.reduce_mean(tf.cast(acc,tf.float32))
+        acc_result = sess.run(acc_float,feed_dict={imageInput:mnist.test.images,labeInput:mnist.test.labels})
+        print(acc_result)
+</code></pre><h1 id="刷脸识别"><a href="#刷脸识别" class="headerlink" title="刷脸识别"></a>刷脸识别</h1><h2 id="爬虫获取样本"><a href="#爬虫获取样本" class="headerlink" title="爬虫获取样本"></a>爬虫获取样本</h2><pre><code class="perl">import urllib 
+from bs4 import BeautifulSoup
+  html = urllib.request.urlopen(
+        &#39;https://www.duitang.com/album/?id=69001447&#39;).read()
+    # parse url data 1 html 2 &#39;html.parser&#39; 3 &#39;utf-8&#39;
+    soup = BeautifulSoup(html, &#39;html.parser&#39;, from_encoding=&#39;utf-8&#39;)
+    # img
+    images = soup.findAll(&#39;img&#39;)
+    print(images)
+    imageName = 0
+    for image in images:
+        link = image.get(&#39;src&#39;)
+        print(&#39;link=&#39;, link)
+        fileFormat = link[-3:]
+        if fileFormat == &#39;png&#39; or fileFormat == &#39;jpg&#39;:
+            fileSavePath = &#39;C:/Users/codewj/AnacondaProjects/5刷脸识别/images/&#39; + str(imageName) + &#39;.jpg&#39;
+            imageName = imageName + 1
+            urllib.request.urlretrieve(link, fileSavePath)</code></pre><h2 id="ffmpeg"><a href="#ffmpeg" class="headerlink" title="ffmpeg"></a>ffmpeg</h2><pre><code class="matlab">ffmpeg -i input.mp4 -r 1 -q:v 2 -f image2 pic-%03d.jpeg  视频提取帧
+ffmpeg -i input.mp4 -ss 00:00:20 -t 10 -r 1 -q:v 2 -f image2 pic-%03d.jpeg  ffmpeg会从input.mp4的第20s时间开始，往下10s，即20~30s这10秒钟之间，每隔1s就抓一帧，总共会抓10帧。
+ffmpeg -i input.avi output.mp4  视频转格式
+ffmpeg -i a.mp4 -acodec copy -vn a.aac  视频提取音频
+ffmpeg -i input.mp4 -vcodec copy -an output.mp4  视频提取音频
+ffmpeg -ss 00:00:15 -t 00:00:05 -i input.mp4 -vcodec copy -acodec copy output.mp4  视频剪切
+ffmpeg -i input.mp4 -b:v 2000k -bufsize 2000k -maxrate 2500k output.mp4  码率控制
+ffmpeg -i input.mp4 -vcodec mpeg4 output.mp4  视频编码格式转换mpeg4
+ffmpeg -i input.mp4 -vf scale=960:540 output.mp4   将输入视频缩小到960x540输出 
+ffmpeg -i input.mp4 -i iQIYI_logo.png -filter_complex overlay output.mp4 视频添加logo</code></pre><h2 id="opencv预处理"><a href="#opencv预处理" class="headerlink" title="opencv预处理"></a>opencv预处理</h2><pre><code class="nix"># 1 load xml 2 load jpg 3 haar gray 4 detect 5 draw
+import cv2
+import numpy as np
+# load xml 1 file name
+face_xml = cv2.CascadeClassifier(&#39;haarcascade_frontalface_default.xml&#39;)
+eye_xml = cv2.CascadeClassifier(&#39;haarcascade_eye.xml&#39;)
+# load jpg
+img = cv2.imread(&#39;face.jpg&#39;)
+cv2.imshow(&#39;src&#39;,img)
+# haar gray
+gray = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
+# detect faces 1 data 2 scale 3 5
+faces = face_xml.detectMultiScale(gray,1.3,5)
+print(&#39;face=&#39;,len(faces))
+# draw
+index = 0
+for (x,y,w,h) in faces:
+    cv2.rectangle(img,(x,y),(x+w,y+h),(255,0,0),2)
+    roi_face = gray[y:y+h,x:x+w]
+    roi_color = img[y:y+h,x:x+w]
+    fileName = str(index)+&#39;.jpg&#39;
+    cv2.imwrite(fileName,roi_color)
+    index = index + 1
+    # 1 gray
+    eyes = eye_xml.detectMultiScale(roi_face)
+    print(&#39;eye=&#39;,len(eyes))
+    #for (e_x,e_y,e_w,e_h) in eyes:
+        #cv2.rectangle(roi_color,(e_x,e_y),(e_x+e_w,e_y+e_h),(0,255,0),2)
+cv2.imshow(&#39;dst&#39;,img)
+cv2.waitKey(0)</code></pre><h2 id="某个人脸识别"><a href="#某个人脸识别" class="headerlink" title="某个人脸识别"></a>某个人脸识别</h2><pre><code class="makefile"># 1 数据yale 2 准备train label-》train 
+# 3 cnn 4 检测
+import tensorflow as tf
+import numpy as np
+import scipy.io as sio
+
+f = open(&#39;Yale_64x64.mat&#39;,&#39;rb&#39;)
+mdict = sio.loadmat(f)
+# fea gnd
+train_data = mdict[&#39;fea&#39;]
+train_label = mdict[&#39;gnd&#39;]
+# 数据无序排列
+train_data = np.random.permutation(train_data)
+train_label = np.random.permutation(train_label)
+test_data = train_data[0:64]
+test_label = train_label[0:64]
+np.random.seed(100)
+test_data = np.random.permutation(test_data)
+np.random.seed(100)
+test_label = np.random.permutation(test_label)
+# train [0-9] [10*N] [15*N]  [0 0 1 0 0 0 0 0 0 0] -&gt; 2
+train_data = train_data.reshape(train_data.shape[0],64,64,1).astype(np.float32)/255
+train_labels_new = np.zeros((165,15))# 165 image 15
+for i in range(0,165):
+    j = int(train_label[i,0])-1 # 1-15 0-14 
+    train_labels_new[i,j] = 1
+
+test_data_input = test_data.reshape(test_data.shape[0],64,64,1).astype(np.float32)/255
+test_labels_input = np.zeros((64,15))# 165 image 15
+for i in range(0,64):
+    j = int(test_label[i,0])-1 # 1-15 0-14 
+    test_labels_input[i,j] = 1
+# cnn acc  tf.nn tf.layer
+data_input = tf.placeholder(tf.float32,[None,64,64,1])
+label_input = tf.placeholder(tf.float32,[None,15])
+
+layer1 = tf.layers.conv2d(inputs=data_input,filters=32,kernel_size=2,strides=1,padding=&#39;SAME&#39;,activation=tf.nn.relu)
+layer1_pool = tf.layers.max_pooling2d(layer1,pool_size=2,strides=2)
+layer2 = tf.reshape(layer1_pool,[-1,32*32*32])
+layer2_relu = tf.layers.dense(layer2,1024,tf.nn.relu)
+output = tf.layers.dense(layer2_relu,15)
+
+loss = tf.losses.softmax_cross_entropy(onehot_labels=label_input,logits=output)
+train = tf.train.GradientDescentOptimizer(0.01).minimize(loss)
+accuracy = tf.metrics.accuracy(labels=tf.argmax(label_input,axis=1),predictions=tf.argmax(output,axis=1))[1]
+
+# run acc
+init = tf.group(tf.global_variables_initializer(),tf.local_variables_initializer())
+with tf.Session() as sess:
+    sess.run(init)
+    for i in range(0,200):
+        train_data_input = np.array(train_data)
+        train_label_input = np.array(train_labels_new)
+        sess.run([train,loss],feed_dict={data_input:train_data_input,label_input:train_label_input})
+        acc = sess.run(accuracy,feed_dict={data_input:test_data_input,label_input:test_labels_input})
+        print(&#39;acc:%.2f&#39;,acc)</code></pre></article><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a> <span class="donate_txt">↑<br> 欢迎投食,求鼓励，求支持！</span><br></div><div id="donate_guide" class="donate_bar center hidden"> <img src="/images/alipay.png" alt="支付宝打赏"> <img src="/images/wechatpay.png" alt="微信打赏"></div><script type="text/javascript">document.getElementById("btn_donate").onclick=function(){$("#donate_board").addClass("hidden"),$("#donate_guide").removeClass("hidden")}</script></div><div class="nexmoe-post-copyright"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i> <strong>本文作者：</strong>OneJane<br> <strong>本文链接：</strong><a href="https://onejane.github.io/2019/09/03/OpenCV与TensorFlow手写数字刷脸识别/" title="https://onejane.github.io/2019/09/03/OpenCV与TensorFlow手写数字刷脸识别/" target="_blank" rel="noopener">https://onejane.github.io/2019/09/03/OpenCV与TensorFlow手写数字刷脸识别/</a><br> <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可</div><section class="nexmoe-comment"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css"><div id="gitalk"></div><script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script><script type="text/javascript">var gitalk=new Gitalk({clientID:"e677e59382e1c7a468fd",clientSecret:"717d041bc4ab749f069314862232cfb6ec8adc15",id:decodeURI(window.location.pathname),repo:"onejane.github.io",owner:"onejane",admin:"onejane"});gitalk.render("gitalk")</script></section></div></div></div><script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/smoothscroll-for-websites@1.4.9/SmoothScroll.min.js"></script><script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js"></script><script>hljs.initHighlightingOnLoad()</script><script src="/js/app.js?v=1567504825618"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.1.0/lazysizes.min.js"></script><div hidden><script type="text/javascript" src="https://js.users.51.la/20279757.js"></script></div></body><script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script></html>
