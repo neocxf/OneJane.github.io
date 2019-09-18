@@ -1,0 +1,966 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.9.0"><title>基于selenium爬取智联招聘及国家企业信用信息公示系统 - OneJane</title><meta charset="UTF-8"><meta name="description" content="微服务,高可用,高并发,人工智能"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="msvalidate.01" content="396E9693347B4D18AAE96D9E75B9B686"><link rel="shortcut icon" href="/images/a.ico" type="image/png"><meta name="description" content="突破加密混淆的js文件，IP封锁，验证码识别（滑动和语序点击并存），useragent检查，多重url拼接cookie"><meta name="keywords" content="scrapy,selenium"><meta property="og:type" content="article"><meta property="og:title" content="基于selenium爬取智联招聘及国家企业信用信息公示系统"><meta property="og:url" content="https://onejane.github.io/2019/09/18/基于selenium爬取智联招聘及国家企业信用信息公示系统/index.html"><meta property="og:site_name" content="OneJane"><meta property="og:description" content="突破加密混淆的js文件，IP封锁，验证码识别（滑动和语序点击并存），useragent检查，多重url拼接cookie"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2019-09-18T03:07:08.612Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="基于selenium爬取智联招聘及国家企业信用信息公示系统"><meta name="twitter:description" content="突破加密混淆的js文件，IP封锁，验证码识别（滑动和语序点击并存），useragent检查，多重url拼接cookie"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/css/mdui.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.15.8/styles/atom-one-dark.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1038733_0xvrvpg9c0r.css"><link rel="stylesheet" href="/css/style.css?v=1568779254960"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script></head><body class="mdui-drawer-body-left"><div id="nexmoe-background"><div class="nexmoe-bg" style="background-image:url(https://www.github.com/OneJane/blog/raw/master/小书匠/1566388885395.png)"></div><div class="mdui-appbar mdui-shadow-0"><div class="mdui-toolbar"> <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a><div class="mdui-toolbar-spacer"></div> <a href="/" title="OneJane" class="mdui-btn mdui-btn-icon"><img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388846021.png"></a></div></div></div><div id="nexmoe-header"><div class="nexmoe-drawer mdui-drawer" id="drawer"><div class="nexmoe-avatar mdui-ripple"> <a href="/" title="OneJane"><img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388846021.png" alt="OneJane"></a></div><div class="nexmoe-count"><div><span>文章</span>37</div><div><span>标签</span>54</div><div><span>分类</span>11</div></div><ul class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}"><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页"><i class="mdui-list-item-icon nexmoefont icon-home"></i><div class="mdui-list-item-content"> 回到首页</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="关于博客"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i><div class="mdui-list-item-content"> 关于博客</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/py.html" title="我的朋友"><i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i><div class="mdui-list-item-content"> 我的朋友</div></a></ul><aside id="nexmoe-sidebar"><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">社交按钮</h3><div class="nexmoe-widget nexmoe-social"><a class="mdui-ripple" href="https://www.zhihu.com/people/codewj/activities" target="_blank" mdui-tooltip="{content: 'zhihu'}" style="color:#e76a8d;background-color:rgba(231,106,141,.15)"><i class="nexmoefont icon-zhihu"></i></a><a class="mdui-ripple" href="https://github.com/OneJane" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color:#191717;background-color:rgba(25,23,23,.15)"><i class="nexmoefont icon-github"></i></a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章分类</h3><div class="nexmoe-widget"><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/人工智能/">人工智能</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/定时器/">定时器</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/持续集成/">持续集成</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/注册中心/">注册中心</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/测试/">测试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/爬虫/">爬虫</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/项目实战/">项目实战</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高可用/">高可用</a><span class="category-list-count">4</span></li></ul></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">标签云</h3><div class="nexmoe-widget tagcloud"> <a href="/tags/Gensim/" style="font-size:10px">Gensim</a> <a href="/tags/Hanlp/" style="font-size:10px">Hanlp</a> <a href="/tags/NLTK/" style="font-size:10px">NLTK</a> <a href="/tags/OpenCV/" style="font-size:13.33px">OpenCV</a> <a href="/tags/Stanford-NLP/" style="font-size:10px">Stanford NLP</a> <a href="/tags/Tensorflow/" style="font-size:16.67px">Tensorflow</a> <a href="/tags/ant-design/" style="font-size:10px">ant design</a> <a href="/tags/ant-design-pro/" style="font-size:11.67px">ant design pro</a> <a href="/tags/docker/" style="font-size:18.33px">docker</a> <a href="/tags/dubbo/" style="font-size:11.67px">dubbo</a> <a href="/tags/elasticsearch/" style="font-size:10px">elasticsearch</a> <a href="/tags/elastisearch/" style="font-size:10px">elastisearch</a> <a href="/tags/email/" style="font-size:10px">email</a> <a href="/tags/es6/" style="font-size:10px">es6</a> <a href="/tags/feign/" style="font-size:10px">feign</a> <a href="/tags/flask/" style="font-size:10px">flask</a> <a href="/tags/freemarker/" style="font-size:10px">freemarker</a> <a href="/tags/gateway/" style="font-size:10px">gateway</a> <a href="/tags/gitlab/" style="font-size:11.67px">gitlab</a> <a href="/tags/haproxy/" style="font-size:10px">haproxy</a> <a href="/tags/jenkins/" style="font-size:11.67px">jenkins</a> <a href="/tags/jmeter/" style="font-size:10px">jmeter</a> <a href="/tags/keepalived/" style="font-size:10px">keepalived</a> <a href="/tags/linux/" style="font-size:10px">linux</a> <a href="/tags/maven/" style="font-size:11.67px">maven</a> <a href="/tags/multi-druid/" style="font-size:10px">multi druid</a> <a href="/tags/mybatis/" style="font-size:10px">mybatis</a> <a href="/tags/mybatisplus/" style="font-size:10px">mybatisplus</a> <a href="/tags/mysql/" style="font-size:10px">mysql</a> <a href="/tags/nacos/" style="font-size:11.67px">nacos</a> <a href="/tags/nexmoe/" style="font-size:10px">nexmoe</a> <a href="/tags/nlp/" style="font-size:15px">nlp</a> <a href="/tags/numpy/" style="font-size:10px">numpy</a> <a href="/tags/partition/" style="font-size:10px">partition</a> <a href="/tags/pxc/" style="font-size:10px">pxc</a> <a href="/tags/rabbitmq/" style="font-size:10px">rabbitmq</a> <a href="/tags/react/" style="font-size:11.67px">react</a> <a href="/tags/redis/" style="font-size:11.67px">redis</a> <a href="/tags/redis-cluster/" style="font-size:10px">redis-cluster</a> <a href="/tags/replication/" style="font-size:11.67px">replication</a> <a href="/tags/rocketmq/" style="font-size:11.67px">rocketmq</a> <a href="/tags/scrapy/" style="font-size:11.67px">scrapy</a> <a href="/tags/selenium/" style="font-size:11.67px">selenium</a> <a href="/tags/sentinel/" style="font-size:15px">sentinel</a> <a href="/tags/session/" style="font-size:10px">session</a> <a href="/tags/skywalking/" style="font-size:11.67px">skywalking</a> <a href="/tags/spring-cloud-alibaba/" style="font-size:20px">spring cloud alibaba</a> <a href="/tags/springboot/" style="font-size:15px">springboot</a> <a href="/tags/swagger/" style="font-size:10px">swagger</a> <a href="/tags/tk-mybatis/" style="font-size:10px">tk mybatis</a> <a href="/tags/umi/" style="font-size:10px">umi</a> <a href="/tags/validate/" style="font-size:10px">validate</a> <a href="/tags/xxl-job/" style="font-size:11.67px">xxl-job</a> <a href="/tags/zookeeper/" style="font-size:10px">zookeeper</a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章归档</h3><div class="nexmoe-widget"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul></div></div></aside><div class="nexmoe-copyright"> &copy; 2019 OneJane</div></div></div><div id="nexmoe-content"><div class="nexmoe-primary"><div class="nexmoe-post"><div class="nexmoe-post-cover"> <img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388570600.png"><h1>基于selenium爬取智联招聘及国家企业信用信息公示系统</h1></div><div class="nexmoe-post-meta"><a><i class="nexmoefont icon-calendar-fill"></i> 2019年09月18日</a><a><i class="nexmoefont icon-areachart"></i> 6k 字</a><a><i class="nexmoefont icon-time-circle-fill"></i> 大概 33 分钟</a> <a class="nexmoefont icon-appstore-fill -link" href="/categories/爬虫/">爬虫</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/scrapy/">scrapy</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/selenium/">selenium</a></div><article><p>突破加密混淆的js文件，IP封锁，验证码识别（滑动和语序点击并存），useragent检查，多重url拼接cookie</p><a id="more"></a><h1 id="智联招聘"><a href="#智联招聘" class="headerlink" title="智联招聘"></a>智联招聘</h1><blockquote><p>通过获取链接返回的json数据拿到新的页面，selenium进行解析</p></blockquote><pre><code class="python">class ZhilianSpider(scrapy.Spider):
+    name = &#39;zhilian&#39;
+    allowed_domains = [&#39;zhaopin.com&#39;]
+    start_urls = [&#39;https://sou.zhaopin.com/&#39;]
+
+    driver = None
+    chrome_options = webdriver.ChromeOptions()
+    # proxy_url = get_random_proxy()
+    # print(proxy_url + &quot;代理服务器正在爬取&quot;)
+    # chrome_options.add_argument(&#39;--proxy-server=https://&#39; + proxy_url.strip())
+    prefs = {
+        &#39;profile.default_content_setting_values&#39;: {
+            &#39;images&#39;: 1,  # 不加载图片
+            &quot;User-Agent&quot;: UserAgent().random,  # 更换UA
+        }
+    }
+    chrome_options.add_experimental_option(&quot;prefs&quot;, prefs)
+    if platform.system() == &quot;Windows&quot;:
+        driver = webdriver.Chrome(&#39;chromedriver.exe&#39;, chrome_options=chrome_options)
+    elif platform.system() == &quot;Linux&quot;:
+        chrome_options.add_argument(&quot;--headless&quot;)
+        chrome_options.add_argument(&#39;--disable-gpu&#39;)
+        chrome_options.add_argument(&#39;--no-sandbox&#39;)
+        driver = webdriver.Chrome(
+            executable_path=&quot;/usr/bin/chromedriver&quot;,
+            chrome_options=chrome_options)
+    wait = WebDriverWait(driver, 15)
+
+    def start_requests(self):
+        data = [&quot;游戏&quot;, &quot;期货&quot;, &quot;贷款&quot;]
+        for kw in data:
+            yield Request(
+                url=&quot;https://fe-api.zhaopin.com/c/i/sou?start=0&amp;pageSize=90&amp;cityId=639&amp;salary=0,0&amp;workExperience=-1&amp;education=-1&amp;companyType=-1&amp;employmentType=-1&amp;jobWelfareTag=-1&amp;kw=&quot; + kw + &quot;&amp;kt=3&quot;,
+                meta={&quot;kw&quot;: kw},
+                callback=self.parse_pages)  # response获取meta
+
+    def parse_pages(self, response):
+        numtotal = json.loads(response.text)[&quot;data&quot;][&quot;count&quot;]
+        kw = response.meta.get(&quot;kw&quot;, &quot;游戏&quot;)
+        for i in range(0, numtotal // 90 + 1):
+            url = &quot;https://fe-api.zhaopin.com/c/i/sou?start=&quot; + str(
+                90 * i) + &quot;&amp;pageSize=90&amp;cityId=639&amp;salary=0,0&amp;workExperience=-1&amp;education=-1&amp;companyType=-1&amp;employmentType=-1&amp;jobWelfareTag=-1&amp;kw=&quot; + kw + &quot;&amp;kt=3&quot;
+            yield Request(
+                url=url,
+                meta={&quot;kw&quot;: kw},
+                callback=self.parse)  # response获取meta
+
+    def parse(self, response):
+        job_list = json.loads(response.text)[&quot;data&quot;][&quot;results&quot;]
+        for job in job_list:
+            yield Request(url=job[&quot;positionURL&quot;], callback=self.parse_detail,
+                          meta={&#39;cookiejar&#39;: &#39;chrome&#39;, &#39;kw&#39;: response.meta.get(&quot;kw&quot;, &quot;&quot;)})
+
+    def parse_detail(self, response):
+        print(response.url)
+        self.driver.get(response.url)
+        self.driver.refresh()
+        time.sleep(2)
+        self.driver.implicitly_wait(20)
+        dom = etree.HTML(self.driver.page_source)
+        item = JobItem()
+        item[&#39;recruitment_position&#39;] = null_if(dom.xpath(&#39;//*[@class=&quot;summary-plane__title&quot;]&#39;))
+        item[&#39;salary&#39;] = null_if(dom.xpath(&#39;//*[@class=&quot;summary-plane__salary&quot;]&#39;))
+        item[&#39;company_name&#39;] = dom.xpath(&#39;//*[@class=&quot;company__title&quot;]&#39;)[0].text
+        item[&#39;work_experience&#39;] = dom.xpath(&#39;//ul[@class=&quot;summary-plane__info&quot;]/li[2]&#39;)[0].text
+        item[&#39;education_background&#39;] = dom.xpath(&#39;//ul[@class=&quot;summary-plane__info&quot;]/li[3]&#39;)[0].text
+        item[&#39;job_requirements&#39;] = remove_html(
+            etree.tostring(dom.xpath(&#39;//div[@class=&quot;describtion__detail-content&quot;]&#39;)[0], encoding=&quot;utf-8&quot;).decode(
+                &#39;utf-8&#39;))
+        item[&#39;company_info&#39;] = null_if(dom.xpath(&#39;//div[@class=&quot;company__description&quot;]&#39;))
+        item[&#39;company_address&#39;] = remove_html(
+            etree.tostring(dom.xpath(&#39;//span[@class=&quot;job-address__content-text&quot;]&#39;)[0], encoding=&quot;utf-8&quot;).decode(
+                &#39;utf-8&#39;))
+        if len(dom.xpath(&#39;//div[@class=&quot;highlights__content&quot;]&#39;)):
+            item[&#39;company_welfare&#39;] = remove_html(etree.tostring(dom.xpath(&#39;//div[@class=&quot;highlights__content&quot;]&#39;)[0], encoding=&quot;utf-8&quot;).decode(&#39;utf-8&#39;))
+        else:
+            item[&#39;company_welfare&#39;] = &#39;无&#39;
+        item[&#39;id&#39;] = get_md5(self.driver.current_url)
+        item[&#39;keyword&#39;] = response.meta.get(&quot;kw&quot;, &quot;&quot;)
+        item[&#39;url&#39;] = response.url
+        item[&#39;crawl_date&#39;] = datetime.now().strftime(&quot;%Y-%m-%d&quot;)
+        yield item</code></pre><h1 id="国家企业信用信息系统"><a href="#国家企业信用信息系统" class="headerlink" title="国家企业信用信息系统"></a>国家企业信用信息系统</h1><h2 id="获取cookie"><a href="#获取cookie" class="headerlink" title="获取cookie"></a>获取cookie</h2><p>crack.py</p><pre><code class="python">class Crack(object):
+    &quot;&quot;&quot;
+    同一ip频繁使用：
+        出现正常200但是没有结果
+        第一次解密出来是错误的
+    &quot;&quot;&quot;
+    def __init__(self, url, test_url):
+        path = os.getcwd()
+        with open(os.path.join(path, &quot;wc_js.js&quot;), encoding=&#39;utf-8&#39;) as f:
+            wc_js = f.read()
+        self.wc_js = execjs.compile(wc_js)
+        self.url = url
+        self.test_url = test_url
+
+        # 固定user_agent,后台使用user-agent验证cookies, 之后的访问也需要使用这个
+        self.headers = {
+            &#39;User-Agent&#39;: &#39;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.96 Safari/537.36&#39;
+        }
+
+    def acquire_js(self):
+        &quot;&quot;&quot;
+        不带cookies请求首页，获得返回的js
+        :return:页面中的js,和set_cookies中的jsluid
+        &quot;&quot;&quot;
+        response = requests.get(self.url, headers=self.headers)
+        if response.status_code == 521:
+            return response.text, response.headers[&#39;Set-Cookie&#39;].split(&#39;=&#39;)[1].split(&#39;;&#39;)[0]
+        else:
+            print(response.text)
+            print(self.headers)
+            return None, None
+
+    def first_decryption(self, first_js):
+        &quot;&quot;&quot;
+        解密js,获得第二层加密的js
+        :param first_js:
+        :return:
+        &quot;&quot;&quot;
+        x = re.findall(&#39;var x=&quot;(.*?)&quot;&#39;, first_js)[0]
+        y = re.findall(&#39;,y=&quot;(.*?)&quot;&#39;, first_js)[0]
+        second_js = self.wc_js.call(&#39;once_js&#39;, x, y)
+        # second_js = self.wc_js.call(&#39;get_js&#39;, x, y, z)
+        return second_js
+
+    def regex(self, js):
+        regex =  &quot;!*window\[.*?\]&quot;
+        find = re.findall(regex, js)
+        if find:
+            for f in find:
+                if &#39;!&#39; in f:
+                    if len(re.findall(&#39;!&#39;, f)) % 2 == 0:
+                        js = js.replace(f, &#39;false&#39;)
+                    else:
+                        js = js.replace(f, &#39;true&#39;)
+                else:
+                    js = js.replace(f, &#39;undefined&#39;)
+        js = js.replace(&#39;window.headless&#39;, &#39;undefined&#39;)
+        return js
+
+    def replace_url(self, js):
+        # 替换1
+        # 取出两个变量名
+        _3d = re.findall(&quot;(var .{0,5}=)document\.createElement\(&#39;div&#39;\);&quot;, js)
+        _2b = re.findall(&quot;(var .{0,5}=).{0,5}\.match\(/https\?:\\\/\\\//\)\[0\];&quot;, js)
+
+        # 替换成要访问的url
+        js = re.sub(&quot;var .{0,5}=document\.createElement\(&#39;div&#39;\);&quot;, _3d[0] + f&#39;&quot;{self.url.replace(&quot;http://&quot;, &quot;&quot;)}&quot;;&#39;,
+                    js)
+        js = re.sub(&quot;_.{0,5}\.innerHTML=&#39;&lt;a href=.{0,25}&lt;/a&gt;&#39;;&quot;, &quot;&quot;, js)
+        js = re.sub(&quot;_.{0,5}=.{0,5}\.firstChild\.href;&quot;, &quot;&quot;, js)
+        js = re.sub(&quot;var .{0,5}=.{0,5}\.match\(/https\?:\\\/\\\//\)\[0\];&quot;, _2b[0] + &#39;&quot;http://&quot;;&#39;, js)
+        js = re.sub(&quot;_.{0,5}=.{0,5}\.substr\(.{0,5}\.length\)\.toLowerCase\(\);&quot;, &quot;&quot;, js)
+        return js
+
+    def second_decryption(self, second_js):
+        &quot;&quot;&quot;
+        把第二层js准换成本地可以运行的js
+        !!!此处可能会出错!!!
+        :param second_js: 第一次解密的js
+        :return: __jsl_clearance的值
+        &quot;&quot;&quot;
+        # 转义字符
+        js = second_js.replace(&#39;\\\\&#39;, &#39;\\&#39;)
+
+        # 切割
+        js = &#39;cookie&#39; + js.split(&#39;document.cookie&#39;)[1]
+        js = js.split(&#39;GMT;Path=/;&#39;)[0] + &quot;&#39;&quot;
+
+        if re.findall(&quot;(var .{0,5}=)document\.createElement\(&#39;div&#39;\);&quot;, js):
+            js = self.replace_url(js)
+
+        # 替换可能出现的window
+        js = self.regex(js)
+
+        s = &quot;&quot;&quot;
+            function cook() {
+            %s
+            return cookie
+            }
+            &quot;&quot;&quot;
+        new_js = s % js
+        ctx = execjs.compile(new_js)
+        # 切割获得的__jsl_clearance
+        jsl = ctx.call(&#39;cook&#39;)
+        jsl = jsl.split(&#39;;&#39;)[0]
+        jsl_clearance = jsl.split(&#39;=&#39;)[1]
+        return jsl_clearance
+
+    def test_cookies(self, jsluid, jsl_clearance):
+        &quot;&quot;&quot;
+        带cookies访问,测试拿到的是否正确
+        :param jsluid:cookies中的参数
+        :param jsl_clearance: cookies中的参数
+        :return:
+        &quot;&quot;&quot;
+        headers = self.headers.copy()
+        headers[&#39;Cookie&#39;] = f&#39;__jsluid_h={jsluid}; __jsl_clearance={jsl_clearance};&#39;
+        response = requests.get(self.test_url, headers=headers)
+        print(response.text)
+        return response.status_code
+
+    def run(self):
+        while True:
+            first_js, jsluid = self.acquire_js()
+            second_js = self.first_decryption(first_js)
+            try:
+                jsl_clearance = self.second_decryption(second_js)
+            except:
+                # print(second_js)
+                continue
+            else:
+                code = self.test_cookies(jsluid, jsl_clearance)
+                if code == 200:
+                    return jsluid, jsl_clearance
+                else:
+                    print(code)
+                    # print(second_js)
+                    continue
+
+
+if __name__ == &#39;__main__&#39;:
+    # # 企业信息公示系统
+    url = &quot;http://www.gsxt.gov.cn/index.html&quot;
+    test_url = &quot;http://www.gsxt.gov.cn/index.html&quot;
+
+    # # 66代理
+    # url = &quot;http://www.66ip.cn/2.html&quot;
+    # test_url = &quot;http://www.66ip.cn/2.html&quot;
+
+    # # 公安部网站
+    # url = &#39;http://www.mps.gov.cn/&#39;
+    # test_url = &#39;http://www.mps.gov.cn/&#39;
+
+    ck = Crack(url, test_url)
+    jsluid, jsl_clearance = ck.run()
+    print(&#39;jsluid:&#39;, jsluid)
+    print(&#39;jsl_clearance:&#39;, jsl_clearance)</code></pre><h2 id="利用超级鹰破解验证码"><a href="#利用超级鹰破解验证码" class="headerlink" title="利用超级鹰破解验证码"></a>利用超级鹰破解验证码</h2><pre><code>class SearchResultParse(object):
+    &#39;&#39;&#39;查询结果页解析
+    &#39;&#39;&#39;
+
+    def __init__(self, pagesource, base_url, parse_rule):
+        self.selector = etree.HTML(pagesource)
+        self.url_list = []
+        self.base_url = base_url
+        self.parse_rule = parse_rule[&#39;search_result_url&#39;]
+
+    def search_result_parse(self):
+        self.url_list = [self.base_url + i for i in self.selector.xpath(self.parse_rule)]
+        return self.url_list
+
+
+class PageDetailParse(object):
+    &#39;&#39;&#39;详情页解析
+    &#39;&#39;&#39;
+
+    def __init__(self, pagesource, parse_rule):
+        self.selector = etree.HTML(pagesource)
+        self.parse_rule = parse_rule
+        self.info_list = {}
+
+    def search_result_parse(self, primary_info=None):
+        if primary_info is None:
+            primary_info = []
+        for i in self.parse_rule[&#39;primaryinfo&#39;]:
+            primary_info.append(
+                self.selector.xpath(i).replace(&quot;\n&quot;, &quot;&quot;).replace(&quot;\t&quot;, &quot;&quot;).replace(&quot;\r&quot;, &quot;&quot;).replace(&quot; &quot;, &quot;&quot;))
+        self.info_list[&#39;primary_info&#39;] = primary_info
+        return self.info_list
+
+
+class CookieRequest(object):
+    &#39;&#39;&#39;带cookie访问查询结果
+    &#39;&#39;&#39;
+
+    def __init__(self, url_list=None):
+        &#39;&#39;&#39;设置requests中的session的cookie
+        &#39;&#39;&#39;
+        self.url_list = url_list
+        self.session = requests.Session()
+        self.result = []
+        self.headers = {
+            &#39;User-Agent&#39;: &#39;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.96 Safari/537.36&#39;
+        }
+
+    def cookie_requests(self):
+        &#39;&#39;&#39;带cookie依次访问各个查询结果
+        &#39;&#39;&#39;
+        url = &quot;http://www.gsxt.gov.cn/index.html&quot;
+        test_url = &quot;http://www.gsxt.gov.cn/corp-query-entprise-info-hot-search-list.html?province=100000&quot;
+        ck = Crack(url, test_url)
+        jsluid, jsl_clearance, JSESSIONID = ck.run()
+        self.headers[&#39;Cookie&#39;] = f&#39;__jsluid_h={jsluid}; __jsl_clearance={jsl_clearance};JSESSIONID={JSESSIONID}&#39;
+        for url in self.url_list:
+            response = self.session.get(url=url, headers=self.headers)
+            self.result.append(response.text)
+            time.sleep(5)
+        return self.result
+
+
+class MaxEnterError(Exception):
+    &#39;&#39;&#39;输入关键字最大尝试次数
+    &#39;&#39;&#39;
+
+    def __init__(self, ErrorInfo):
+        super().__init__(self)  # 初始化父类
+        self.errorinfo = ErrorInfo
+
+    def __str__(self):
+        return self.errorinfo
+
+
+class GtClickShot(object):
+
+    def __init__(self, username, password,soft_id):
+        &#39;&#39;&#39;初始化超级鹰
+        softid已固化到程序
+        args:
+            username(str):超级鹰普通用户名
+            password(str):超级鹰密码
+        &#39;&#39;&#39;
+        self.username = username
+        self.password = md5(password.encode(&quot;utf-8&quot;)).hexdigest()
+        self.soft_id = soft_id
+        self.base_params = {
+            &#39;user&#39;: self.username,
+            &#39;pass2&#39;: self.password,
+            &#39;softid&#39;: self.soft_id,
+        }
+        self.headers = {
+            &#39;Connection&#39;: &#39;Keep-Alive&#39;,
+            &#39;User-Agent&#39;: &#39;Mozilla/4.0 (compatible; MSIE 8.0; Windows NT 5.1; Trident/4.0)&#39;,
+        }
+
+    def PostPic(self, im, codetype):
+        &quot;&quot;&quot;发送图片至打码平台
+        args：       
+            im(Byte): 图片字节
+            codetype(str): 题目类型 参考 http://www.chaojiying.com/price.html
+        return(json):返回打码信息，包含坐标信息，坐标信息用“|”隔开
+        &quot;&quot;&quot;
+        params = {
+            &#39;codetype&#39;: codetype,
+        }
+        params.update(self.base_params)
+        files = {&#39;userfile&#39;: (&#39;ccc.jpg&#39;, im)}
+        r = requests.post(&#39;http://upload.chaojiying.net/Upload/Processing.php&#39;, data=params, files=files,
+                          headers=self.headers)
+        return r.json()
+
+    def ReportError(self, im_id):
+        &quot;&quot;&quot;识别错误返回题分
+        args：
+            im_id(str):报错题目的图片ID
+        return(str):报错反馈
+        &quot;&quot;&quot;
+        params = {
+            &#39;id&#39;: im_id,
+        }
+        params.update(self.base_params)
+        r = requests.post(&#39;http://upload.chaojiying.net/Upload/ReportError.php&#39;, data=params, headers=self.headers)
+        return r.json()
+
+
+class CorpSearch(object):
+    def __init__(self, init_url, index_url, headers, max_click):
+
+        &#39;&#39;&#39;初始化
+        args:
+            init_url:初始化url,加速乐反爬JS要求访问目标网站前需先访问初始化url获取gt和challenge
+            index_url:目标网站首页url
+            headers：请求头信息
+            max_click：最大循环点击次数为了应对点击不灵敏，设置循环检查点击。
+            self.wait:默认条件等待最大时间
+            self.click_valitimes:点击验证次数，大于0时需返回题分，等于0时不需要
+        &#39;&#39;&#39;
+        chrome_options = webdriver.ChromeOptions()
+        prefs = {
+            &#39;profile.default_content_setting_values&#39;: {
+                &#39;images&#39;: 1,  # 加载图片
+                &quot;User-Agent&quot;: UserAgent().random,  # 更换UA
+            }
+        }
+        chrome_options.add_experimental_option(&quot;prefs&quot;, prefs)
+        self.init_url = init_url
+        self.index_url = index_url
+        if platform.system() == &quot;Windows&quot;:
+            self.driver = webdriver.Chrome(&#39;chromedriver.exe&#39;, chrome_options=chrome_options)
+        elif platform.system() == &quot;Linux&quot;:
+            chrome_options.add_argument(&quot;--headless&quot;)
+            chrome_options.add_argument(&#39;--disable-gpu&#39;)
+            chrome_options.add_argument(&#39;--no-sandbox&#39;)
+            self.driver = webdriver.Chrome(
+                executable_path=&quot;/usr/bin/chromedriver&quot;,
+                chrome_options=chrome_options)
+        self.wait = WebDriverWait(self.driver, 50)
+        self.max_entertimes = max_click
+        self.click_valitimes = 0
+        self.action = ActionChains(self.driver)
+        self.gt_shot = GtClickShot(&quot;zhaoys&quot;, &quot;501314&quot;,&quot;901554&quot;)
+        self.options = webdriver.ChromeOptions()
+        self.headers = headers
+        for option in self.headers:
+            self.options.add_argument(option)
+
+    # 初始化页面，绕过过加速乐反爬，获取gt和challenge,并加载进入首页
+    def init(self):
+
+        &#39;&#39;&#39;
+        请求初始化网站，并进入首页
+        &#39;&#39;&#39;
+        self.driver.get(self.init_url)
+        self.wait.until(EC.presence_of_element_located((By.CSS_SELECTOR, &quot;body &gt; pre:nth-child(1)&quot;)))
+        self.driver.get(self.index_url)
+
+    # 加载首页，输入查询关键词，点击查询按钮
+    # 如果点击按钮失效,自动重新回车，并设定最大回车次数，一旦超过设定值，抛出异常，结束程序
+    def input_query(self, keyword):
+
+        &#39;&#39;&#39;输入关键词进行查询
+        args:
+            keyword:查询关键词
+        return:
+            仅用于方法返回
+        &#39;&#39;&#39;
+        enter_word = self.wait.until(EC.presence_of_element_located((By.ID, &quot;keyword&quot;)))
+        self.wait.until(EC.presence_of_element_located((By.ID, &quot;btn_query&quot;)))
+        time.sleep(random.randint(8, 15) / 10)
+        enter_word.send_keys(keyword)
+        time.sleep(random.randint(5, 10) / 10)
+        enter_word.send_keys(Keys.ENTER)
+        while True:
+            if self.max_entertimes == 0:
+                raise MaxEnterError(&#39;---Out of max times on the search enter---&#39;)
+            gt_panel = self.driver.find_element_by_css_selector(&quot;body &gt; div.geetest_panel.geetest_wind&quot;)
+            style_value = gt_panel.value_of_css_property(&quot;display&quot;)
+            if style_value.strip() == &quot;block&quot;:
+                break
+            else:
+                enter_word.send_keys(Keys.ENTER)
+                time.sleep(random.randint(1, 5) / 10)
+                self.max_entertimes -= 1
+        return
+
+    # 判断页面中是否包含某个元素，注意是class_name
+    def is_element_exist(self, class_name):
+
+        &#39;&#39;&#39;判断某个元素是否存在
+        args:
+            class_name:元素class属性名称
+        return:
+            存在(True),不存在(False)
+        &#39;&#39;&#39;
+
+        try:
+            self.driver.find_element_by_class_name(class_name)
+            return True
+        except:
+            return False
+
+    # 屏幕截图，并将截图内容读入内存，加速计算操作
+    def get_screenshot(self):
+
+        &#39;&#39;&#39;屏幕截图
+        return:
+            返回截图
+        &#39;&#39;&#39;
+
+        screenshot = self.driver.get_screenshot_as_png()
+        screenshot = Image.open(BytesIO(screenshot))
+        return screenshot
+
+    # 获取验证验证码图片的位置，用于裁图
+    def get_position(self, pos_img):
+
+        &#39;&#39;&#39;验证图片的坐标尺寸信息
+        args:
+            pos_img:验证码定位点元素
+        return:
+            验证码定位点的坐标信息，注意依次为：左底，左高，右高，右底
+        &#39;&#39;&#39;
+
+        location = pos_img.location
+        size = pos_img.size
+        top, bottom, left, right = location[&#39;y&#39;], location[&#39;y&#39;] + size[&#39;height&#39;], location[&#39;x&#39;], location[&#39;x&#39;] + size[
+            &#39;width&#39;]
+        return (left, top, right, bottom)
+
+    # 对于滑块验证码，获取完整的和缺块的验证码图片截图
+    def get_slide_images(self):
+
+        &#39;&#39;&#39;获取有缺口和没缺口的图片
+        &#39;&#39;&#39;
+        canvas_img = self.wait.until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, &quot;.geetest_canvas_img.geetest_absolute &gt; div&quot;)))
+        position = self.get_position(canvas_img)
+        befor_screenshot = self.get_screenshot()
+        befor_img = befor_screenshot.crop(position)
+        befor_img.save(&quot;befor_click.png&quot;)
+
+        btn_slide = self.wait.until(EC.presence_of_element_located((By.CLASS_NAME, &quot;geetest_slider_button&quot;)))
+        self.action.click_and_hold(btn_slide).perform()
+        after_screenshot = self.get_screenshot()
+        after_img = after_screenshot.crop(position)
+        after_img.save(&quot;after_click.png&quot;)
+
+    # 获取缺口位置，计算滑动距离（灰度化，求差值，阈值去燥，计算缺口位置，计算滑动距离）
+    def get_slide_distance(self):
+
+        &#39;&#39;&#39;获取滑动距离
+        return:
+            返回滑动距离
+        &#39;&#39;&#39;
+
+        befor_click_img = &quot;F:\\Anaconda3\\Lib\\captcha\\gt_validate\\befor_click.png&quot;
+        after_click_path = &quot;F:\\Anaconda3\\Lib\\captcha\\gt_validate\\after_click.png&quot;
+        befor_img = cv2.imread(befor_click_img)
+        after_img = cv2.imread(after_click_path)
+
+        befor_gray = cv2.cvtColor(befor_img, cv2.COLOR_BGR2GRAY)
+        after_gray = cv2.cvtColor(after_img, cv2.COLOR_BGR2GRAY)
+        img_diff = np.array(befor_gray) - np.array(after_gray)
+
+        height, width = img_diff.shape
+
+        for i in range(height):
+            for j in range(width):
+                if img_diff[i][j] &gt; 245 or img_diff[i][j] &lt; 60:
+                    img_diff[i][j] = 0
+
+        start_position = random.choice([4, 5, 6])
+        reshape_img = img_diff.T
+        sum_color = list(map(lambda x: sum(x), reshape_img))
+        for i in range(1, len(sum_color)):
+            if sum_color[i] &gt; 1000 and i &gt; 60:
+                end_position = i
+                break
+
+        slide_distance = end_position - start_position
+        return slide_distance
+
+    # 模拟鼠标轨迹，按照开始慢加速（2），中间快加速（5），后面慢加速（2），最后慢减速的方式（1）
+    # 返回值是x值与Y值坐标以及sleep时间截点，起始中间最后都要sleep
+    def get_track(self, distance, track_list=None):
+
+        &#39;&#39;&#39;获取滑动轨迹
+        args:
+            distance:滑动距离
+        kargs:
+            Track_list:滑动轨迹，初始化为空
+        return:
+            滑动轨迹，断点位置(2处)
+        &#39;&#39;&#39;
+
+        if track_list is None:
+            track_list = []
+        base = distance / 10
+        x1 = round(base * 2)
+        x2 = round(base * 5)
+        x3 = x1
+        x4 = distance - x1 - x2 - x3
+        ynoise_num = random.randint(5, 10)
+        y1 = [random.randint(-2, 2) for _ in range(ynoise_num)]
+        yrdm = list(set(random.choice(range(distance)) for _ in range(ynoise_num)))
+        x = [1] * distance
+        y = [0] * distance
+        for i, j in enumerate(yrdm):
+            y[j] = y1[i]
+        t1 = sorted([random.randint(8, 13) / 1000 for _ in range(x1)], reverse=True)
+        t2 = sorted([random.randint(1, 8) / 1000 for _ in range(x2)], reverse=True)
+        t3 = sorted([random.randint(8, 13) / 1000 for _ in range(x3)], reverse=True)
+        t4 = sorted([random.randint(12, 20) / 1000 for _ in range(x4)])
+        t = t1 + t2 + t3 + t4
+
+        for i in (zip(x, y, t)):
+            track_list.append(i)
+        return (track_list, x1 + x2, x1 + x2 + x3)
+
+    # 对于点击验证码，获取验证码的校验文字和待点击图片截图,以及验证码弹框元素
+    def get_click_images(self):
+
+        &#39;&#39;&#39;获取需点击的图片
+        return: 
+            需点击坐标的图片，
+            提示图片(用于调试打码时的计算点击次数)，  
+            验证码图片定位元素(用于定位鼠标位置并计算相对坐标)
+        &#39;&#39;&#39;
+
+        click_img_element = self.wait.until(EC.presence_of_element_located((By.CLASS_NAME, &quot;geetest_widget&quot;)))
+        self.wait.until(EC.presence_of_element_located((By.CLASS_NAME, &quot;geetest_item_img&quot;)))
+        time.sleep(random.randint(1, 5) / 10)
+        click_position = self.get_position(click_img_element)
+        all_screenshot = self.get_screenshot()
+        click_img = all_screenshot.crop(click_position)
+        click_img.save(&quot;click_img.png&quot;)
+
+        tip_img = self.wait.until(EC.presence_of_element_located((By.CLASS_NAME, &quot;geetest_tip_img&quot;)))
+        tip_position = self.get_position(tip_img)
+        tip_img = all_screenshot.crop(tip_position)
+        tip_img.save(&quot;tip_img.png&quot;)
+
+        return (click_img, tip_img, click_img_element)
+
+    # 计算要点击的字符数量，灰度化，反向二值化,转置，沿X坐标对Y求和，判断分割点数量，判断字符数量
+    def cal_char_num(self, char_img_path):
+
+        &#39;&#39;&#39;计算需点击的字符数量
+        args:
+            char_img_path:提示图片的存储路径
+        return:
+            点击次数
+        &#39;&#39;&#39;
+
+        flag = 0
+        origin_img = cv2.imread(char_img_path)
+        gray_img = cv2.cvtColor(origin_img, cv2.COLOR_BGR2GRAY)
+        ret, thresh1 = cv2.threshold(gray_img, 127, 255, cv2.THRESH_BINARY_INV)
+        transpos_img = np.array(thresh1).T
+        result = list(map(lambda x: sum(x), transpos_img))
+        for i in range(len(result) - 3):
+            if result[i] == 0 and result[i + 1] == 0 and result[i + 2] &gt; 0:
+                flag += 1
+        return flag
+
+    # 返回验证码字符的坐标，每个点击点的坐标,并转化为整数坐标
+    def char_absolute_coord(self, img, num, coord=None):
+
+        &#39;&#39;&#39;调试用，点击验证码图片返回整数值坐标
+        args:
+            img:验证码图片
+            num：点击次数
+        kargs:
+            coord:验证码字符坐标    
+        return:
+            字符坐标
+        &#39;&#39;&#39;
+        if coord is None:
+            coord = []
+        img = Image.open(img)
+        plt.imshow(img)
+        points = plt.ginput(num)
+        plt.close()
+        for i in points:
+            x_co, y_co = i
+            coord.append((round(x_co), round(y_co)))
+        return coord
+
+    # 返回从起点开始依次到每个点击文字的相对位置，形式为[(xoffset,yoffset),(),(),...]
+    def get_offset_coord(self, absolute_coord, click_track=None):
+
+        &#39;&#39;&#39;获取相邻点击字符的相对坐标，用于鼠标移动点击
+        args:
+            absolute_coord：验证码字符的绝对坐标
+        kargs:
+            click_track:每个需点击字符间的相对坐标或位移
+        return:
+            相对坐标或位移
+        &#39;&#39;&#39;
+
+        if click_track is None:
+            click_track = []
+        for i, j in enumerate(absolute_coord):
+            if i == 0:
+                click_track.append(j)
+            else:
+                click_track.append((j[0] - absolute_coord[i - 1][0], j[1] - absolute_coord[i - 1][1]))
+        return click_track
+
+    # 验证点击验证码,获取验证码数量，人工点击，按照计算的坐标相对偏移位置，依次点击文字进行验证
+    # 通过打码平台，将验证码图片发送后返回坐标信息，通过超级鹰打码平台
+    def click_captcha_validate(self):
+
+        &#39;&#39;&#39;根据打码平台返回的坐标进行验证
+
+        return:
+            仅仅用于方法返回
+        &#39;&#39;&#39;
+        click_img, tip_img, click_img_element = self.get_click_images()
+
+        bytes_array = BytesIO()
+        click_img.save(bytes_array, format=&quot;PNG&quot;)
+        coord_result = self.gt_shot.PostPic(bytes_array.getvalue(), &quot;9005&quot;)
+        print(coord_result)
+        groups = coord_result.get(&quot;pic_str&quot;).split(&#39;|&#39;)
+        if groups == &quot;&quot;:
+            raise RuntimeError(&quot;打码超时&quot;)
+        pic_id = coord_result.get(&quot;pic_id&quot;)
+        points = [[int(num) for num in group.split(&#39;,&#39;)] for group in groups]
+
+        #        tip_img_path=&quot;D:\\Anaconda3\\Lib\\captcha\\gt_validate\\tip_img.png&quot;
+        #        click_img_path=&quot;D:\\Anaconda3\\Lib\\captcha\\gt_validate\\click_img.png&quot;
+
+        #        num=self.cal_char_num(tip_img_path)
+        #        points=self.char_absolute_coord(click_img_path,num)
+
+        mouse_track = self.get_offset_coord(points)
+        print(mouse_track)
+        self.action.move_to_element_with_offset(click_img_element, 0, 0)
+        for position in mouse_track:
+            self.action.move_by_offset(position[0], position[1])
+            self.action.click()
+            self.action.pause(random.randint(3, 7) / 10)
+        self.action.perform()
+        time.sleep(random.randint(4, 6) / 10)
+        click_submit_btn = self.wait.until(EC.presence_of_element_located((By.CLASS_NAME, &#39;geetest_commit_tip&#39;)))
+        click_submit_btn.click()
+        self.action.reset_actions()
+        self.valide_process(pic_id=pic_id)
+        return
+
+    # 验证滑动验证码，获取滑动距离和滑动轨迹，分别在起始，中间，结束时随机停顿
+    def slide_captcha_validate(self):
+
+        &#39;&#39;&#39;滑动验证码验证
+        return:
+            仅仅用于方法返回
+        &#39;&#39;&#39;
+
+        self.get_slide_images()
+        distance = self.get_slide_distance()
+        track, p1, p2 = self.get_track(distance)
+        time.sleep(random.randint(3, 7) / 10)
+        for i, j in enumerate(track):
+            if i == p1 or i == p2:
+                time.sleep(random.randint(3, 7) / 10)
+            self.action.move_by_offset(j[0], j[1])
+            time.sleep(j[2])
+        time.sleep(random.randint(3, 7) / 10)
+        self.action.release()
+        self.valide_process()
+        return
+
+    # 验证是否成功破解，设置重启机制
+    # 超过最大验证次数需点击“点击此处重试”
+    def valide_process(self, pic_id=None):
+
+        &#39;&#39;&#39;验证过程
+        1&gt;判断极验弹框消失且查询结果框出现，验证成功，结束验证；
+        2&gt;第一步验证失败，超时；
+        3&gt;超时原因：极验验证框没消失(跳转至第4步)或查询结果框没出现(跳转至第6步)；
+        4&gt;极验验证框没消失，检验是否超过最大验证次数，如果是，需点击重试，跳至第7步，如果不是，跳至第5步；
+        5&gt;如果不是，判断验证类型，调用响应验证方法，跳至第1步；
+        6&gt;如果查询结果框没出现，直接退出关闭浏览器；
+        7&gt;点击重试时，如果是空白响应则退出浏览器，或者判断验证类型，调用响应验证方法，跳至第1步。
+        args:
+            cap_type:验证码类型
+            pic_id:点击类验证码图片id
+        return:
+            要么验证成功，要么退出浏览器
+        &#39;&#39;&#39;
+
+        try:
+            WebDriverWait(self.driver, 3).until_not(
+                EC.visibility_of_element_located((By.CSS_SELECTOR, &quot;body &gt; div.geetest_panel&quot;)))
+            WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located((By.ID, &quot;advs&quot;)))
+            print(&quot;Validate Successful&quot;)
+            return
+        except TimeoutException:
+            try:
+                gt_panel_error = self.driver.find_element_by_css_selector(
+                    &quot;body &gt; div.geetest_panel.geetest_wind &gt; div.geetest_panel_box &gt; div.geetest_panel_error&quot;)
+                error_display = gt_panel_error.value_of_css_property(&quot;display&quot;)
+
+                if error_display.strip() == &quot;block&quot;:
+                    gt_panel_error_content = self.driver.find_element_by_css_selector(
+                        &quot;.geetest_panel_error &gt; div.geetest_panel_error_content&quot;)
+                    self.action.move_to_element(gt_panel_error_content).click().perform()
+                    self.action.reset_actions()
+                    try:
+                        WebDriverWait(self.driver, 3).until_not(
+                            EC.visibility_of_element_located((By.CSS_SELECTOR, &quot;body &gt; div.geetest_panel&quot;)))
+                        WebDriverWait(self.driver, 10).until(lambda x: x.find_element_by_id(&#39;advs&#39;).is_displayed())
+                        print(&quot;Validate Successful&quot;)
+                        return
+                    except TimeoutException:
+                        self.slide_orclick_validate(pic_id)
+                else:
+                    self.slide_orclick_validate(pic_id)
+
+            except:
+                print(&#39;error occured&#39;)
+                return
+
+    # 判断是执行点击还是滑块
+    def slide_orclick_validate(self, pic_id=None):
+
+        &#39;&#39;&#39;判断下一步是选择滑动验证还是点击验证还是退出浏览器
+        args:
+            pic_id:点击类验证码图片id
+        return:
+            要么滑动验证，要么点击验证，要么None          
+        &#39;&#39;&#39;
+
+        try:
+            WebDriverWait(self.driver, 3).until(EC.presence_of_element_located((By.CLASS_NAME, &quot;geetest_close&quot;)))
+            print(&#39;Validate Failed,retry again&#39;)
+            if self.is_element_exist(&quot;geetest_canvas_img&quot;):
+                print(&#39;captcha type is slide&#39;)
+                return self.slide_captcha_validate()
+            else:
+                print(&#39;captcha type is click&#39;)
+                if self.click_valitimes &gt; 0:
+                    self.gt_shot.ReportError(pic_id)
+                self.click_valitimes += 1
+                return self.click_captcha_validate()
+        except:
+            print(&quot;Directly no click or slide validate&quot;)
+            return
+
+    # 带cookie切换至首页继续检索
+    def switch_hmpg(self):
+
+        &#39;&#39;&#39;由结果页切换至首页
+        return: 用于方法返回
+        &#39;&#39;&#39;
+        self.wait.until(EC.presence_of_element_located((By.ID, &quot;advs&quot;)))
+        hmpg_btn = self.driver.find_element_by_css_selector(
+            &quot;body &gt; div.container &gt; div.header_box &gt; div &gt; div &gt; a:nth-child(1)&quot;)
+        self.action.move_to_element(hmpg_btn).click().perform()
+        self.action.reset_actions()
+        self.wait.until(lambda x: x.find_element_by_id(&#39;btn_query&#39;).is_displayed())
+        return
+
+    # 通过index界面或者点击首页继续检索时的爬取步骤
+    def main(self, keyword, start_pg=None):
+
+        &#39;&#39;&#39;操作主程序
+        args:
+            keyword:查询关键词
+        kargs:
+            start_pg:是否需要初始化访问加速乐，默认要
+
+        &#39;&#39;&#39;
+
+        if start_pg == &quot;homepage&quot;:
+            self.switch_hmpg()
+        else:
+            self.init()
+        self.input_query(keyword)
+        self.slide_orclick_validate()
+
+    # 保存cookie和检索结果，用于requests及详情解析
+    def to_dict(self):
+
+        &#39;&#39;&#39;保存cookie（用于requests请求及详情解析）和查询结果
+        args:
+            cookie_name:cookie文件名称
+        &#39;&#39;&#39;
+
+        htmlpage = self.driver.page_source
+
+        return {
+                &#39;page&#39;: htmlpage
+                }
+
+
+if __name__ == &#39;__main__&#39;:
+    init_url = &quot;http://www.gsxt.gov.cn/SearchItemCaptcha&quot;
+    index_url = &quot;http://www.gsxt.gov.cn/index.html&quot;
+    base_url = &#39;http://www.gsxt.gov.cn&#39;
+    result_parse_rule = {&#39;search_result_url&#39;: &#39;//*[@id=&quot;advs&quot;]/div/div[2]/a/@href&#39;}
+    detail_parse_rule = {
+        &#39;primaryinfo&#39;: [&#39;string(//*[@id=&quot;primaryInfo&quot;]/div/div[@class=&quot;overview&quot;]/dl[{}])&#39;.format(i) for i in
+                        range(15)], }
+    max_click = 10
+    chm_headers = [&#39;Host=&quot;www.gsxt.gov.cn&quot;&#39;,
+                   &#39;Connection=&quot;keep-alive&quot;&#39;,
+                   &#39;User-Agent=&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36&quot;&#39;,
+                   &#39;Upgrade-Insecure-Requests=1&#39;,
+                   &#39;Accept=&quot;text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8&quot;&#39;,
+                   &#39;Accept-Encoding=&quot;gzip, deflate&quot;&#39;,
+                   &#39;Accept-Language=&quot;zh-CN,zh;q=0.9&quot;&#39;]
+
+    search = CorpSearch(init_url, index_url, chm_headers, max_click)
+    search.main(&quot;腾讯&quot;)
+    cookie_html = search.to_dict()
+    search_result = SearchResultParse(cookie_html[&#39;page&#39;], base_url, result_parse_rule)
+    url_list = search_result.search_result_parse()
+
+    detail_request = CookieRequest(url_list=url_list)
+    detail_result = detail_request.cookie_requests()
+    for pg in detail_result:
+        pg_detail = PageDetailParse(pg, detail_parse_rule)
+        detail = pg_detail.search_result_parse()
+        m = re.findall(r&#39;\[(.*?)\]&#39;, str(detail))
+        info_list = m[0].replace(&#39;\&#39;&#39;, &#39;&#39;).split(&#39;, &#39;)
+        sql = &quot;insert into company(code,name,type,start,end,) values(%s,%s,%s,%s.%s)&quot;
+        count, rt_list = MysqlConnection.execute_sql(sql, (info_list[0],info_list[1],info_list[2],info_list[3]))</code></pre><h2 id="爬虫实现"><a href="#爬虫实现" class="headerlink" title="爬虫实现"></a>爬虫实现</h2><pre><code class="ruby">class EnterPriseSpider(scrapy.Spider):
+    name = &#39;enterprise&#39;
+    allowed_domains = [&#39;gsxt.gov.cn&#39;]
+    start_urls = [&#39;http://www.gsxt.gov.cn/index.html&#39;]
+
+    def __init__(self, word=None, *args, **kwargs):
+        super(eval(self.__class__.__name__), self).__init__(*args, **kwargs)
+        self.word = word
+
+    def start_requests(self):
+        init_url = &quot;http://www.gsxt.gov.cn/SearchItemCaptcha&quot;
+        index_url = &quot;http://www.gsxt.gov.cn/index.html&quot;
+        base_url = &#39;http://www.gsxt.gov.cn&#39;
+        result_parse_rule = {&#39;search_result_url&#39;: &#39;//*[@id=&quot;advs&quot;]/div/div[2]/a/@href&#39;}
+
+
+        max_click = 10
+        chm_headers = [&#39;Host=&quot;www.gsxt.gov.cn&quot;&#39;,
+                       &#39;Connection=&quot;keep-alive&quot;&#39;,
+                       &#39;User-Agent=&quot;Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/62.0.3202.94 Safari/537.36&quot;&#39;,
+                       &#39;Upgrade-Insecure-Requests=1&#39;,
+                       &#39;Accept=&quot;text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8&quot;&#39;,
+                       &#39;Accept-Encoding=&quot;gzip, deflate&quot;&#39;,
+                       &#39;Accept-Language=&quot;zh-CN,zh;q=0.9&quot;&#39;]
+
+        search = CorpSearch(init_url, index_url, chm_headers, max_click)
+        search.main(self.word)
+        cookie_html = search.to_dict()
+        search_result = SearchResultParse(cookie_html[&#39;page&#39;], base_url, result_parse_rule)
+        url_list = search_result.search_result_parse()
+
+
+        yield Request(url=&quot;https://www.baidu.com/&quot;,callback=self.parse,
+                      meta={&#39;url_list&#39;: url_list})
+
+    def parse(self, response):
+        detail_parse_rule = {
+            &#39;primaryinfo&#39;: [&#39;string(//*[@id=&quot;primaryInfo&quot;]/div/div[@class=&quot;overview&quot;]/dl[{}])&#39;.format(i) for i in
+                            range(15)], }
+        url_list = response.meta.get(&quot;url_list&quot;, &quot;&quot;)
+        detail_request = CookieRequest(url_list=url_list)
+        detail_result = detail_request.cookie_requests()
+        for pg in detail_result:
+            pg_detail = PageDetailParse(pg, detail_parse_rule)
+            detail = pg_detail.search_result_parse()
+            m = re.findall(r&#39;\[(.*?)\]&#39;, str(detail))
+            info_list = m[0].replace(&#39;\&#39;&#39;, &#39;&#39;).split(&#39;, &#39;)
+            item = CompanyItem()
+            item[&#39;name&#39;] = company_info(info_list, &quot;企业名称：&quot;)
+            item[&#39;code&#39;] = company_info(info_list, &quot;统一社会信用代码：&quot;)
+            item[&#39;type&#39;] = company_info(info_list, &quot;类型：&quot;)
+
+            start = company_info(info_list, &quot;营业期限自：&quot;)
+            partner_start = company_info(info_list, &quot;合伙期限自：&quot;)
+            item[&#39;start&#39;] = start if &quot;无&quot; == partner_start else partner_start
+            end = company_info(info_list, &quot;合伙期限自：&quot;)
+            partner_end = company_info(info_list, &quot;合伙期限至：&quot;)
+            item[&#39;end&#39;] = end if &quot;无&quot; == partner_end else partner_end
+
+            item[&#39;capital&#39;] = company_info(info_list, &quot;注册资本：&quot;)
+            item[&#39;owner&#39;] = company_info(info_list, &quot;法定代表人：&quot;)
+            item[&#39;establish&#39;] = company_info(info_list, &quot;成立日期：&quot;)
+            item[&#39;registration&#39;] = company_info(info_list, &quot;登记机关：&quot;)
+            item[&#39;check&#39;] = company_info(info_list, &quot;核准日期：&quot;)
+            item[&#39;status&#39;] = company_info(info_list, &quot;登记状态：&quot;)
+            residence = company_info(info_list, &quot;住所：&quot;)
+            premises = company_info(info_list, &quot;主要经营场所：&quot;)
+            item[&#39;address&#39;] = residence if &quot;无&quot; == premises else premises
+            item[&#39;scope&#39;] = company_info(info_list, &quot;经营范围：&quot;)
+            item[&#39;partner&#39;] = company_info(info_list, &quot;执行事务合伙人:&quot;)
+            yield item</code></pre><h1 id="main-py"><a href="#main-py" class="headerlink" title="main.py"></a>main.py</h1><pre><code class="xl">from scrapy import cmdline
+from scrapy.cmdline import execute
+
+import sys
+import os
+
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+# execute([&quot;scrapy&quot;, &quot;crawl&quot;, &quot;enterprise&quot;,&quot;-a&quot;,&quot;word=百度&quot;])
+execute([&quot;scrapy&quot;, &quot;crawl&quot;, &quot;zhilian&quot;])</code></pre></article><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a> <span class="donate_txt">↑<br> 欢迎投食,求鼓励，求支持！</span><br></div><div id="donate_guide" class="donate_bar center hidden"> <img src="/images/alipay.png" alt="支付宝打赏"> <img src="/images/wechatpay.png" alt="微信打赏"></div><script type="text/javascript">document.getElementById("btn_donate").onclick=function(){$("#donate_board").addClass("hidden"),$("#donate_guide").removeClass("hidden")}</script></div><div class="nexmoe-post-copyright"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i> <strong>本文作者：</strong>OneJane<br> <strong>本文链接：</strong><a href="https://onejane.github.io/2019/09/18/基于selenium爬取智联招聘及国家企业信用信息公示系统/" title="https://onejane.github.io/2019/09/18/基于selenium爬取智联招聘及国家企业信用信息公示系统/" target="_blank" rel="noopener">https://onejane.github.io/2019/09/18/基于selenium爬取智联招聘及国家企业信用信息公示系统/</a><br> <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可</div><section class="nexmoe-comment"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css"><div id="gitalk"></div><script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script><script type="text/javascript">var gitalk=new Gitalk({clientID:"e677e59382e1c7a468fd",clientSecret:"717d041bc4ab749f069314862232cfb6ec8adc15",id:decodeURI(window.location.pathname),repo:"onejane.github.io",owner:"onejane",admin:"onejane"});gitalk.render("gitalk")</script></section></div></div></div><script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/smoothscroll-for-websites@1.4.9/SmoothScroll.min.js"></script><script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js"></script><script>hljs.initHighlightingOnLoad()</script><script src="/js/app.js?v=1568779254979"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.1.0/lazysizes.min.js"></script><div hidden><script type="text/javascript" src="https://js.users.51.la/20279757.js"></script></div></body><script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script></html>
