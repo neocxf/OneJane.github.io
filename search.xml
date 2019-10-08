@@ -154,8 +154,8 @@
         <category>项目实战</category>
       </categories>
       <tags>
-        <tag>ant design pro</tag>
         <tag>dubbo</tag>
+        <tag>ant design pro</tag>
         <tag>zookeeper</tag>
       </tags>
   </entry>
@@ -168,8 +168,8 @@
       </categories>
       <tags>
         <tag>react</tag>
-        <tag>ant design</tag>
         <tag>ant design pro</tag>
+        <tag>ant design</tag>
       </tags>
   </entry>
   <entry>
@@ -247,8 +247,8 @@
       </categories>
       <tags>
         <tag>spring cloud alibaba</tag>
-        <tag>skywalking</tag>
         <tag>rocketmq</tag>
+        <tag>skywalking</tag>
         <tag>validate</tag>
         <tag>multi druid</tag>
         <tag>swagger</tag>
