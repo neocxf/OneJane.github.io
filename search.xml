@@ -177,8 +177,8 @@
         <category>项目实战</category>
       </categories>
       <tags>
-        <tag>ant design pro</tag>
         <tag>dubbo</tag>
+        <tag>ant design pro</tag>
         <tag>zookeeper</tag>
       </tags>
   </entry>
@@ -240,10 +240,10 @@
         <category>项目实战</category>
       </categories>
       <tags>
-        <tag>session</tag>
-        <tag>redis</tag>
-        <tag>freemarker</tag>
         <tag>spring cloud alibaba</tag>
+        <tag>redis</tag>
+        <tag>session</tag>
+        <tag>freemarker</tag>
       </tags>
   </entry>
   <entry>
@@ -286,8 +286,8 @@
         <category>项目实战</category>
       </categories>
       <tags>
-        <tag>spring cloud alibaba</tag>
         <tag>sentinel</tag>
+        <tag>spring cloud alibaba</tag>
         <tag>nacos</tag>
       </tags>
   </entry>
@@ -438,8 +438,8 @@
         <category>高可用</category>
       </categories>
       <tags>
-        <tag>redis</tag>
         <tag>sentinel</tag>
+        <tag>redis</tag>
       </tags>
   </entry>
   <entry>
@@ -485,8 +485,8 @@
         <category>注册中心</category>
       </categories>
       <tags>
-        <tag>spring cloud alibaba</tag>
         <tag>docker</tag>
+        <tag>spring cloud alibaba</tag>
       </tags>
   </entry>
 </search>
