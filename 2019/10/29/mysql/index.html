@@ -1,1 +1,531 @@
-<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.9.0"><title>mysql - OneJane</title><meta charset="UTF-8"><meta name="description" content="微服务,高可用,高并发,人工智能"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="msvalidate.01" content="396E9693347B4D18AAE96D9E75B9B686"><link rel="shortcut icon" href="/images/a.ico" type="image/png"><meta name="description" content="parted实现linux大磁盘分区"><meta name="keywords" content="function,procedure"><meta property="og:type" content="article"><meta property="og:title" content="mysql"><meta property="og:url" content="https://onejane.github.io/2019/10/29/mysql/index.html"><meta property="og:site_name" content="OneJane"><meta property="og:description" content="parted实现linux大磁盘分区"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2019-10-29T07:27:41.669Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="mysql"><meta name="twitter:description" content="parted实现linux大磁盘分区"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/css/mdui.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.15.8/styles/atom-one-dark.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1038733_0xvrvpg9c0r.css"><link rel="stylesheet" href="/css/style.css?v=1572343223936"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script></head><body class="mdui-drawer-body-left"><div id="nexmoe-background"><div class="nexmoe-bg" style="background-image:url(https://www.github.com/OneJane/blog/raw/master/小书匠/1566388885395.png)"></div><div class="mdui-appbar mdui-shadow-0"><div class="mdui-toolbar"> <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a><div class="mdui-toolbar-spacer"></div> <a href="/" title="OneJane" class="mdui-btn mdui-btn-icon"><img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388846021.png"></a></div></div></div><div id="nexmoe-header"><div class="nexmoe-drawer mdui-drawer" id="drawer"><div class="nexmoe-avatar mdui-ripple"> <a href="/" title="OneJane"><img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388846021.png" alt="OneJane"></a></div><div class="nexmoe-count"><div><span>文章</span>40</div><div><span>标签</span>57</div><div><span>分类</span>11</div></div><ul class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}"><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页"><i class="mdui-list-item-icon nexmoefont icon-home"></i><div class="mdui-list-item-content"> 回到首页</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="关于博客"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i><div class="mdui-list-item-content"> 关于博客</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/py.html" title="我的朋友"><i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i><div class="mdui-list-item-content"> 我的朋友</div></a></ul><aside id="nexmoe-sidebar"><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">社交按钮</h3><div class="nexmoe-widget nexmoe-social"><a class="mdui-ripple" href="https://www.zhihu.com/people/codewj/activities" target="_blank" mdui-tooltip="{content: 'zhihu'}" style="color:#e76a8d;background-color:rgba(231,106,141,.15)"><i class="nexmoefont icon-zhihu"></i></a><a class="mdui-ripple" href="https://github.com/OneJane" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color:#191717;background-color:rgba(25,23,23,.15)"><i class="nexmoefont icon-github"></i></a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章分类</h3><div class="nexmoe-widget"><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/人工智能/">人工智能</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/定时器/">定时器</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/持续集成/">持续集成</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/注册中心/">注册中心</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/测试/">测试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/爬虫/">爬虫</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/项目实战/">项目实战</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高可用/">高可用</a><span class="category-list-count">4</span></li></ul></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">标签云</h3><div class="nexmoe-widget tagcloud"> <a href="/tags/Gensim/" style="font-size:10px">Gensim</a> <a href="/tags/Hanlp/" style="font-size:10px">Hanlp</a> <a href="/tags/NLTK/" style="font-size:10px">NLTK</a> <a href="/tags/OpenCV/" style="font-size:13.33px">OpenCV</a> <a href="/tags/Stanford-NLP/" style="font-size:10px">Stanford NLP</a> <a href="/tags/Tensorflow/" style="font-size:16.67px">Tensorflow</a> <a href="/tags/ant-design/" style="font-size:10px">ant design</a> <a href="/tags/ant-design-pro/" style="font-size:11.67px">ant design pro</a> <a href="/tags/docker/" style="font-size:18.33px">docker</a> <a href="/tags/dubbo/" style="font-size:11.67px">dubbo</a> <a href="/tags/elasticsearch/" style="font-size:10px">elasticsearch</a> <a href="/tags/elastisearch/" style="font-size:10px">elastisearch</a> <a href="/tags/email/" style="font-size:10px">email</a> <a href="/tags/es6/" style="font-size:10px">es6</a> <a href="/tags/feign/" style="font-size:10px">feign</a> <a href="/tags/flask/" style="font-size:10px">flask</a> <a href="/tags/freemarker/" style="font-size:10px">freemarker</a> <a href="/tags/function/" style="font-size:10px">function</a> <a href="/tags/gateway/" style="font-size:10px">gateway</a> <a href="/tags/gitlab/" style="font-size:11.67px">gitlab</a> <a href="/tags/haproxy/" style="font-size:10px">haproxy</a> <a href="/tags/jenkins/" style="font-size:11.67px">jenkins</a> <a href="/tags/jmeter/" style="font-size:10px">jmeter</a> <a href="/tags/keepalived/" style="font-size:10px">keepalived</a> <a href="/tags/linux/" style="font-size:10px">linux</a> <a href="/tags/maven/" style="font-size:11.67px">maven</a> <a href="/tags/multi-druid/" style="font-size:10px">multi druid</a> <a href="/tags/mybatis/" style="font-size:10px">mybatis</a> <a href="/tags/mybatisplus/" style="font-size:10px">mybatisplus</a> <a href="/tags/mysql/" style="font-size:10px">mysql</a> <a href="/tags/nacos/" style="font-size:11.67px">nacos</a> <a href="/tags/nexmoe/" style="font-size:10px">nexmoe</a> <a href="/tags/nlp/" style="font-size:15px">nlp</a> <a href="/tags/numpy/" style="font-size:10px">numpy</a> <a href="/tags/partition/" style="font-size:10px">partition</a> <a href="/tags/procedure/" style="font-size:10px">procedure</a> <a href="/tags/pxc/" style="font-size:10px">pxc</a> <a href="/tags/python/" style="font-size:10px">python</a> <a href="/tags/rabbitmq/" style="font-size:10px">rabbitmq</a> <a href="/tags/react/" style="font-size:11.67px">react</a> <a href="/tags/redis/" style="font-size:11.67px">redis</a> <a href="/tags/redis-cluster/" style="font-size:10px">redis-cluster</a> <a href="/tags/replication/" style="font-size:11.67px">replication</a> <a href="/tags/rocketmq/" style="font-size:11.67px">rocketmq</a> <a href="/tags/scrapy/" style="font-size:13.33px">scrapy</a> <a href="/tags/selenium/" style="font-size:13.33px">selenium</a> <a href="/tags/sentinel/" style="font-size:15px">sentinel</a> <a href="/tags/session/" style="font-size:10px">session</a> <a href="/tags/skywalking/" style="font-size:11.67px">skywalking</a> <a href="/tags/spring-cloud-alibaba/" style="font-size:20px">spring cloud alibaba</a> <a href="/tags/springboot/" style="font-size:15px">springboot</a> <a href="/tags/swagger/" style="font-size:10px">swagger</a> <a href="/tags/tk-mybatis/" style="font-size:10px">tk mybatis</a> <a href="/tags/umi/" style="font-size:10px">umi</a> <a href="/tags/validate/" style="font-size:10px">validate</a> <a href="/tags/xxl-job/" style="font-size:11.67px">xxl-job</a> <a href="/tags/zookeeper/" style="font-size:10px">zookeeper</a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章归档</h3><div class="nexmoe-widget"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul></div></div></aside><div class="nexmoe-copyright"> &copy; 2019 OneJane</div></div></div><div id="nexmoe-content"><div class="nexmoe-primary"><div class="nexmoe-post"><div class="nexmoe-post-cover"> <img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388885395.png"><h1>mysql</h1></div><div class="nexmoe-post-meta"><a><i class="nexmoefont icon-calendar-fill"></i> 2019年10月29日</a><a><i class="nexmoefont icon-areachart"></i> 8 字</a><a><i class="nexmoefont icon-time-circle-fill"></i> 大概 1 分钟</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/function/">function</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/procedure/">procedure</a></div><article><p>parted实现linux大磁盘分区</p><a id="more"></a></article><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a> <span class="donate_txt">↑<br> 欢迎投食,求鼓励，求支持！</span><br></div><div id="donate_guide" class="donate_bar center hidden"> <img src="/images/alipay.png" alt="支付宝打赏"> <img src="/images/wechatpay.png" alt="微信打赏"></div><script type="text/javascript">document.getElementById("btn_donate").onclick=function(){$("#donate_board").addClass("hidden"),$("#donate_guide").removeClass("hidden")}</script></div><div class="nexmoe-post-copyright"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i> <strong>本文作者：</strong>OneJane<br> <strong>本文链接：</strong><a href="https://onejane.github.io/2019/10/29/mysql/" title="https://onejane.github.io/2019/10/29/mysql/" target="_blank" rel="noopener">https://onejane.github.io/2019/10/29/mysql/</a><br> <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可</div><section class="nexmoe-comment"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css"><div id="gitalk"></div><script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script><script type="text/javascript">var gitalk=new Gitalk({clientID:"e677e59382e1c7a468fd",clientSecret:"717d041bc4ab749f069314862232cfb6ec8adc15",id:decodeURI(window.location.pathname),repo:"onejane.github.io",owner:"onejane",admin:"onejane"});gitalk.render("gitalk")</script></section></div></div></div><script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/smoothscroll-for-websites@1.4.9/SmoothScroll.min.js"></script><script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js"></script><script>hljs.initHighlightingOnLoad()</script><script src="/js/app.js?v=1572343223949"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.1.0/lazysizes.min.js"></script><div hidden><script type="text/javascript" src="https://js.users.51.la/20279757.js"></script></div></body><script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script></html>
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.9.0"><title>mysql使用实战 - OneJane</title><meta charset="UTF-8"><meta name="description" content="微服务,高可用,高并发,人工智能"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="msvalidate.01" content="396E9693347B4D18AAE96D9E75B9B686"><link rel="shortcut icon" href="/images/a.ico" type="image/png"><meta name="description" content="mysql使用实战"><meta name="keywords" content="function,procedure"><meta property="og:type" content="article"><meta property="og:title" content="mysql使用实战"><meta property="og:url" content="https://onejane.github.io/2019/10/29/mysql/index.html"><meta property="og:site_name" content="OneJane"><meta property="og:description" content="mysql使用实战"><meta property="og:locale" content="zh-CN"><meta property="og:updated_time" content="2019-10-29T10:35:33.955Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="mysql使用实战"><meta name="twitter:description" content="mysql使用实战"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/css/mdui.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.15.8/styles/atom-one-dark.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1038733_0xvrvpg9c0r.css"><link rel="stylesheet" href="/css/style.css?v=1572364804414"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script></head><body class="mdui-drawer-body-left"><div id="nexmoe-background"><div class="nexmoe-bg" style="background-image:url(https://www.github.com/OneJane/blog/raw/master/小书匠/1566388885395.png)"></div><div class="mdui-appbar mdui-shadow-0"><div class="mdui-toolbar"> <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a><div class="mdui-toolbar-spacer"></div> <a href="/" title="OneJane" class="mdui-btn mdui-btn-icon"><img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388846021.png"></a></div></div></div><div id="nexmoe-header"><div class="nexmoe-drawer mdui-drawer" id="drawer"><div class="nexmoe-avatar mdui-ripple"> <a href="/" title="OneJane"><img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388846021.png" alt="OneJane"></a></div><div class="nexmoe-count"><div><span>文章</span>40</div><div><span>标签</span>57</div><div><span>分类</span>11</div></div><ul class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}"><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页"><i class="mdui-list-item-icon nexmoefont icon-home"></i><div class="mdui-list-item-content"> 回到首页</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="关于博客"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i><div class="mdui-list-item-content"> 关于博客</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/py.html" title="我的朋友"><i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i><div class="mdui-list-item-content"> 我的朋友</div></a></ul><aside id="nexmoe-sidebar"><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">社交按钮</h3><div class="nexmoe-widget nexmoe-social"><a class="mdui-ripple" href="https://www.zhihu.com/people/codewj/activities" target="_blank" mdui-tooltip="{content: 'zhihu'}" style="color:#e76a8d;background-color:rgba(231,106,141,.15)"><i class="nexmoefont icon-zhihu"></i></a><a class="mdui-ripple" href="https://github.com/OneJane" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color:#191717;background-color:rgba(25,23,23,.15)"><i class="nexmoefont icon-github"></i></a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章分类</h3><div class="nexmoe-widget"><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/人工智能/">人工智能</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/定时器/">定时器</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/持续集成/">持续集成</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/注册中心/">注册中心</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/测试/">测试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/爬虫/">爬虫</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/项目实战/">项目实战</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高可用/">高可用</a><span class="category-list-count">4</span></li></ul></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">标签云</h3><div class="nexmoe-widget tagcloud"> <a href="/tags/Gensim/" style="font-size:10px">Gensim</a> <a href="/tags/Hanlp/" style="font-size:10px">Hanlp</a> <a href="/tags/NLTK/" style="font-size:10px">NLTK</a> <a href="/tags/OpenCV/" style="font-size:13.33px">OpenCV</a> <a href="/tags/Stanford-NLP/" style="font-size:10px">Stanford NLP</a> <a href="/tags/Tensorflow/" style="font-size:16.67px">Tensorflow</a> <a href="/tags/ant-design/" style="font-size:10px">ant design</a> <a href="/tags/ant-design-pro/" style="font-size:11.67px">ant design pro</a> <a href="/tags/docker/" style="font-size:18.33px">docker</a> <a href="/tags/dubbo/" style="font-size:11.67px">dubbo</a> <a href="/tags/elasticsearch/" style="font-size:10px">elasticsearch</a> <a href="/tags/elastisearch/" style="font-size:10px">elastisearch</a> <a href="/tags/email/" style="font-size:10px">email</a> <a href="/tags/es6/" style="font-size:10px">es6</a> <a href="/tags/feign/" style="font-size:10px">feign</a> <a href="/tags/flask/" style="font-size:10px">flask</a> <a href="/tags/freemarker/" style="font-size:10px">freemarker</a> <a href="/tags/function/" style="font-size:10px">function</a> <a href="/tags/gateway/" style="font-size:10px">gateway</a> <a href="/tags/gitlab/" style="font-size:11.67px">gitlab</a> <a href="/tags/haproxy/" style="font-size:10px">haproxy</a> <a href="/tags/jenkins/" style="font-size:11.67px">jenkins</a> <a href="/tags/jmeter/" style="font-size:10px">jmeter</a> <a href="/tags/keepalived/" style="font-size:10px">keepalived</a> <a href="/tags/linux/" style="font-size:10px">linux</a> <a href="/tags/maven/" style="font-size:11.67px">maven</a> <a href="/tags/multi-druid/" style="font-size:10px">multi druid</a> <a href="/tags/mybatis/" style="font-size:10px">mybatis</a> <a href="/tags/mybatisplus/" style="font-size:10px">mybatisplus</a> <a href="/tags/mysql/" style="font-size:10px">mysql</a> <a href="/tags/nacos/" style="font-size:11.67px">nacos</a> <a href="/tags/nexmoe/" style="font-size:10px">nexmoe</a> <a href="/tags/nlp/" style="font-size:15px">nlp</a> <a href="/tags/numpy/" style="font-size:10px">numpy</a> <a href="/tags/partition/" style="font-size:10px">partition</a> <a href="/tags/procedure/" style="font-size:10px">procedure</a> <a href="/tags/pxc/" style="font-size:10px">pxc</a> <a href="/tags/python/" style="font-size:10px">python</a> <a href="/tags/rabbitmq/" style="font-size:10px">rabbitmq</a> <a href="/tags/react/" style="font-size:11.67px">react</a> <a href="/tags/redis/" style="font-size:11.67px">redis</a> <a href="/tags/redis-cluster/" style="font-size:10px">redis-cluster</a> <a href="/tags/replication/" style="font-size:11.67px">replication</a> <a href="/tags/rocketmq/" style="font-size:11.67px">rocketmq</a> <a href="/tags/scrapy/" style="font-size:13.33px">scrapy</a> <a href="/tags/selenium/" style="font-size:13.33px">selenium</a> <a href="/tags/sentinel/" style="font-size:15px">sentinel</a> <a href="/tags/session/" style="font-size:10px">session</a> <a href="/tags/skywalking/" style="font-size:11.67px">skywalking</a> <a href="/tags/spring-cloud-alibaba/" style="font-size:20px">spring cloud alibaba</a> <a href="/tags/springboot/" style="font-size:15px">springboot</a> <a href="/tags/swagger/" style="font-size:10px">swagger</a> <a href="/tags/tk-mybatis/" style="font-size:10px">tk mybatis</a> <a href="/tags/umi/" style="font-size:10px">umi</a> <a href="/tags/validate/" style="font-size:10px">validate</a> <a href="/tags/xxl-job/" style="font-size:11.67px">xxl-job</a> <a href="/tags/zookeeper/" style="font-size:10px">zookeeper</a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章归档</h3><div class="nexmoe-widget"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul></div></div></aside><div class="nexmoe-copyright"> &copy; 2019 OneJane</div></div></div><div id="nexmoe-content"><div class="nexmoe-primary"><div class="nexmoe-post"><div class="nexmoe-post-cover"> <img src="https://www.github.com/OneJane/blog/raw/master/小书匠/96c7b4bb33ecb8ca658ed74a9ce2b6f7_hd.jpg"><h1>mysql使用实战</h1></div><div class="nexmoe-post-meta"><a><i class="nexmoefont icon-calendar-fill"></i> 2019年10月29日</a><a><i class="nexmoefont icon-areachart"></i> 2.3k 字</a><a><i class="nexmoefont icon-time-circle-fill"></i> 大概 14 分钟</a> <a class="nexmoefont icon-appstore-fill -link" href="/categories/数据库/">数据库</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/function/">function</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/procedure/">procedure</a></div><article><p><a href="https://onejane.github.io/">mysql使用实战</a></p><a id="more"></a><h1 id="中文转拼音模糊查询"><a href="#中文转拼音模糊查询" class="headerlink" title="中文转拼音模糊查询"></a>中文转拼音模糊查询</h1><pre><code class="lsl">CREATE TABLE
+IF NOT EXISTS `t_base_pinyin` (
+    `pin_yin_` VARCHAR (1000) CHARACTER
+    SET gbk NOT NULL,
+    `code_` INT (11) NOT NULL,
+    PRIMARY KEY (`code_`)
+) ENGINE = INNODB DEFAULT CHARSET = latin1;
+
+INSERT INTO t_base_pinyin (pin_yin_, code_)
+VALUES
+    (&quot;a&quot;, 20319),
+    (&quot;ai&quot;, 20317),
+    (&quot;an&quot;, 20304),
+    (&quot;ang&quot;, 20295),
+    (&quot;ao&quot;, 20292),
+    (&quot;ba&quot;, 20283),
+    (&quot;bai&quot;, 20265),
+    (&quot;ban&quot;, 20257),
+    (&quot;bang&quot;, 20242),
+    (&quot;bao&quot;, 20230),
+    (&quot;bei&quot;, 20051),
+    (&quot;ben&quot;, 20036),
+    (&quot;beng&quot;, 20032),
+    (&quot;bi&quot;, 20026),
+    (&quot;bian&quot;, 20002),
+    (&quot;biao&quot;, 19990),
+    (&quot;bie&quot;, 19986),
+    (&quot;bin&quot;, 19982),
+    (&quot;bing&quot;, 19976),
+    (&quot;bo&quot;, 19805),
+    (&quot;bu&quot;, 19784),
+    (&quot;ca&quot;, 19775),
+    (&quot;cai&quot;, 19774),
+    (&quot;can&quot;, 19763),
+    (&quot;cang&quot;, 19756),
+    (&quot;cao&quot;, 19751),
+    (&quot;ce&quot;, 19746),
+    (&quot;ceng&quot;, 19741),
+    (&quot;cha&quot;, 19739),
+    (&quot;chai&quot;, 19728),
+    (&quot;chan&quot;, 19725),
+    (&quot;chang&quot;, 19715),
+    (&quot;chao&quot;, 19540),
+    (&quot;che&quot;, 19531),
+    (&quot;chen&quot;, 19525),
+    (&quot;cheng&quot;, 19515),
+    (&quot;chi&quot;, 19500),
+    (&quot;chong&quot;, 19484),
+    (&quot;chou&quot;, 19479),
+    (&quot;chu&quot;, 19467),
+    (&quot;chuai&quot;, 19289),
+    (&quot;chuan&quot;, 19288),
+    (&quot;chuang&quot;, 19281),
+    (&quot;chui&quot;, 19275),
+    (&quot;chun&quot;, 19270),
+    (&quot;chuo&quot;, 19263),
+    (&quot;ci&quot;, 19261),
+    (&quot;cong&quot;, 19249),
+    (&quot;cou&quot;, 19243),
+    (&quot;cu&quot;, 19242),
+    (&quot;cuan&quot;, 19238),
+    (&quot;cui&quot;, 19235),
+    (&quot;cun&quot;, 19227),
+    (&quot;cuo&quot;, 19224),
+    (&quot;da&quot;, 19218),
+    (&quot;dai&quot;, 19212),
+    (&quot;dan&quot;, 19038),
+    (&quot;dang&quot;, 19023),
+    (&quot;dao&quot;, 19018),
+    (&quot;de&quot;, 19006),
+    (&quot;deng&quot;, 19003),
+    (&quot;di&quot;, 18996),
+    (&quot;dian&quot;, 18977),
+    (&quot;diao&quot;, 18961),
+    (&quot;die&quot;, 18952),
+    (&quot;ding&quot;, 18783),
+    (&quot;diu&quot;, 18774),
+    (&quot;dong&quot;, 18773),
+    (&quot;dou&quot;, 18763),
+    (&quot;du&quot;, 18756),
+    (&quot;duan&quot;, 18741),
+    (&quot;dui&quot;, 18735),
+    (&quot;dun&quot;, 18731),
+    (&quot;duo&quot;, 18722),
+    (&quot;e&quot;, 18710),
+    (&quot;en&quot;, 18697),
+    (&quot;er&quot;, 18696),
+    (&quot;fa&quot;, 18526),
+    (&quot;fan&quot;, 18518),
+    (&quot;fang&quot;, 18501),
+    (&quot;fei&quot;, 18490),
+    (&quot;fen&quot;, 18478),
+    (&quot;feng&quot;, 18463),
+    (&quot;fo&quot;, 18448),
+    (&quot;fou&quot;, 18447),
+    (&quot;fu&quot;, 18446),
+    (&quot;ga&quot;, 18239),
+    (&quot;gai&quot;, 18237),
+    (&quot;gan&quot;, 18231),
+    (&quot;gang&quot;, 18220),
+    (&quot;gao&quot;, 18211),
+    (&quot;ge&quot;, 18201),
+    (&quot;gei&quot;, 18184),
+    (&quot;gen&quot;, 18183),
+    (&quot;geng&quot;, 18181),
+    (&quot;gong&quot;, 18012),
+    (&quot;gou&quot;, 17997),
+    (&quot;gu&quot;, 17988),
+    (&quot;gua&quot;, 17970),
+    (&quot;guai&quot;, 17964),
+    (&quot;guan&quot;, 17961),
+    (&quot;guang&quot;, 17950),
+    (&quot;gui&quot;, 17947),
+    (&quot;gun&quot;, 17931),
+    (&quot;guo&quot;, 17928),
+    (&quot;ha&quot;, 17922),
+    (&quot;hai&quot;, 17759),
+    (&quot;han&quot;, 17752),
+    (&quot;hang&quot;, 17733),
+    (&quot;hao&quot;, 17730),
+    (&quot;he&quot;, 17721),
+    (&quot;hei&quot;, 17703),
+    (&quot;hen&quot;, 17701),
+    (&quot;heng&quot;, 17697),
+    (&quot;hong&quot;, 17692),
+    (&quot;hou&quot;, 17683),
+    (&quot;hu&quot;, 17676),
+    (&quot;hua&quot;, 17496),
+    (&quot;huai&quot;, 17487),
+    (&quot;huan&quot;, 17482),
+    (&quot;huang&quot;, 17468),
+    (&quot;hui&quot;, 17454),
+    (&quot;hun&quot;, 17433),
+    (&quot;huo&quot;, 17427),
+    (&quot;ji&quot;, 17417),
+    (&quot;jia&quot;, 17202),
+    (&quot;jian&quot;, 17185),
+    (&quot;jiang&quot;, 16983),
+    (&quot;jiao&quot;, 16970),
+    (&quot;jie&quot;, 16942),
+    (&quot;jin&quot;, 16915),
+    (&quot;jing&quot;, 16733),
+    (&quot;jiong&quot;, 16708),
+    (&quot;jiu&quot;, 16706),
+    (&quot;ju&quot;, 16689),
+    (&quot;juan&quot;, 16664),
+    (&quot;jue&quot;, 16657),
+    (&quot;jun&quot;, 16647),
+    (&quot;ka&quot;, 16474),
+    (&quot;kai&quot;, 16470),
+    (&quot;kan&quot;, 16465),
+    (&quot;kang&quot;, 16459),
+    (&quot;kao&quot;, 16452),
+    (&quot;ke&quot;, 16448),
+    (&quot;ken&quot;, 16433),
+    (&quot;keng&quot;, 16429),
+    (&quot;kong&quot;, 16427),
+    (&quot;kou&quot;, 16423),
+    (&quot;ku&quot;, 16419),
+    (&quot;kua&quot;, 16412),
+    (&quot;kuai&quot;, 16407),
+    (&quot;kuan&quot;, 16403),
+    (&quot;kuang&quot;, 16401),
+    (&quot;kui&quot;, 16393),
+    (&quot;kun&quot;, 16220),
+    (&quot;kuo&quot;, 16216),
+    (&quot;la&quot;, 16212),
+    (&quot;lai&quot;, 16205),
+    (&quot;lan&quot;, 16202),
+    (&quot;lang&quot;, 16187),
+    (&quot;lao&quot;, 16180),
+    (&quot;le&quot;, 16171),
+    (&quot;lei&quot;, 16169),
+    (&quot;leng&quot;, 16158),
+    (&quot;li&quot;, 16155),
+    (&quot;lia&quot;, 15959),
+    (&quot;lian&quot;, 15958),
+    (&quot;liang&quot;, 15944),
+    (&quot;liao&quot;, 15933),
+    (&quot;lie&quot;, 15920),
+    (&quot;lin&quot;, 15915),
+    (&quot;ling&quot;, 15903),
+    (&quot;liu&quot;, 15889),
+    (&quot;long&quot;, 15878),
+    (&quot;lou&quot;, 15707),
+    (&quot;lu&quot;, 15701),
+    (&quot;lv&quot;, 15681),
+    (&quot;luan&quot;, 15667),
+    (&quot;lue&quot;, 15661),
+    (&quot;lun&quot;, 15659),
+    (&quot;luo&quot;, 15652),
+    (&quot;ma&quot;, 15640),
+    (&quot;mai&quot;, 15631),
+    (&quot;man&quot;, 15625),
+    (&quot;mang&quot;, 15454),
+    (&quot;mao&quot;, 15448),
+    (&quot;me&quot;, 15436),
+    (&quot;mei&quot;, 15435),
+    (&quot;men&quot;, 15419),
+    (&quot;meng&quot;, 15416),
+    (&quot;mi&quot;, 15408),
+    (&quot;mian&quot;, 15394),
+    (&quot;miao&quot;, 15385),
+    (&quot;mie&quot;, 15377),
+    (&quot;min&quot;, 15375),
+    (&quot;ming&quot;, 15369),
+    (&quot;miu&quot;, 15363),
+    (&quot;mo&quot;, 15362),
+    (&quot;mou&quot;, 15183),
+    (&quot;mu&quot;, 15180),
+    (&quot;na&quot;, 15165),
+    (&quot;nai&quot;, 15158),
+    (&quot;nan&quot;, 15153),
+    (&quot;nang&quot;, 15150),
+    (&quot;nao&quot;, 15149),
+    (&quot;ne&quot;, 15144),
+    (&quot;nei&quot;, 15143),
+    (&quot;nen&quot;, 15141),
+    (&quot;neng&quot;, 15140),
+    (&quot;ni&quot;, 15139),
+    (&quot;nian&quot;, 15128),
+    (&quot;niang&quot;, 15121),
+    (&quot;niao&quot;, 15119),
+    (&quot;nie&quot;, 15117),
+    (&quot;nin&quot;, 15110),
+    (&quot;ning&quot;, 15109),
+    (&quot;niu&quot;, 14941),
+    (&quot;nong&quot;, 14937),
+    (&quot;nu&quot;, 14933),
+    (&quot;nv&quot;, 14930),
+    (&quot;nuan&quot;, 14929),
+    (&quot;nue&quot;, 14928),
+    (&quot;nuo&quot;, 14926),
+    (&quot;o&quot;, 14922),
+    (&quot;ou&quot;, 14921),
+    (&quot;pa&quot;, 14914),
+    (&quot;pai&quot;, 14908),
+    (&quot;pan&quot;, 14902),
+    (&quot;pang&quot;, 14894),
+    (&quot;pao&quot;, 14889),
+    (&quot;pei&quot;, 14882),
+    (&quot;pen&quot;, 14873),
+    (&quot;peng&quot;, 14871),
+    (&quot;pi&quot;, 14857),
+    (&quot;pian&quot;, 14678),
+    (&quot;piao&quot;, 14674),
+    (&quot;pie&quot;, 14670),
+    (&quot;pin&quot;, 14668),
+    (&quot;ping&quot;, 14663),
+    (&quot;po&quot;, 14654),
+    (&quot;pu&quot;, 14645),
+    (&quot;qi&quot;, 14630),
+    (&quot;qia&quot;, 14594),
+    (&quot;qian&quot;, 14429),
+    (&quot;qiang&quot;, 14407),
+    (&quot;qiao&quot;, 14399),
+    (&quot;qie&quot;, 14384),
+    (&quot;qin&quot;, 14379),
+    (&quot;qing&quot;, 14368),
+    (&quot;qiong&quot;, 14355),
+    (&quot;qiu&quot;, 14353),
+    (&quot;qu&quot;, 14345),
+    (&quot;quan&quot;, 14170),
+    (&quot;que&quot;, 14159),
+    (&quot;qun&quot;, 14151),
+    (&quot;ran&quot;, 14149),
+    (&quot;rang&quot;, 14145),
+    (&quot;rao&quot;, 14140),
+    (&quot;re&quot;, 14137),
+    (&quot;ren&quot;, 14135),
+    (&quot;reng&quot;, 14125),
+    (&quot;ri&quot;, 14123),
+    (&quot;rong&quot;, 14122),
+    (&quot;rou&quot;, 14112),
+    (&quot;ru&quot;, 14109),
+    (&quot;ruan&quot;, 14099),
+    (&quot;rui&quot;, 14097),
+    (&quot;run&quot;, 14094),
+    (&quot;ruo&quot;, 14092),
+    (&quot;sa&quot;, 14090),
+    (&quot;sai&quot;, 14087),
+    (&quot;san&quot;, 14083),
+    (&quot;sang&quot;, 13917),
+    (&quot;sao&quot;, 13914),
+    (&quot;se&quot;, 13910),
+    (&quot;sen&quot;, 13907),
+    (&quot;seng&quot;, 13906),
+    (&quot;sha&quot;, 13905),
+    (&quot;shai&quot;, 13896),
+    (&quot;shan&quot;, 13894),
+    (&quot;shang&quot;, 13878),
+    (&quot;shao&quot;, 13870),
+    (&quot;she&quot;, 13859),
+    (&quot;shen&quot;, 13847),
+    (&quot;sheng&quot;, 13831),
+    (&quot;shi&quot;, 13658),
+    (&quot;shou&quot;, 13611),
+    (&quot;shu&quot;, 13601),
+    (&quot;shua&quot;, 13406),
+    (&quot;shuai&quot;, 13404),
+    (&quot;shuan&quot;, 13400),
+    (&quot;shuang&quot;, 13398),
+    (&quot;shui&quot;, 13395),
+    (&quot;shun&quot;, 13391),
+    (&quot;shuo&quot;, 13387),
+    (&quot;si&quot;, 13383),
+    (&quot;song&quot;, 13367),
+    (&quot;sou&quot;, 13359),
+    (&quot;su&quot;, 13356),
+    (&quot;suan&quot;, 13343),
+    (&quot;sui&quot;, 13340),
+    (&quot;sun&quot;, 13329),
+    (&quot;suo&quot;, 13326),
+    (&quot;ta&quot;, 13318),
+    (&quot;tai&quot;, 13147),
+    (&quot;tan&quot;, 13138),
+    (&quot;tang&quot;, 13120),
+    (&quot;tao&quot;, 13107),
+    (&quot;te&quot;, 13096),
+    (&quot;teng&quot;, 13095),
+    (&quot;ti&quot;, 13091),
+    (&quot;tian&quot;, 13076),
+    (&quot;tiao&quot;, 13068),
+    (&quot;tie&quot;, 13063),
+    (&quot;ting&quot;, 13060),
+    (&quot;tong&quot;, 12888),
+    (&quot;tou&quot;, 12875),
+    (&quot;tu&quot;, 12871),
+    (&quot;tuan&quot;, 12860),
+    (&quot;tui&quot;, 12858),
+    (&quot;tun&quot;, 12852),
+    (&quot;tuo&quot;, 12849),
+    (&quot;wa&quot;, 12838),
+    (&quot;wai&quot;, 12831),
+    (&quot;wan&quot;, 12829),
+    (&quot;wang&quot;, 12812),
+    (&quot;wei&quot;, 12802),
+    (&quot;wen&quot;, 12607),
+    (&quot;weng&quot;, 12597),
+    (&quot;wo&quot;, 12594),
+    (&quot;wu&quot;, 12585),
+    (&quot;xi&quot;, 12556),
+    (&quot;xia&quot;, 12359),
+    (&quot;xian&quot;, 12346),
+    (&quot;xiang&quot;, 12320),
+    (&quot;xiao&quot;, 12300),
+    (&quot;xie&quot;, 12120),
+    (&quot;xin&quot;, 12099),
+    (&quot;xing&quot;, 12089),
+    (&quot;xiong&quot;, 12074),
+    (&quot;xiu&quot;, 12067),
+    (&quot;xu&quot;, 12058),
+    (&quot;xuan&quot;, 12039),
+    (&quot;xue&quot;, 11867),
+    (&quot;xun&quot;, 11861),
+    (&quot;ya&quot;, 11847),
+    (&quot;yan&quot;, 11831),
+    (&quot;yang&quot;, 11798),
+    (&quot;yao&quot;, 11781),
+    (&quot;ye&quot;, 11604),
+    (&quot;yi&quot;, 11589),
+    (&quot;yin&quot;, 11536),
+    (&quot;ying&quot;, 11358),
+    (&quot;yo&quot;, 11340),
+    (&quot;yong&quot;, 11339),
+    (&quot;you&quot;, 11324),
+    (&quot;yu&quot;, 11303),
+    (&quot;yuan&quot;, 11097),
+    (&quot;yue&quot;, 11077),
+    (&quot;yun&quot;, 11067),
+    (&quot;za&quot;, 11055),
+    (&quot;zai&quot;, 11052),
+    (&quot;zan&quot;, 11045),
+    (&quot;zang&quot;, 11041),
+    (&quot;zao&quot;, 11038),
+    (&quot;ze&quot;, 11024),
+    (&quot;zei&quot;, 11020),
+    (&quot;zen&quot;, 11019),
+    (&quot;zeng&quot;, 11018),
+    (&quot;zha&quot;, 11014),
+    (&quot;zhai&quot;, 10838),
+    (&quot;zhan&quot;, 10832),
+    (&quot;zhang&quot;, 10815),
+    (&quot;zhao&quot;, 10800),
+    (&quot;zhe&quot;, 10790),
+    (&quot;zhen&quot;, 10780),
+    (&quot;zheng&quot;, 10764),
+    (&quot;zhi&quot;, 10587),
+    (&quot;zhong&quot;, 10544),
+    (&quot;zhou&quot;, 10533),
+    (&quot;zhu&quot;, 10519),
+    (&quot;zhua&quot;, 10331),
+    (&quot;zhuai&quot;, 10329),
+    (&quot;zhuan&quot;, 10328),
+    (&quot;zhuang&quot;, 10322),
+    (&quot;zhui&quot;, 10315),
+    (&quot;zhun&quot;, 10309),
+    (&quot;zhuo&quot;, 10307),
+    (&quot;zi&quot;, 10296),
+    (&quot;zong&quot;, 10281),
+    (&quot;zou&quot;, 10274),
+    (&quot;zu&quot;, 10270),
+    (&quot;zuan&quot;, 10262),
+    (&quot;zui&quot;, 10260),
+    (&quot;zun&quot;, 10256),
+    (&quot;zuo&quot;, 10254);
+DROP FUNCTION IF EXISTS to_pinyin;
+DELIMITER $
+CREATE FUNCTION to_pinyin(NAME text CHARSET gbk)
+RETURNS text CHARSET gbk
+BEGIN
+    DECLARE mycode INT;
+    DECLARE tmp_lcode VARCHAR(2) CHARSET gbk;
+    DECLARE lcode INT;
+    DECLARE tmp_rcode VARCHAR(2) CHARSET gbk;
+    DECLARE rcode INT;
+    DECLARE mypy text CHARSET gbk DEFAULT &#39;&#39;;
+    DECLARE lp INT;
+    SET mycode = 0;
+    SET lp = 1;
+    SET NAME = HEX(NAME);
+    WHILE lp &lt; LENGTH(NAME) DO
+        SET tmp_lcode = SUBSTRING(NAME, lp, 2);
+        SET lcode = CAST(ASCII(UNHEX(tmp_lcode)) AS UNSIGNED); 
+        SET tmp_rcode = SUBSTRING(NAME, lp + 2, 2);
+        SET rcode = CAST(ASCII(UNHEX(tmp_rcode)) AS UNSIGNED); 
+        IF lcode &gt; 128 THEN
+            SET mycode =65536 - lcode * 256 - rcode ;
+            SELECT CONCAT(mypy,pin_yin_) INTO mypy FROM t_base_pinyin WHERE CODE_ &gt;= ABS(mycode) ORDER BY CODE_ ASC LIMIT 1;
+            SET lp = lp + 4;
+        ELSE
+            SET mypy = CONCAT(mypy,CHAR(CAST(ASCII(UNHEX(SUBSTRING(NAME, lp, 2))) AS UNSIGNED)));
+            SET lp = lp + 2;
+        END IF;
+    END WHILE;
+    RETURN LOWER(mypy);
+END;
+$
+DELIMITER ;
+
+CREATE VIEW v_pinyin AS SELECT
+u.jjbh,u.CJLB,u.SFDD,u.CJXXDD,u.BJNR,u.CLJGNR,u.CJDWMC,u.JJRQSJ ，to_pinyin (u.CLJGNR) AS CLJGNR_PINYIN,to_pinyin (u.BJNR) AS BJNR_PINYIN，u.JJRQSJ 
+FROM
+    p_answer_handle_alarm u</code></pre><h1 id="抽取文本中数字-字母-中文"><a href="#抽取文本中数字-字母-中文" class="headerlink" title="抽取文本中数字/字母/中文"></a>抽取文本中数字/字母/中文</h1><pre><code class="vbscript">DELIMITER $$
+
+DROP FUNCTION IF EXISTS `Num_char_extract`$$
+
+CREATE FUNCTION `Num_char_extract`(Varstring VARCHAR(100)CHARSET utf8, flag INT) RETURNS VARCHAR(50) CHARSET utf8
+BEGIN
+    DECLARE len INT DEFAULT 0;
+    DECLARE Tmp VARCHAR(100) DEFAULT &#39;&#39;;
+    SET len=CHAR_LENGTH(Varstring);
+    IF flag = 0 
+    THEN
+        WHILE len &gt; 0 DO
+        IF MID(Varstring,len,1)REGEXP&#39;[0-9]&#39; THEN
+        SET Tmp=CONCAT(Tmp,MID(Varstring,len,1));
+        END IF;
+        SET len = len - 1;
+        END WHILE;
+    ELSEIF flag=1
+    THEN
+        WHILE len &gt; 0 DO
+        IF (MID(Varstring,len,1)REGEXP &#39;[a-zA-Z]&#39;) 
+        THEN
+        SET Tmp=CONCAT(Tmp,MID(Varstring,len,1));
+        END IF;
+        SET len = len - 1;
+        END WHILE;
+    ELSEIF flag=2
+    THEN
+        WHILE len &gt; 0 DO
+        IF ( (MID(Varstring,len,1)REGEXP&#39;[0-9]&#39;)
+        OR (MID(Varstring,len,1)REGEXP &#39;[a-zA-Z]&#39;) ) 
+        THEN
+        SET Tmp=CONCAT(Tmp,MID(Varstring,len,1));
+        END IF;
+        SET len = len - 1;
+        END WHILE;
+    ELSEIF flag=3
+    THEN
+        WHILE len &gt; 0 DO
+        IF NOT (MID(Varstring,len,1)REGEXP &#39;^[u0391-uFFE5]&#39;)
+        THEN
+        SET Tmp=CONCAT(Tmp,MID(Varstring,len,1));
+        END IF;
+        SET len = len - 1;
+        END WHILE;
+    ELSE 
+        SET Tmp = &#39;Error: The second paramter should be in (0,1,2,3)&#39;;
+        RETURN Tmp;
+    END IF;
+    RETURN REVERSE(Tmp);
+    END$$
+
+DELIMITER ;</code></pre><h1 id="中文转首字母查询"><a href="#中文转首字母查询" class="headerlink" title="中文转首字母查询"></a>中文转首字母查询</h1><pre><code class="gams">CREATE  FUNCTION `fristPinyin`(P_NAME VARCHAR(255)) RETURNS varchar(255) CHARSET utf8
+BEGIN
+    DECLARE V_RETURN VARCHAR(255);
+    SET V_RETURN = ELT(INTERVAL(CONV(HEX(left(CONVERT(P_NAME USING gbk),1)),16,10),
+        0xB0A1,0xB0C5,0xB2C1,0xB4EE,0xB6EA,0xB7A2,0xB8C1,0xB9FE,0xBBF7,
+        0xBFA6,0xC0AC,0xC2E8,0xC4C3,0xC5B6,0xC5BE,0xC6DA,0xC8BB,
+        0xC8F6,0xCBFA,0xCDDA,0xCEF4,0xD1B9,0xD4D1),   
+    &#39;A&#39;,&#39;B&#39;,&#39;C&#39;,&#39;D&#39;,&#39;E&#39;,&#39;F&#39;,&#39;G&#39;,&#39;H&#39;,&#39;J&#39;,&#39;K&#39;,&#39;L&#39;,&#39;M&#39;,&#39;N&#39;,&#39;O&#39;,&#39;P&#39;,&#39;Q&#39;,&#39;R&#39;,&#39;S&#39;,&#39;T&#39;,&#39;W&#39;,&#39;X&#39;,&#39;Y&#39;,&#39;Z&#39;);
+    RETURN V_RETURN;
+END;
+
+CREATE  FUNCTION `pinyin`(P_NAME VARCHAR(255)) RETURNS varchar(255) CHARSET utf8
+BEGIN
+    DECLARE V_COMPARE VARCHAR(255);
+    DECLARE V_RETURN VARCHAR(255);
+    DECLARE I INT;
+    SET I = 1;
+    SET V_RETURN = &#39;&#39;;
+    while I &lt; LENGTH(P_NAME) do
+        SET V_COMPARE = SUBSTR(P_NAME, I, 1);
+        IF (V_COMPARE != &#39;&#39;) THEN
+            #SET V_RETURN = CONCAT(V_RETURN, &#39;,&#39;, V_COMPARE);
+            SET V_RETURN = CONCAT(V_RETURN, fristPinyin(V_COMPARE));
+            #SET V_RETURN = fristPinyin(V_COMPARE);
+        END IF;
+        SET I = I + 1;
+    end while;
+    IF (ISNULL(V_RETURN) or V_RETURN = &#39;&#39;) THEN
+        SET V_RETURN = P_NAME;
+    END IF;
+    RETURN V_RETURN;
+END;
+
+select upper(pinyin(company_name)) as cn,company_name from job where upper(pinyin(company_name)) like &#39;%pa%&#39;;
+
+select  pinyin(&quot;金石&quot;)    </code></pre><h1 id="联表查询在A不在B表"><a href="#联表查询在A不在B表" class="headerlink" title="联表查询在A不在B表"></a>联表查询在A不在B表</h1><p>select * from (<br><strong>select DISTINCT(company_name) from job j1 where is_checked = ‘1’</strong><br>) j2 where j2.company_name not in(<br><strong>select DISTINCT(job_company_name) from standard_business s1</strong><br>)</p></article><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a> <span class="donate_txt">↑<br> 欢迎投食,求鼓励，求支持！</span><br></div><div id="donate_guide" class="donate_bar center hidden"> <img src="/images/alipay.png" alt="支付宝打赏"> <img src="/images/wechatpay.png" alt="微信打赏"></div><script type="text/javascript">document.getElementById("btn_donate").onclick=function(){$("#donate_board").addClass("hidden"),$("#donate_guide").removeClass("hidden")}</script></div><div class="nexmoe-post-copyright"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i> <strong>本文作者：</strong>OneJane<br> <strong>本文链接：</strong><a href="https://onejane.github.io/2019/10/29/mysql/" title="https://onejane.github.io/2019/10/29/mysql/" target="_blank" rel="noopener">https://onejane.github.io/2019/10/29/mysql/</a><br> <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可</div><section class="nexmoe-comment"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css"><div id="gitalk"></div><script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script><script type="text/javascript">var gitalk=new Gitalk({clientID:"e677e59382e1c7a468fd",clientSecret:"717d041bc4ab749f069314862232cfb6ec8adc15",id:decodeURI(window.location.pathname),repo:"onejane.github.io",owner:"onejane",admin:"onejane"});gitalk.render("gitalk")</script></section></div></div></div><script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/smoothscroll-for-websites@1.4.9/SmoothScroll.min.js"></script><script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js"></script><script>hljs.initHighlightingOnLoad()</script><script src="/js/app.js?v=1572364804434"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.1.0/lazysizes.min.js"></script><div hidden><script type="text/javascript" src="https://js.users.51.la/20279757.js"></script></div></body><script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script></html>
