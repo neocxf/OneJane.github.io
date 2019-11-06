@@ -267,8 +267,8 @@
       </categories>
       <tags>
         <tag>spring cloud alibaba</tag>
-        <tag>nacos</tag>
         <tag>dubbo</tag>
+        <tag>nacos</tag>
         <tag>feign</tag>
         <tag>elasticsearch</tag>
       </tags>
