@@ -1,0 +1,118 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.9.0"><title>基于ML的中文短文本聚类（7） - OneJane</title><meta charset="UTF-8"><meta name="description" content="微服务,高可用,高并发,人工智能"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="msvalidate.01" content="396E9693347B4D18AAE96D9E75B9B686"><link rel="shortcut icon" href="/images/a.ico" type="image/png"><meta name="description" content="文本聚类是将一个个文档由原有的自然语言文字信息转化成数学信息，以高维空间点的形式展现出来，通过计算哪些点距离比较近，从而将那些点聚成一个簇，簇的中心叫做簇心。一个好的聚类要保证簇内点的距离尽量的近，但簇与簇之间的点要尽量的远。"><meta name="keywords" content="jieba,gensim,tf-idf"><meta property="og:type" content="article"><meta property="og:title" content="基于ML的中文短文本聚类（7）"><meta property="og:url" content="https://onejane.github.io/2019/11/22/7.基于ML的中文短文本聚类/index.html"><meta property="og:site_name" content="OneJane"><meta property="og:description" content="文本聚类是将一个个文档由原有的自然语言文字信息转化成数学信息，以高维空间点的形式展现出来，通过计算哪些点距离比较近，从而将那些点聚成一个簇，簇的中心叫做簇心。一个好的聚类要保证簇内点的距离尽量的近，但簇与簇之间的点要尽量的远。"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574412173439.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574413184851.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574414315805.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574414465230.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574414498053.png"><meta property="og:updated_time" content="2019-11-22T13:32:04.694Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="基于ML的中文短文本聚类（7）"><meta name="twitter:description" content="文本聚类是将一个个文档由原有的自然语言文字信息转化成数学信息，以高维空间点的形式展现出来，通过计算哪些点距离比较近，从而将那些点聚成一个簇，簇的中心叫做簇心。一个好的聚类要保证簇内点的距离尽量的近，但簇与簇之间的点要尽量的远。"><meta name="twitter:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574412173439.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/css/mdui.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.15.8/styles/atom-one-dark.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1038733_0xvrvpg9c0r.css"><link rel="stylesheet" href="/css/style.css?v=1574429967620"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script></head><body class="mdui-drawer-body-left"><div id="nexmoe-background"><div class="nexmoe-bg" style="background-image:url(https://www.github.com/OneJane/blog/raw/master/小书匠/1566388885395.png)"></div><div class="mdui-appbar mdui-shadow-0"><div class="mdui-toolbar"> <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a><div class="mdui-toolbar-spacer"></div> <a href="/" title="OneJane" class="mdui-btn mdui-btn-icon"><img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388846021.png"></a></div></div></div><div id="nexmoe-header"><div class="nexmoe-drawer mdui-drawer" id="drawer"><div class="nexmoe-avatar mdui-ripple"> <a href="/" title="OneJane"><img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388846021.png" alt="OneJane"></a></div><div class="nexmoe-count"><div><span>文章</span>60</div><div><span>标签</span>82</div><div><span>分类</span>12</div></div><ul class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}"><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页"><i class="mdui-list-item-icon nexmoefont icon-home"></i><div class="mdui-list-item-content"> 回到首页</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="关于博客"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i><div class="mdui-list-item-content"> 关于博客</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/py.html" title="我的朋友"><i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i><div class="mdui-list-item-content"> 我的朋友</div></a></ul><aside id="nexmoe-sidebar"><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">社交按钮</h3><div class="nexmoe-widget nexmoe-social"><a class="mdui-ripple" href="https://www.zhihu.com/people/codewj/activities" target="_blank" mdui-tooltip="{content: 'zhihu'}" style="color:#e76a8d;background-color:rgba(231,106,141,.15)"><i class="nexmoefont icon-zhihu"></i></a><a class="mdui-ripple" href="https://github.com/OneJane" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color:#191717;background-color:rgba(25,23,23,.15)"><i class="nexmoefont icon-github"></i></a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章分类</h3><div class="nexmoe-widget"><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/人工智能/">人工智能</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/定时器/">定时器</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/持续集成/">持续集成</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/注册中心/">注册中心</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/测试/">测试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/爬虫/">爬虫</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/自然语言处理/">自然语言处理</a><span class="category-list-count">20</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/项目实战/">项目实战</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高可用/">高可用</a><span class="category-list-count">4</span></li></ul></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">标签云</h3><div class="nexmoe-widget tagcloud"> <a href="/tags/Gensim/" style="font-size:10px">Gensim</a> <a href="/tags/Hanlp/" style="font-size:10px">Hanlp</a> <a href="/tags/NLTK/" style="font-size:10px">NLTK</a> <a href="/tags/OpenCV/" style="font-size:13.33px">OpenCV</a> <a href="/tags/Stanford-NLP/" style="font-size:10px">Stanford NLP</a> <a href="/tags/Tensorflow/" style="font-size:16.67px">Tensorflow</a> <a href="/tags/ant-design/" style="font-size:10px">ant design</a> <a href="/tags/ant-design-pro/" style="font-size:11.67px">ant design pro</a> <a href="/tags/auc/" style="font-size:10px">auc</a> <a href="/tags/bottle/" style="font-size:10px">bottle</a> <a href="/tags/chatterbot/" style="font-size:10px">chatterbot</a> <a href="/tags/cnn/" style="font-size:11.67px">cnn</a> <a href="/tags/crf/" style="font-size:13.33px">crf</a> <a href="/tags/doc2vec/" style="font-size:10px">doc2vec</a> <a href="/tags/docker/" style="font-size:18.33px">docker</a> <a href="/tags/dubbo/" style="font-size:11.67px">dubbo</a> <a href="/tags/elasticsearch/" style="font-size:10px">elasticsearch</a> <a href="/tags/elastisearch/" style="font-size:10px">elastisearch</a> <a href="/tags/email/" style="font-size:10px">email</a> <a href="/tags/es6/" style="font-size:10px">es6</a> <a href="/tags/feign/" style="font-size:10px">feign</a> <a href="/tags/flask/" style="font-size:11.67px">flask</a> <a href="/tags/folium/" style="font-size:10px">folium</a> <a href="/tags/freemarker/" style="font-size:10px">freemarker</a> <a href="/tags/function/" style="font-size:10px">function</a> <a href="/tags/gateway/" style="font-size:10px">gateway</a> <a href="/tags/gensim/" style="font-size:11.67px">gensim</a> <a href="/tags/gitlab/" style="font-size:11.67px">gitlab</a> <a href="/tags/gru/" style="font-size:11.67px">gru</a> <a href="/tags/hanlp/" style="font-size:10px">hanlp</a> <a href="/tags/haproxy/" style="font-size:10px">haproxy</a> <a href="/tags/hmm/" style="font-size:10px">hmm</a> <a href="/tags/jenkins/" style="font-size:11.67px">jenkins</a> <a href="/tags/jieba/" style="font-size:15px">jieba</a> <a href="/tags/jmeter/" style="font-size:10px">jmeter</a> <a href="/tags/keepalived/" style="font-size:10px">keepalived</a> <a href="/tags/lda/" style="font-size:10px">lda</a> <a href="/tags/linux/" style="font-size:10px">linux</a> <a href="/tags/lstm/" style="font-size:11.67px">lstm</a> <a href="/tags/maven/" style="font-size:11.67px">maven</a> <a href="/tags/multi-druid/" style="font-size:10px">multi druid</a> <a href="/tags/mybatis/" style="font-size:10px">mybatis</a> <a href="/tags/mybatisplus/" style="font-size:10px">mybatisplus</a> <a href="/tags/mysql/" style="font-size:10px">mysql</a> <a href="/tags/n-gram/" style="font-size:10px">n-gram</a> <a href="/tags/nacos/" style="font-size:11.67px">nacos</a> <a href="/tags/neo4j/" style="font-size:11.67px">neo4j</a> <a href="/tags/nexmoe/" style="font-size:10px">nexmoe</a> <a href="/tags/nlp/" style="font-size:15px">nlp</a> <a href="/tags/numpy/" style="font-size:10px">numpy</a> <a href="/tags/partition/" style="font-size:10px">partition</a> <a href="/tags/procedure/" style="font-size:10px">procedure</a> <a href="/tags/pxc/" style="font-size:10px">pxc</a> <a href="/tags/pyhanlp/" style="font-size:11.67px">pyhanlp</a> <a href="/tags/python/" style="font-size:10px">python</a> <a href="/tags/rabbitmq/" style="font-size:10px">rabbitmq</a> <a href="/tags/react/" style="font-size:11.67px">react</a> <a href="/tags/redis/" style="font-size:11.67px">redis</a> <a href="/tags/redis-cluster/" style="font-size:10px">redis-cluster</a> <a href="/tags/replication/" style="font-size:11.67px">replication</a> <a href="/tags/rnn/" style="font-size:10px">rnn</a> <a href="/tags/rocketmq/" style="font-size:11.67px">rocketmq</a> <a href="/tags/scrapy/" style="font-size:13.33px">scrapy</a> <a href="/tags/selenium/" style="font-size:13.33px">selenium</a> <a href="/tags/sentinel/" style="font-size:15px">sentinel</a> <a href="/tags/seq2seq/" style="font-size:10px">seq2seq</a> <a href="/tags/session/" style="font-size:10px">session</a> <a href="/tags/sklearn/" style="font-size:10px">sklearn</a> <a href="/tags/skywalking/" style="font-size:11.67px">skywalking</a> <a href="/tags/snownlp/" style="font-size:10px">snownlp</a> <a href="/tags/spring-cloud-alibaba/" style="font-size:20px">spring cloud alibaba</a> <a href="/tags/springboot/" style="font-size:15px">springboot</a> <a href="/tags/swagger/" style="font-size:10px">swagger</a> <a href="/tags/textrank/" style="font-size:10px">textrank</a> <a href="/tags/tf-idf/" style="font-size:11.67px">tf-idf</a> <a href="/tags/tk-mybatis/" style="font-size:10px">tk mybatis</a> <a href="/tags/umi/" style="font-size:10px">umi</a> <a href="/tags/validate/" style="font-size:10px">validate</a> <a href="/tags/word2vec/" style="font-size:10px">word2vec</a> <a href="/tags/wordcloud/" style="font-size:10px">wordcloud</a> <a href="/tags/xxl-job/" style="font-size:11.67px">xxl-job</a> <a href="/tags/zookeeper/" style="font-size:10px">zookeeper</a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章归档</h3><div class="nexmoe-widget"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul></div></div></aside><div class="nexmoe-copyright"> &copy; 2019 OneJane</div></div></div><div id="nexmoe-content"><div class="nexmoe-primary"><div class="nexmoe-post"><div class="nexmoe-post-cover"> <img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388437515.png"><h1>基于ML的中文短文本聚类（7）</h1></div><div class="nexmoe-post-meta"><a><i class="nexmoefont icon-calendar-fill"></i> 2019年11月22日</a><a><i class="nexmoefont icon-areachart"></i> 1.8k 字</a><a><i class="nexmoefont icon-time-circle-fill"></i> 大概 8 分钟</a> <a class="nexmoefont icon-appstore-fill -link" href="/categories/自然语言处理/">自然语言处理</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/gensim/">gensim</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/jieba/">jieba</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/tf-idf/">tf-idf</a></div><article><p>文本聚类是将一个个文档由原有的自然语言文字信息转化成数学信息，以高维空间点的形式展现出来，通过计算哪些点距离比较近，从而将那些点聚成一个簇，簇的中心叫做簇心。一个好的聚类要保证簇内点的距离尽量的近，但簇与簇之间的点要尽量的远。</p><a id="more"></a><h1 id="文本聚类"><a href="#文本聚类" class="headerlink" title="文本聚类"></a>文本聚类</h1><p>如下图，以 K、M、N 三个点分别为聚类的簇心，将结果聚为三类，使得簇内点的距离尽量的近，但簇与簇之间的点尽量的远。</p><p><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574412173439.png" alt="enter description here"><br>文本无监督聚类步骤：</p><ul><li>语料加载</li><li>分词</li><li>去停用词</li><li>抽取词向量特征</li><li>实战 TF-IDF 的中文文本 K-means 聚类</li><li>实战 word2Vec 的中文文本 K-means 聚类</li></ul><h2 id="语料加载"><a href="#语料加载" class="headerlink" title="语料加载"></a>语料加载</h2><p>进行语料加载，在这之前，引入所需要的 Python 依赖包，并将全部语料和停用词字典读入内存中</p><pre><code class="xl">#依赖库，有随机数库、jieba 分词、pandas 库
+import random
+import jieba
+import pandas as pd
+import numpy as np
+from sklearn.feature_extraction.text import TfidfTransformer
+from sklearn.feature_extraction.text import TfidfVectorizer
+import matplotlib.pyplot as plt
+from sklearn.decomposition import PCA
+from sklearn.cluster import KMeans
+import gensim
+from gensim.models import Word2Vec
+from sklearn.preprocessing import scale
+import multiprocessing
+
+#加载停用词 stopwords.txt
+topwords=pd.read_csv(&#39;stopwords.txt&#39;,index_col=False,quoting=3,sep=&quot;\t&quot;,names=[&#39;stopword&#39;], encoding=&#39;utf-8&#39;)
+topwords=stopwords[&#39;stopword&#39;].values
+
+# 加载语料，语料是4个已经分好类的 csv 文件，直接用 pandas 加载即可，加载之后可以首先删除 nan 行，并提取要分词的 content 列转换为 list 列表
+#加载语料
+laogong_df = pd.read_csv(&#39;beilaogongda.csv&#39;, encoding=&#39;utf-8&#39;, sep=&#39;,&#39;)
+laopo_df = pd.read_csv(&#39;beilaogongda.csv&#39;, encoding=&#39;utf-8&#39;, sep=&#39;,&#39;)
+erzi_df = pd.read_csv(&#39;beierzida.csv&#39;, encoding=&#39;utf-8&#39;, sep=&#39;,&#39;)
+nver_df = pd.read_csv(&#39;beinverda.csv&#39;, encoding=&#39;utf-8&#39;, sep=&#39;,&#39;)
+#删除语料的nan行
+laogong_df.dropna(inplace=True)
+laopo_df.dropna(inplace=True)
+erzi_df.dropna(inplace=True)
+nver_df.dropna(inplace=True)
+#转换
+laogong = laogong_df.segment.values.tolist()
+laopo = laopo_df.segment.values.tolist()
+erzi = erzi_df.segment.values.tolist()
+nver = nver_df.segment.values.tolist()</code></pre><h2 id="分词和去停用词"><a href="#分词和去停用词" class="headerlink" title="分词和去停用词"></a>分词和去停用词</h2><p>定义分词、去停用词的函数，函数包含两个参数：content_lines 参数为语料列表；sentences 参数为预先定义的 list，用来存储分词后的结果</p><pre><code class="python">def preprocess_text(content_lines, sentences):
+    for line in content_lines:
+        try:
+            segs=jieba.lcut(line)
+            segs = [v for v in segs if not str(v).isdigit()]#去数字
+            segs = list(filter(lambda x:x.strip(), segs))   #去左右空格
+            segs = list(filter(lambda x:len(x)&gt;1, segs)) #长度为1的字符
+            segs = list(filter(lambda x:x not in stopwords, segs)) #去掉停用词
+            sentences.append(&quot; &quot;.join(segs))
+        except Exception:
+            print(line)
+            continue 
+
+# 调用函数、生成训练数据，根据我提供的司法语料数据，分为报警人被老公打，报警人被老婆打，报警人被儿子打，报警人被女儿打            sentences = []
+preprocess_text(laogong, sentences)
+preprocess_text(laopo, sentences)
+preprocess_text(erzi, sentences)
+preprocess_text(nver, sentences)    
+
+# 将得到的数据集打散，生成更可靠的训练集分布，避免同类数据分布不均匀
+random.shuffle(sentences)
+
+# 我们控制台输出前10条数据，观察一下（因为上面进行了随机打散，你看到的前10条可能不一样）
+for sentence in sentences[:10]:
+    print(sentenc)
+</code></pre><blockquote><p>得到的结果聚类和分类是不同的，这里没有标签<br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574413184851.png" alt="enter description here"></p></blockquote><h2 id="抽取词向量特征"><a href="#抽取词向量特征" class="headerlink" title="抽取词向量特征"></a>抽取词向量特征</h2><p>抽取特征，将文本中的词语转换为词频矩阵，统计每个词语的 tf-idf 权值，获得词在对应文本中的 tf-idf 权重</p><pre><code>#将文本中的词语转换为词频矩阵 矩阵元素a[i][j] 表示j词在i类文本下的词频
+vectorizer = TfidfVectorizer(sublinear_tf=True, max_df=0.5)
+#统计每个词语的tf-idf权值
+transformer = TfidfTransformer()
+# 第一个fit_transform是计算tf-idf 第二个fit_transform是将文本转为词频矩阵
+tfidf = transformer.fit_transform(vectorizer.fit_transform(sentences))
+# 获取词袋模型中的所有词语
+word = vectorizer.get_feature_names()
+# 将tf-idf矩阵抽取出来，元素w[i][j]表示j词在i类文本中的tf-idf权重
+weight = tfidf.toarray()
+#查看特征大小
+print (&#39;Features length: &#39; + str(len(word)))</code></pre><h2 id="TF-IDF-的中文文本-K-means-聚类"><a href="#TF-IDF-的中文文本-K-means-聚类" class="headerlink" title="TF-IDF 的中文文本 K-means 聚类"></a>TF-IDF 的中文文本 K-means 聚类</h2><p>使用 k-means++ 来初始化模型，当然也可以选择随机初始化，即 init=”random”，然后通过 PCA 降维把上面的权重 weight 降到10维，进行聚类模型训练</p><pre><code>numClass=4 #聚类分几簇
+clf = KMeans(n_clusters=numClass, max_iter=10000, init=&quot;k-means++&quot;, tol=1e-6)  #这里也可以选择随机初始化init=&quot;random&quot;
+pca = PCA(n_components=10)  # 降维
+TnewData = pca.fit_transform(weight)  # 载入N维
+s = clf.fit(TnewData)</code></pre><p>第二步，定义聚类结果可视化函数 plot_cluster(result,newData,numClass)，该函数包含3个参数，其中 result 表示聚类拟合的结果集；newData 表示权重 weight 降维的结果，这里需要降维到2维，即平面可视化；numClass 表示聚类分为几簇，绘制代码第一部分绘制结果 newData，第二部分绘制聚类的中心点</p><pre><code class="python">def plot_cluster(result,newData,numClass):
+    plt.figure(2)
+    Lab = [[] for i in range(numClass)]
+    index = 0
+    for labi in result:
+        Lab[labi].append(index)
+        index += 1
+    color = [&#39;oy&#39;, &#39;ob&#39;, &#39;og&#39;, &#39;cs&#39;, &#39;ms&#39;, &#39;bs&#39;, &#39;ks&#39;, &#39;ys&#39;, &#39;yv&#39;, &#39;mv&#39;, &#39;bv&#39;, &#39;kv&#39;, &#39;gv&#39;, &#39;y^&#39;, &#39;m^&#39;, &#39;b^&#39;, &#39;k^&#39;,
+             &#39;g^&#39;] * 3 
+    for i in range(numClass):
+        x1 = []
+        y1 = []
+        for ind1 in newData[Lab[i]]:
+            # print ind1
+            try:
+                y1.append(ind1[1])
+                x1.append(ind1[0])
+            except:
+                pass
+        plt.plot(x1, y1, color[i])
+
+    #绘制初始中心点
+    x1 = []
+    y1 = []
+    for ind1 in clf.cluster_centers_:
+        try:
+            y1.append(ind1[1])
+            x1.append(ind1[0])
+        except:
+            pass
+    plt.plot(x1, y1, &quot;rv&quot;) #绘制中心
+    plt.show()</code></pre><p>对数据降维到2维，然后获得结果，最后绘制聚类结果图</p><pre><code class="makefile">pca = PCA(n_components=2)  # 输出两维
+newData = pca.fit_transform(weight)  # 载入N维
+result = list(clf.predict(TnewData))
+plot_cluster(result,newData,numClass)</code></pre><p>得到的聚类结果图，4个中心点和4个簇，我们看到结果还比较好，簇的边界很清楚<br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574414315805.png" alt="enter description here"><br>上面演示的可视化过程，降维使用了 PCA，我们还可以试试 TSNE，两者同为降维工具，主要区别在于，所在的包不同<br>因为原理不同，导致 TSNE 保留下的属性信息，更具代表性，也即最能体现样本间的差异，但是 TSNE 运行极慢，PCA 则相对较快，下面看看 TSNE 运行的可视化结果</p><pre><code class="stylus">from sklearn.decomposition import PCA
+from sklearn.manifold import TSNE 
+ts =TSNE(2)
+newData = ts.fit_transform(weight)
+result = list(clf.predict(TnewData))
+plot_cluster(result,newData,numClass)    </code></pre><p>得到的可视化结果，为一个中心点，不同簇落在围绕中心点的不同半径之内，得到的可视化结果，为一个中心点，不同簇落在围绕中心点的不同半径之内，我们看到在这里结果并不是很好<br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574414465230.png" alt="enter description here"><br>为了更好的表达和获取更具有代表性的信息，在展示（可视化）高维数据时，更为一般的处理，常常先用 PCA 进行降维，再使用 TSNE</p><pre><code class="haxe">from sklearn.manifold import TSNE
+newData = PCA(n_components=4).fit_transform(weight)  # 载入N维
+newData =TSNE(2).fit_transform(newData)
+result = list(clf.predict(TnewData))
+plot_cluster(result,newData,numClass)</code></pre><p>得到的可视化结果，不同簇落在围绕中心点的不同半径之内<br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574414498053.png" alt="enter description here"><br>从优化和提高模型准确率来说，主要有两方面可以尝试：</p><ul><li>特征向量的构建，除了词袋模型，可以考虑使用 word2vec 和 doc2vec 等；</li><li>模型上可以采用基于密度的 DBSCAN、层次聚类等算法。</li></ul></article><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a> <span class="donate_txt">↑<br> 欢迎投食,求鼓励，求支持！</span><br></div><div id="donate_guide" class="donate_bar center hidden"> <img src="/images/alipay.png" alt="支付宝打赏"> <img src="/images/wechatpay.png" alt="微信打赏"></div><script type="text/javascript">document.getElementById("btn_donate").onclick=function(){$("#donate_board").addClass("hidden"),$("#donate_guide").removeClass("hidden")}</script></div><div class="nexmoe-post-copyright"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i> <strong>本文作者：</strong>OneJane<br> <strong>本文链接：</strong><a href="https://onejane.github.io/2019/11/22/7.基于ML的中文短文本聚类/" title="https://onejane.github.io/2019/11/22/7.基于ML的中文短文本聚类/" target="_blank" rel="noopener">https://onejane.github.io/2019/11/22/7.基于ML的中文短文本聚类/</a><br> <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可</div><section class="nexmoe-comment"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css"><div id="gitalk"></div><script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script><script type="text/javascript">var gitalk=new Gitalk({clientID:"e677e59382e1c7a468fd",clientSecret:"717d041bc4ab749f069314862232cfb6ec8adc15",id:decodeURI(window.location.pathname),repo:"onejane.github.io",owner:"onejane",admin:"onejane"});gitalk.render("gitalk")</script></section></div></div></div><script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/smoothscroll-for-websites@1.4.9/SmoothScroll.min.js"></script><script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js"></script><script>hljs.initHighlightingOnLoad()</script><script src="/js/app.js?v=1574429967636"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.1.0/lazysizes.min.js"></script><div hidden><script type="text/javascript" src="https://js.users.51.la/20279757.js"></script></div></body><script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script></html>

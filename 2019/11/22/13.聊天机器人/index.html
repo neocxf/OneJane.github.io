@@ -1,0 +1,176 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.9.0"><title>聊天机器人（13） - OneJane</title><meta charset="UTF-8"><meta name="description" content="微服务,高可用,高并发,人工智能"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="msvalidate.01" content="396E9693347B4D18AAE96D9E75B9B686"><link rel="shortcut icon" href="/images/a.ico" type="image/png"><meta name="description" content="自动聊天机器人，也称为自动问答系统，由于所使用的场景不同，叫法也不一样。自动问答（Question Answering，QA）是指利用计算机自动回答用户所提出的问题以满足用户知识需求的任务。不同于现有搜索引擎，问答系统是信息服务的一种高级形式，系统返回用户的不再是基于关键词匹配排序的文档列表，而是精准的自然语言答案。近年来，随着人工智能的飞速发展，自动问答已经成为倍受关注且发展前景广泛的研究方向。"><meta name="keywords" content="chatterbot,seq2seq,lstm"><meta property="og:type" content="article"><meta property="og:title" content="聊天机器人（13）"><meta property="og:url" content="https://onejane.github.io/2019/11/22/13.聊天机器人/index.html"><meta property="og:site_name" content="OneJane"><meta property="og:description" content="自动聊天机器人，也称为自动问答系统，由于所使用的场景不同，叫法也不一样。自动问答（Question Answering，QA）是指利用计算机自动回答用户所提出的问题以满足用户知识需求的任务。不同于现有搜索引擎，问答系统是信息服务的一种高级形式，系统返回用户的不再是基于关键词匹配排序的文档列表，而是精准的自然语言答案。近年来，随着人工智能的飞速发展，自动问答已经成为倍受关注且发展前景广泛的研究方向。"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574424178895.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574424233792.png"><meta property="og:updated_time" content="2019-11-22T13:24:01.151Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="聊天机器人（13）"><meta name="twitter:description" content="自动聊天机器人，也称为自动问答系统，由于所使用的场景不同，叫法也不一样。自动问答（Question Answering，QA）是指利用计算机自动回答用户所提出的问题以满足用户知识需求的任务。不同于现有搜索引擎，问答系统是信息服务的一种高级形式，系统返回用户的不再是基于关键词匹配排序的文档列表，而是精准的自然语言答案。近年来，随着人工智能的飞速发展，自动问答已经成为倍受关注且发展前景广泛的研究方向。"><meta name="twitter:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574424178895.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/css/mdui.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.15.8/styles/atom-one-dark.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1038733_0xvrvpg9c0r.css"><link rel="stylesheet" href="/css/style.css?v=1574429967660"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script></head><body class="mdui-drawer-body-left"><div id="nexmoe-background"><div class="nexmoe-bg" style="background-image:url(https://www.github.com/OneJane/blog/raw/master/小书匠/1566388885395.png)"></div><div class="mdui-appbar mdui-shadow-0"><div class="mdui-toolbar"> <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a><div class="mdui-toolbar-spacer"></div> <a href="/" title="OneJane" class="mdui-btn mdui-btn-icon"><img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388846021.png"></a></div></div></div><div id="nexmoe-header"><div class="nexmoe-drawer mdui-drawer" id="drawer"><div class="nexmoe-avatar mdui-ripple"> <a href="/" title="OneJane"><img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388846021.png" alt="OneJane"></a></div><div class="nexmoe-count"><div><span>文章</span>60</div><div><span>标签</span>82</div><div><span>分类</span>12</div></div><ul class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}"><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页"><i class="mdui-list-item-icon nexmoefont icon-home"></i><div class="mdui-list-item-content"> 回到首页</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="关于博客"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i><div class="mdui-list-item-content"> 关于博客</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/py.html" title="我的朋友"><i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i><div class="mdui-list-item-content"> 我的朋友</div></a></ul><aside id="nexmoe-sidebar"><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">社交按钮</h3><div class="nexmoe-widget nexmoe-social"><a class="mdui-ripple" href="https://www.zhihu.com/people/codewj/activities" target="_blank" mdui-tooltip="{content: 'zhihu'}" style="color:#e76a8d;background-color:rgba(231,106,141,.15)"><i class="nexmoefont icon-zhihu"></i></a><a class="mdui-ripple" href="https://github.com/OneJane" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color:#191717;background-color:rgba(25,23,23,.15)"><i class="nexmoefont icon-github"></i></a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章分类</h3><div class="nexmoe-widget"><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/人工智能/">人工智能</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/定时器/">定时器</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/持续集成/">持续集成</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/注册中心/">注册中心</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/测试/">测试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/爬虫/">爬虫</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/自然语言处理/">自然语言处理</a><span class="category-list-count">20</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/项目实战/">项目实战</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高可用/">高可用</a><span class="category-list-count">4</span></li></ul></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">标签云</h3><div class="nexmoe-widget tagcloud"> <a href="/tags/Gensim/" style="font-size:10px">Gensim</a> <a href="/tags/Hanlp/" style="font-size:10px">Hanlp</a> <a href="/tags/NLTK/" style="font-size:10px">NLTK</a> <a href="/tags/OpenCV/" style="font-size:13.33px">OpenCV</a> <a href="/tags/Stanford-NLP/" style="font-size:10px">Stanford NLP</a> <a href="/tags/Tensorflow/" style="font-size:16.67px">Tensorflow</a> <a href="/tags/ant-design/" style="font-size:10px">ant design</a> <a href="/tags/ant-design-pro/" style="font-size:11.67px">ant design pro</a> <a href="/tags/auc/" style="font-size:10px">auc</a> <a href="/tags/bottle/" style="font-size:10px">bottle</a> <a href="/tags/chatterbot/" style="font-size:10px">chatterbot</a> <a href="/tags/cnn/" style="font-size:11.67px">cnn</a> <a href="/tags/crf/" style="font-size:13.33px">crf</a> <a href="/tags/doc2vec/" style="font-size:10px">doc2vec</a> <a href="/tags/docker/" style="font-size:18.33px">docker</a> <a href="/tags/dubbo/" style="font-size:11.67px">dubbo</a> <a href="/tags/elasticsearch/" style="font-size:10px">elasticsearch</a> <a href="/tags/elastisearch/" style="font-size:10px">elastisearch</a> <a href="/tags/email/" style="font-size:10px">email</a> <a href="/tags/es6/" style="font-size:10px">es6</a> <a href="/tags/feign/" style="font-size:10px">feign</a> <a href="/tags/flask/" style="font-size:11.67px">flask</a> <a href="/tags/folium/" style="font-size:10px">folium</a> <a href="/tags/freemarker/" style="font-size:10px">freemarker</a> <a href="/tags/function/" style="font-size:10px">function</a> <a href="/tags/gateway/" style="font-size:10px">gateway</a> <a href="/tags/gensim/" style="font-size:11.67px">gensim</a> <a href="/tags/gitlab/" style="font-size:11.67px">gitlab</a> <a href="/tags/gru/" style="font-size:11.67px">gru</a> <a href="/tags/hanlp/" style="font-size:10px">hanlp</a> <a href="/tags/haproxy/" style="font-size:10px">haproxy</a> <a href="/tags/hmm/" style="font-size:10px">hmm</a> <a href="/tags/jenkins/" style="font-size:11.67px">jenkins</a> <a href="/tags/jieba/" style="font-size:15px">jieba</a> <a href="/tags/jmeter/" style="font-size:10px">jmeter</a> <a href="/tags/keepalived/" style="font-size:10px">keepalived</a> <a href="/tags/lda/" style="font-size:10px">lda</a> <a href="/tags/linux/" style="font-size:10px">linux</a> <a href="/tags/lstm/" style="font-size:11.67px">lstm</a> <a href="/tags/maven/" style="font-size:11.67px">maven</a> <a href="/tags/multi-druid/" style="font-size:10px">multi druid</a> <a href="/tags/mybatis/" style="font-size:10px">mybatis</a> <a href="/tags/mybatisplus/" style="font-size:10px">mybatisplus</a> <a href="/tags/mysql/" style="font-size:10px">mysql</a> <a href="/tags/n-gram/" style="font-size:10px">n-gram</a> <a href="/tags/nacos/" style="font-size:11.67px">nacos</a> <a href="/tags/neo4j/" style="font-size:11.67px">neo4j</a> <a href="/tags/nexmoe/" style="font-size:10px">nexmoe</a> <a href="/tags/nlp/" style="font-size:15px">nlp</a> <a href="/tags/numpy/" style="font-size:10px">numpy</a> <a href="/tags/partition/" style="font-size:10px">partition</a> <a href="/tags/procedure/" style="font-size:10px">procedure</a> <a href="/tags/pxc/" style="font-size:10px">pxc</a> <a href="/tags/pyhanlp/" style="font-size:11.67px">pyhanlp</a> <a href="/tags/python/" style="font-size:10px">python</a> <a href="/tags/rabbitmq/" style="font-size:10px">rabbitmq</a> <a href="/tags/react/" style="font-size:11.67px">react</a> <a href="/tags/redis/" style="font-size:11.67px">redis</a> <a href="/tags/redis-cluster/" style="font-size:10px">redis-cluster</a> <a href="/tags/replication/" style="font-size:11.67px">replication</a> <a href="/tags/rnn/" style="font-size:10px">rnn</a> <a href="/tags/rocketmq/" style="font-size:11.67px">rocketmq</a> <a href="/tags/scrapy/" style="font-size:13.33px">scrapy</a> <a href="/tags/selenium/" style="font-size:13.33px">selenium</a> <a href="/tags/sentinel/" style="font-size:15px">sentinel</a> <a href="/tags/seq2seq/" style="font-size:10px">seq2seq</a> <a href="/tags/session/" style="font-size:10px">session</a> <a href="/tags/sklearn/" style="font-size:10px">sklearn</a> <a href="/tags/skywalking/" style="font-size:11.67px">skywalking</a> <a href="/tags/snownlp/" style="font-size:10px">snownlp</a> <a href="/tags/spring-cloud-alibaba/" style="font-size:20px">spring cloud alibaba</a> <a href="/tags/springboot/" style="font-size:15px">springboot</a> <a href="/tags/swagger/" style="font-size:10px">swagger</a> <a href="/tags/textrank/" style="font-size:10px">textrank</a> <a href="/tags/tf-idf/" style="font-size:11.67px">tf-idf</a> <a href="/tags/tk-mybatis/" style="font-size:10px">tk mybatis</a> <a href="/tags/umi/" style="font-size:10px">umi</a> <a href="/tags/validate/" style="font-size:10px">validate</a> <a href="/tags/word2vec/" style="font-size:10px">word2vec</a> <a href="/tags/wordcloud/" style="font-size:10px">wordcloud</a> <a href="/tags/xxl-job/" style="font-size:11.67px">xxl-job</a> <a href="/tags/zookeeper/" style="font-size:10px">zookeeper</a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章归档</h3><div class="nexmoe-widget"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul></div></div></aside><div class="nexmoe-copyright"> &copy; 2019 OneJane</div></div></div><div id="nexmoe-content"><div class="nexmoe-primary"><div class="nexmoe-post"><div class="nexmoe-post-cover"> <img src="https://www.github.com/OneJane/blog/raw/master/小书匠/v2-9df453ee0dca562cd2b232ac3f027cb3_hd.jpg"><h1>聊天机器人（13）</h1></div><div class="nexmoe-post-meta"><a><i class="nexmoefont icon-calendar-fill"></i> 2019年11月22日</a><a><i class="nexmoefont icon-areachart"></i> 2.8k 字</a><a><i class="nexmoefont icon-time-circle-fill"></i> 大概 13 分钟</a> <a class="nexmoefont icon-appstore-fill -link" href="/categories/自然语言处理/">自然语言处理</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/chatterbot/">chatterbot</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/lstm/">lstm</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/seq2seq/">seq2seq</a></div><article><p>自动聊天机器人，也称为自动问答系统，由于所使用的场景不同，叫法也不一样。自动问答（Question Answering，QA）是指利用计算机自动回答用户所提出的问题以满足用户知识需求的任务。不同于现有搜索引擎，问答系统是信息服务的一种高级形式，系统返回用户的不再是基于关键词匹配排序的文档列表，而是精准的自然语言答案。近年来，随着人工智能的飞速发展，自动问答已经成为倍受关注且发展前景广泛的研究方向。</p><a id="more"></a><h1 id="自动问答简介"><a href="#自动问答简介" class="headerlink" title="自动问答简介"></a>自动问答简介</h1><p>自动问答主要研究的内容和关键科学问题如下：</p><ol><li><p><strong>问句理解</strong> ：给定用户问题，自动问答首先需要理解用户所提问题。用户问句的语义理解包含词法分析、句法分析、语义分析等多项关键技术，需要从文本的多个维度理解其中包含的语义内容。</p></li><li><p><strong>文本信息抽取</strong> ：自动问答系统需要在已有语料库、知识库或问答库中匹配相关的信息，并抽取出相应的答案。</p></li><li><p><strong>知识推理</strong> ：自动问答中，由于语料库、知识库和问答库本身的覆盖度有限，并不是所有问题都能直接找到答案。这就需要在已有的知识体系中，通过知识推理的手段获取这些隐含的答案。</p></li></ol><p>纵观自动问答研究的发展态势和技术现状，以下研究方向或问题将可能成为未来整个领域和行业重点关注的方向：基于深度学习的端到端自动问答，多领域、多语言的自动问答，面向问答的深度推理，篇章阅读理解、对话等。</p><h1 id="基于-Chatterbot-制作中文聊天机器人"><a href="#基于-Chatterbot-制作中文聊天机器人" class="headerlink" title="基于 Chatterbot 制作中文聊天机器人"></a>基于 Chatterbot 制作中文聊天机器人</h1><p>ChatterBot 是一个构建在 Python 上，基于一系列规则和机器学习算法完成的聊天机器人，具有结构清晰，可扩展性好，简单实用的特点。</p><p>Chatterbot 安装有两种方式：</p><ul><li>使用 <code>pip install chatterbot</code> 安装；</li><li>直接在 <a href="https://github.com/gunthercox/ChatterBot" target="_blank" rel="noopener">Github Chatterbot</a> 下载这个项目，通过 <code>python setup.py install</code> 安装，其中 examples 文件夹中包含几个例子，可以根据例子加深自己的理解。</li></ul><p>安装过程如果出现错误，主要是需要安装这些依赖库：</p><pre><code class="lsl">chatterbot-corpus&gt;=1.1,&lt;1.2
+mathparse&gt;=0.1,&lt;0.2
+nltk&gt;=3.2,&lt;4.0
+pymongo&gt;=3.3,&lt;4.0
+python-dateutil&gt;=2.6,&lt;2.7
+python-twitter&gt;=3.0,&lt;4.0
+sqlalchemy&gt;=1.2,&lt;1.3
+pint&gt;=0.8.1</code></pre><p><strong>1.</strong> 手动设置一点语料，体验基于规则的聊天机器人回答。</p><pre><code class="python">from chatterbot import ChatBot
+from chatterbot.trainers import ListTrainer
+Chinese_bot = ChatBot(&quot;Training demo&quot;) #创建一个新的实例
+Chinese_bot.set_trainer(ListTrainer)
+Chinese_bot.train([
+    &#39;亲，在吗？&#39;,
+    &#39;亲，在呢&#39;,
+    &#39;这件衣服的号码大小标准吗？&#39;,
+    &#39;亲，标准呢，请放心下单吧。&#39;,
+    &#39;有红色的吗？&#39;,
+    &#39;有呢，目前有白红蓝3种色调。&#39;,
+])</code></pre><p>下面进行测试：</p><pre><code class="makefile"># 测试一下
+question = &#39;亲，在吗&#39;
+print(question)
+response = Chinese_bot.get_response(question)
+print(response)
+print(&quot;\n&quot;)
+question = &#39;有红色的吗？&#39;
+print(question)
+response = Chinese_bot.get_response(question)
+print(response)</code></pre><p>从得到的结果可以看出，这应该完全是基于规则的判断：</p><blockquote><p>亲，在吗</p></blockquote><blockquote><p>亲，在呢</p></blockquote><blockquote><p>有红色的吗？</p></blockquote><blockquote><p>有呢，目前有白红蓝3种色调。</p></blockquote><p><strong>2.</strong> 训练自己的语料。</p><p>本次使用的语料来自 QQ 群的聊天记录，导出的 QQ 聊天记录稍微处理一下即可使用，整个过程如下。</p><p>（1）首先载入语料，第二行代码主要是想把每句话后面的换行 <code>\n</code> 去掉。</p><pre><code class="livecodeserver">lines = open(&quot;QQ.txt&quot;,&quot;r&quot;,encoding=&#39;gbk&#39;).readlines()
+sec = [ line.strip() for line in lines]</code></pre><p>（2）接下来就可以训练模型了，由于整个语料比较大，训练过程也比较耗时。</p><pre><code class="javascript">from chatterbot import ChatBot
+from chatterbot.trainers import ListTrainer
+Chinese_bot = ChatBot(&quot;Training&quot;)
+Chinese_bot.set_trainer(ListTrainer)
+Chinese_bot.train(sec)</code></pre><p>这里需要注意，如果训练过程很慢，可以在第一步中加入如下代码，即只取前1000条进行训练：</p><pre><code class="avrasm">sec = sec[0:1000]</code></pre><p>（3）最后，对训练好的模型进行测试，可见训练数据是 QQ 群技术对话，也看得出程序员们都很努力，整体想的都是学习。<br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574424178895.png" alt="enter description here"></p><p>以上只是简单的 Chatterbot 演示，如果想看更好的应用，推荐看官方文档。</p><h1 id="基于-Seq2Seq-制作中文聊天机器人"><a href="#基于-Seq2Seq-制作中文聊天机器人" class="headerlink" title="基于 Seq2Seq 制作中文聊天机器人"></a>基于 Seq2Seq 制作中文聊天机器人</h1><p>序列数据处理模型，从<code>N-gram</code> 语言模型到 RNN 及其变种。这里我们讲另外一个基于深度学习的 Seq2Seq 模型。</p><p>从 RNN 结构说起，根据输出和输入序列不同数量 RNN ，可以有多种不同的结构，不同结构自然就有不同的引用场合。</p><ul><li>One To One 结构，仅仅只是简单的给一个输入得到一个输出，此处并未体现序列的特征，例如图像分类场景。</li><li>One To Many 结构，给一个输入得到一系列输出，这种结构可用于生产图片描述的场景。</li><li>Many To One 结构，给一系列输入得到一个输出，这种结构可用于文本情感分析，对一些列的文本输入进行分类，看是消极还是积极情感。</li><li>Many To Many 结构，给一系列输入得到一系列输出，这种结构可用于翻译或聊天对话场景，将输入的文本转换成另外一系列文本。</li><li>同步 Many To Many 结构，它是经典的 RNN 结构，前一输入的状态会带到下一个状态中，而且每个输入都会对应一个输出，我们最熟悉的应用场景是字符预测，同样也可以用于视频分类，对视频的帧打标签。</li></ul><p>在 Many To Many 的两种模型中，第四和第五种是有差异的，经典 RNN结构的输入和输出序列必须要等长，它的应用场景也比较有限。而第四种，输入和输出序列可以不等长，这种模型便是 Seq2Seq 模型，即 Sequence toSequence。它实现了从一个序列到另外一个序列的转换，比如 Google 曾用 Seq2Seq 模型加 Attention模型实现了翻译功能，类似的还可以实现聊天机器人对话模型。经典的 RNN 模型固定了输入序列和输出序列的大小，而 Seq2Seq 模型则突破了该限制。</p><p>Seq2Seq 属于 <code>Encoder-Decoder</code> 结构，这里看看常见的 <code>Encoder-Decoder</code> 结构。基本思想就是利用两个 RNN，一个RNN 作为 Encoder，另一个 RNN 作为 Decoder。Encoder负责将输入序列压缩成指定长度的向量，这个向量就可以看成是这个序列的语义，这个过程称为编码，如下图，获取语义向量最简单的方式就是直接将最后一个输入的隐状态作为语义向量。也可以对最后一个隐含状态做一个变换得到语义向量，还可以将输入序列的所有隐含状态做一个变换得到语义变量。</p><p><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574424233792.png" alt="enter description here"></p><p>具体理论知识这里不再赘述，下面重点看看，如何通过 Keras 实现一个 <code>LSTM_Seq2Seq</code> 自动问答机器人。</p><p><strong>1.</strong> 语料准备。</p><p>语料我们使用 Tab 键 <code>\t</code> 把问题和答案区分，每一对为一行。其中，语料为爬虫爬取的工程机械网站的问答。</p><p><strong>2.</strong> 模型构建和训练。</p><p>第一步，引入需要的包：</p><pre><code class="haskell">from keras.models import Model
+from keras.layers import Input, LSTM, Dense
+import numpy as np
+import pandas as pd</code></pre><p>第二步，定义模型超参数、迭代次数、语料路径：</p><pre><code class="nix">    #Batch size 的大小
+    batch_size = 32  
+    # 迭代次数epochs
+    epochs = 100
+    # 编码空间的维度Latent dimensionality 
+    latent_dim = 256  
+    # 要训练的样本数
+    num_samples = 5000 
+    #设置语料的路径
+    data_path = &#39;D://nlp//ch13//files.txt&#39;</code></pre><p>第三步，把语料向量化：</p><pre><code class="livecodeserver">#把数据向量话
+input_texts = []
+target_texts = []
+input_characters = set()
+target_characters = set()
+
+with open(data_path, &#39;r&#39;, encoding=&#39;utf-8&#39;) as f:
+    lines = f.read().split(&#39;\n&#39;)
+for line in lines[: min(num_samples, len(lines) - 1)]:
+    #print(line)
+    input_text, target_text = line.split(&#39;\t&#39;)
+    # We use &quot;tab&quot; as the &quot;start sequence&quot; character
+    # for the targets, and &quot;\n&quot; as &quot;end sequence&quot; character.
+    target_text = target_text[0:100]
+    target_text = &#39;\t&#39; + target_text + &#39;\n&#39;
+    input_texts.append(input_text)
+    target_texts.append(target_text)
+
+    for char in input_text:
+        if char not in input_characters:
+            input_characters.add(char)
+    for char in target_text:
+        if char not in target_characters:
+            target_characters.add(char)
+
+input_characters = sorted(list(input_characters))
+target_characters = sorted(list(target_characters))
+num_encoder_tokens = len(input_characters)
+num_decoder_tokens = len(target_characters)
+max_encoder_seq_length = max([len(txt) for txt in input_texts])
+max_decoder_seq_length = max([len(txt) for txt in target_texts])
+
+print(&#39;Number of samples:&#39;, len(input_texts))
+print(&#39;Number of unique input tokens:&#39;, num_encoder_tokens)
+print(&#39;Number of unique output tokens:&#39;, num_decoder_tokens)
+print(&#39;Max sequence length for inputs:&#39;, max_encoder_seq_length)
+print(&#39;Max sequence length for outputs:&#39;, max_decoder_seq_length)
+
+input_token_index = dict(
+    [(char, i) for i, char in enumerate(input_characters)])
+target_token_index = dict(
+    [(char, i) for i, char in enumerate(target_characters)])
+
+encoder_input_data = np.zeros(
+    (len(input_texts), max_encoder_seq_length, num_encoder_tokens),dtype=&#39;float32&#39;)
+decoder_input_data = np.zeros(
+    (len(input_texts), max_decoder_seq_length, num_decoder_tokens),dtype=&#39;float32&#39;)
+decoder_target_data = np.zeros(
+    (len(input_texts), max_decoder_seq_length, num_decoder_tokens),dtype=&#39;float32&#39;)
+
+for i, (input_text, target_text) in enumerate(zip(input_texts, target_texts)):
+    for t, char in enumerate(input_text):
+        encoder_input_data[i, t, input_token_index[char]] = 1.
+    for t, char in enumerate(target_text):
+        # decoder_target_data is ahead of decoder_input_data by one timestep
+        decoder_input_data[i, t, target_token_index[char]] = 1.
+        if t &gt; 0:
+            # decoder_target_data will be ahead by one timestep
+            # and will not include the start character.
+            decoder_target_data[i, t - 1, target_token_index[char]] = 1.</code></pre><p>第四步，<code>LSTM_Seq2Seq</code> 模型定义、训练和保存：</p><pre><code class="nix">encoder_inputs = Input(shape=(None, num_encoder_tokens))
+encoder = LSTM(latent_dim, return_state=True)
+encoder_outputs, state_h, state_c = encoder(encoder_inputs)
+# 输出 `encoder_outputs` 
+encoder_states = [state_h, state_c]
+
+# 状态 `encoder_states` 
+decoder_inputs = Input(shape=(None, num_decoder_tokens))
+decoder_lstm = LSTM(latent_dim, return_sequences=True, return_state=True)
+decoder_outputs, _, _ = decoder_lstm(decoder_inputs,
+                       initial_state=encoder_states)
+decoder_dense = Dense(num_decoder_tokens, activation=&#39;softmax&#39;)
+decoder_outputs = decoder_dense(decoder_outputs)
+
+# 定义模型
+model = Model([encoder_inputs, decoder_inputs], decoder_outputs)
+
+# 训练
+model.compile(optimizer=&#39;rmsprop&#39;, loss=&#39;categorical_crossentropy&#39;)
+model.fit([encoder_input_data, decoder_input_data], decoder_target_data,
+          batch_size=batch_size,
+          epochs=epochs,
+          validation_split=0.2)
+# 保存模型
+model.save(&#39;s2s.h5&#39;)</code></pre><p>第五步，Seq2Seq 的 Encoder 操作：</p><pre><code class="nix">encoder_model = Model(encoder_inputs, encoder_states)
+
+decoder_state_input_h = Input(shape=(latent_dim,))
+decoder_state_input_c = Input(shape=(latent_dim,))
+decoder_states_inputs = [decoder_state_input_h, decoder_state_input_c]
+decoder_outputs, state_h, state_c = decoder_lstm(
+    decoder_inputs, initial_state=decoder_states_inputs)
+decoder_states = [state_h, state_c]
+decoder_outputs = decoder_dense(decoder_outputs)
+decoder_model = Model(
+    [decoder_inputs] + decoder_states_inputs,
+    [decoder_outputs] + decoder_states)</code></pre><p>第六步，把索引和分词转成序列：</p><pre><code class="stylus">reverse_input_char_index = dict(
+    (i, char) for char, i in input_token_index.items())
+reverse_target_char_index = dict(
+    (i, char) for char, i in target_token_index.items())</code></pre><p>第七步，定义预测函数，先使用预模型预测，然后编码成汉字结果：</p><pre><code class="perl">def decode_sequence(input_seq):
+    # Encode the input as state vectors.
+    states_value = encoder_model.predict(input_seq)
+    #print(states_value)
+
+    # Generate empty target sequence of length 1.
+    target_seq = np.zeros((1, 1, num_decoder_tokens))
+    # Populate the first character of target sequence with the start character.
+    target_seq[0, 0, target_token_index[&#39;\t&#39;]] = 1.
+
+    # Sampling loop for a batch of sequences
+    # (to simplify, here we assume a batch of size 1).
+    stop_condition = False
+    decoded_sentence = &#39;&#39;
+    while not stop_condition:
+        output_tokens, h, c = decoder_model.predict(
+            [target_seq] + states_value)
+
+        # Sample a token
+        sampled_token_index = np.argmax(output_tokens[0, -1, :])
+        sampled_char = reverse_target_char_index[sampled_token_index]
+        decoded_sentence += sampled_char
+        if (sampled_char == &#39;\n&#39; or
+           len(decoded_sentence) &gt; max_decoder_seq_length):
+            stop_condition = True
+
+        # Update the target sequence (of length 1).
+        target_seq = np.zeros((1, 1, num_decoder_tokens))
+        target_seq[0, 0, sampled_token_index] = 1.
+        # 更新状态
+        states_value = [h, c]
+    return decoded_sentence</code></pre><p><strong>3.</strong> 模型预测。<br>首先，定义一个预测函数：</p><pre><code class="python">def predict_ans(question):
+        inseq = np.zeros((len(question), max_encoder_seq_length, num_encoder_tokens),dtype=&#39;float16&#39;)
+        decoded_sentence = decode_sequence(inseq)
+        return decoded_sentence</code></pre><p>然后就可以预测了：</p><pre><code class="stylus">print(&#39;Decoded sentence:&#39;, predict_ans(&quot;挖机履带掉了怎么装上去&quot;))</code></pre><h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><p>本文我们首先基于 Chatterbot 制作了中文聊天机器人，并用 QQ 群对话语料自己尝试训练。然后通过 LSTM 和 Seq2Seq模型，根据爬取的语料，训练了一个自动问答的模型，通过以上两种方式，我们们对自动问答有了一个简单的入门。</p></article><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a> <span class="donate_txt">↑<br> 欢迎投食,求鼓励，求支持！</span><br></div><div id="donate_guide" class="donate_bar center hidden"> <img src="/images/alipay.png" alt="支付宝打赏"> <img src="/images/wechatpay.png" alt="微信打赏"></div><script type="text/javascript">document.getElementById("btn_donate").onclick=function(){$("#donate_board").addClass("hidden"),$("#donate_guide").removeClass("hidden")}</script></div><div class="nexmoe-post-copyright"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i> <strong>本文作者：</strong>OneJane<br> <strong>本文链接：</strong><a href="https://onejane.github.io/2019/11/22/13.聊天机器人/" title="https://onejane.github.io/2019/11/22/13.聊天机器人/" target="_blank" rel="noopener">https://onejane.github.io/2019/11/22/13.聊天机器人/</a><br> <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可</div><section class="nexmoe-comment"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css"><div id="gitalk"></div><script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script><script type="text/javascript">var gitalk=new Gitalk({clientID:"e677e59382e1c7a468fd",clientSecret:"717d041bc4ab749f069314862232cfb6ec8adc15",id:decodeURI(window.location.pathname),repo:"onejane.github.io",owner:"onejane",admin:"onejane"});gitalk.render("gitalk")</script></section></div></div></div><script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/smoothscroll-for-websites@1.4.9/SmoothScroll.min.js"></script><script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js"></script><script>hljs.initHighlightingOnLoad()</script><script src="/js/app.js?v=1574429967679"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.1.0/lazysizes.min.js"></script><div hidden><script type="text/javascript" src="https://js.users.51.la/20279757.js"></script></div></body><script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script></html>
