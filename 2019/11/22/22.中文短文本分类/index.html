@@ -1,0 +1,359 @@
+<!DOCTYPE html><html><head><meta name="generator" content="Hexo 3.9.0"><title>中文短文本分类（22） - OneJane</title><meta charset="UTF-8"><meta name="description" content="微服务,高可用,高并发,人工智能"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1"><meta name="msvalidate.01" content="396E9693347B4D18AAE96D9E75B9B686"><link rel="shortcut icon" href="/images/a.ico" type="image/png"><meta name="description" content="目前，随着大数据、云计算对关系型数据处理技术趋向稳定成熟，各大互联网公司对关系数据的整合也已经落地成熟，笔者预测未来数据领域的挑战将主要集中在半结构化和非结构化数据的整合，NLP 技术对个人发展越来越重要，尤其在中文文本上挑战更大。"><meta name="keywords" content="jieba,lstm,lda,cnn,svm"><meta property="og:type" content="article"><meta property="og:title" content="中文短文本分类（22）"><meta property="og:url" content="https://onejane.github.io/2019/11/22/22.中文短文本分类/index.html"><meta property="og:site_name" content="OneJane"><meta property="og:description" content="目前，随着大数据、云计算对关系型数据处理技术趋向稳定成熟，各大互联网公司对关系数据的整合也已经落地成熟，笔者预测未来数据领域的挑战将主要集中在半结构化和非结构化数据的整合，NLP 技术对个人发展越来越重要，尤其在中文文本上挑战更大。"><meta property="og:locale" content="zh-CN"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574427671692.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574427751979.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574427765669.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574428093063.png"><meta property="og:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574428147772.png"><meta property="og:updated_time" content="2019-12-04T10:18:52.726Z"><meta name="twitter:card" content="summary"><meta name="twitter:title" content="中文短文本分类（22）"><meta name="twitter:description" content="目前，随着大数据、云计算对关系型数据处理技术趋向稳定成熟，各大互联网公司对关系数据的整合也已经落地成熟，笔者预测未来数据领域的挑战将主要集中在半结构化和非结构化数据的整合，NLP 技术对个人发展越来越重要，尤其在中文文本上挑战更大。"><meta name="twitter:image" content="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574427671692.png"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/css/mdui.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.15.8/styles/atom-one-dark.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css"><link rel="stylesheet" href="//at.alicdn.com/t/font_1038733_0xvrvpg9c0r.css"><link rel="stylesheet" href="/css/style.css?v=1575508134912"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.css"><script src="https://cdn.jsdelivr.net/npm/aplayer@1.7.0/dist/APlayer.min.js"></script></head><body class="mdui-drawer-body-left"><div id="nexmoe-background"><div class="nexmoe-bg" style="background-image:url(https://www.github.com/OneJane/blog/raw/master/小书匠/1566388885395.png)"></div><div class="mdui-appbar mdui-shadow-0"><div class="mdui-toolbar"> <a mdui-drawer="{target: '#drawer', swipe: true}" title="menu" class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">menu</i></a><div class="mdui-toolbar-spacer"></div> <a href="/" title="OneJane" class="mdui-btn mdui-btn-icon"><img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388846021.png"></a></div></div></div><div id="nexmoe-header"><div class="nexmoe-drawer mdui-drawer" id="drawer"><div class="nexmoe-avatar mdui-ripple"> <a href="/" title="OneJane"><img src="https://www.github.com/OneJane/blog/raw/master/小书匠/1566388846021.png" alt="OneJane"></a></div><div class="nexmoe-count"><div><span>文章</span>62</div><div><span>标签</span>83</div><div><span>分类</span>12</div></div><ul class="nexmoe-list mdui-list" mdui-collapse="{accordion: true}"><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/" title="回到首页"><i class="mdui-list-item-icon nexmoefont icon-home"></i><div class="mdui-list-item-content"> 回到首页</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/about.html" title="关于博客"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i><div class="mdui-list-item-content"> 关于博客</div></a><a class="nexmoe-list-item mdui-list-item mdui-ripple" href="/py.html" title="我的朋友"><i class="mdui-list-item-icon nexmoefont icon-unorderedlist"></i><div class="mdui-list-item-content"> 我的朋友</div></a></ul><aside id="nexmoe-sidebar"><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">社交按钮</h3><div class="nexmoe-widget nexmoe-social"><a class="mdui-ripple" href="https://www.zhihu.com/people/codewj/activities" target="_blank" mdui-tooltip="{content: 'zhihu'}" style="color:#e76a8d;background-color:rgba(231,106,141,.15)"><i class="nexmoefont icon-zhihu"></i></a><a class="mdui-ripple" href="https://github.com/OneJane" target="_blank" mdui-tooltip="{content: 'GitHub'}" style="color:#191717;background-color:rgba(25,23,23,.15)"><i class="nexmoefont icon-github"></i></a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章分类</h3><div class="nexmoe-widget"><ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/人工智能/">人工智能</a><span class="category-list-count">9</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/博客/">博客</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/定时器/">定时器</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/持续集成/">持续集成</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/数据库/">数据库</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/注册中心/">注册中心</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/测试/">测试</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/爬虫/">爬虫</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/系统/">系统</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/自然语言处理/">自然语言处理</a><span class="category-list-count">22</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/项目实战/">项目实战</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/高可用/">高可用</a><span class="category-list-count">4</span></li></ul></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">标签云</h3><div class="nexmoe-widget tagcloud"> <a href="/tags/Gensim/" style="font-size:10px">Gensim</a> <a href="/tags/Hanlp/" style="font-size:10px">Hanlp</a> <a href="/tags/NLTK/" style="font-size:10px">NLTK</a> <a href="/tags/OpenCV/" style="font-size:13.33px">OpenCV</a> <a href="/tags/Stanford-NLP/" style="font-size:10px">Stanford NLP</a> <a href="/tags/Tensorflow/" style="font-size:16.67px">Tensorflow</a> <a href="/tags/ant-design/" style="font-size:10px">ant design</a> <a href="/tags/ant-design-pro/" style="font-size:11.67px">ant design pro</a> <a href="/tags/auc/" style="font-size:10px">auc</a> <a href="/tags/bottle/" style="font-size:10px">bottle</a> <a href="/tags/chatterbot/" style="font-size:10px">chatterbot</a> <a href="/tags/cnn/" style="font-size:13.33px">cnn</a> <a href="/tags/crf/" style="font-size:13.33px">crf</a> <a href="/tags/doc2vec/" style="font-size:10px">doc2vec</a> <a href="/tags/docker/" style="font-size:18.33px">docker</a> <a href="/tags/dubbo/" style="font-size:11.67px">dubbo</a> <a href="/tags/elasticsearch/" style="font-size:10px">elasticsearch</a> <a href="/tags/elastisearch/" style="font-size:10px">elastisearch</a> <a href="/tags/email/" style="font-size:10px">email</a> <a href="/tags/es6/" style="font-size:10px">es6</a> <a href="/tags/feign/" style="font-size:10px">feign</a> <a href="/tags/flask/" style="font-size:11.67px">flask</a> <a href="/tags/folium/" style="font-size:10px">folium</a> <a href="/tags/freemarker/" style="font-size:10px">freemarker</a> <a href="/tags/function/" style="font-size:10px">function</a> <a href="/tags/gateway/" style="font-size:10px">gateway</a> <a href="/tags/gensim/" style="font-size:11.67px">gensim</a> <a href="/tags/gitlab/" style="font-size:11.67px">gitlab</a> <a href="/tags/gru/" style="font-size:11.67px">gru</a> <a href="/tags/hanlp/" style="font-size:11.67px">hanlp</a> <a href="/tags/haproxy/" style="font-size:10px">haproxy</a> <a href="/tags/hmm/" style="font-size:10px">hmm</a> <a href="/tags/jenkins/" style="font-size:11.67px">jenkins</a> <a href="/tags/jieba/" style="font-size:16.67px">jieba</a> <a href="/tags/jmeter/" style="font-size:10px">jmeter</a> <a href="/tags/keepalived/" style="font-size:10px">keepalived</a> <a href="/tags/lda/" style="font-size:11.67px">lda</a> <a href="/tags/linux/" style="font-size:10px">linux</a> <a href="/tags/lstm/" style="font-size:13.33px">lstm</a> <a href="/tags/maven/" style="font-size:11.67px">maven</a> <a href="/tags/multi-druid/" style="font-size:10px">multi druid</a> <a href="/tags/mybatis/" style="font-size:10px">mybatis</a> <a href="/tags/mybatisplus/" style="font-size:10px">mybatisplus</a> <a href="/tags/mysql/" style="font-size:10px">mysql</a> <a href="/tags/n-gram/" style="font-size:10px">n-gram</a> <a href="/tags/nacos/" style="font-size:11.67px">nacos</a> <a href="/tags/neo4j/" style="font-size:11.67px">neo4j</a> <a href="/tags/nexmoe/" style="font-size:10px">nexmoe</a> <a href="/tags/nlp/" style="font-size:15px">nlp</a> <a href="/tags/numpy/" style="font-size:10px">numpy</a> <a href="/tags/partition/" style="font-size:10px">partition</a> <a href="/tags/procedure/" style="font-size:10px">procedure</a> <a href="/tags/pxc/" style="font-size:10px">pxc</a> <a href="/tags/pyhanlp/" style="font-size:11.67px">pyhanlp</a> <a href="/tags/python/" style="font-size:10px">python</a> <a href="/tags/rabbitmq/" style="font-size:10px">rabbitmq</a> <a href="/tags/react/" style="font-size:11.67px">react</a> <a href="/tags/redis/" style="font-size:11.67px">redis</a> <a href="/tags/redis-cluster/" style="font-size:10px">redis-cluster</a> <a href="/tags/replication/" style="font-size:11.67px">replication</a> <a href="/tags/rnn/" style="font-size:10px">rnn</a> <a href="/tags/rocketmq/" style="font-size:11.67px">rocketmq</a> <a href="/tags/scrapy/" style="font-size:13.33px">scrapy</a> <a href="/tags/selenium/" style="font-size:13.33px">selenium</a> <a href="/tags/sentinel/" style="font-size:15px">sentinel</a> <a href="/tags/seq2seq/" style="font-size:10px">seq2seq</a> <a href="/tags/session/" style="font-size:10px">session</a> <a href="/tags/sklearn/" style="font-size:10px">sklearn</a> <a href="/tags/skywalking/" style="font-size:11.67px">skywalking</a> <a href="/tags/snownlp/" style="font-size:10px">snownlp</a> <a href="/tags/spring-cloud-alibaba/" style="font-size:20px">spring cloud alibaba</a> <a href="/tags/springboot/" style="font-size:15px">springboot</a> <a href="/tags/svm/" style="font-size:10px">svm</a> <a href="/tags/swagger/" style="font-size:10px">swagger</a> <a href="/tags/textrank/" style="font-size:10px">textrank</a> <a href="/tags/tf-idf/" style="font-size:13.33px">tf-idf</a> <a href="/tags/tk-mybatis/" style="font-size:10px">tk mybatis</a> <a href="/tags/umi/" style="font-size:10px">umi</a> <a href="/tags/validate/" style="font-size:10px">validate</a> <a href="/tags/word2vec/" style="font-size:10px">word2vec</a> <a href="/tags/wordcloud/" style="font-size:10px">wordcloud</a> <a href="/tags/xxl-job/" style="font-size:11.67px">xxl-job</a> <a href="/tags/zookeeper/" style="font-size:10px">zookeeper</a></div></div><div class="nexmoe-widget-wrap"><h3 class="nexmoe-widget-title">文章归档</h3><div class="nexmoe-widget"><ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/11/">十一月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/10/">十月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/09/">九月 2019</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2019/08/">八月 2019</a></li></ul></div></div></aside><div class="nexmoe-copyright"> &copy; 2019 OneJane</div></div></div><div id="nexmoe-content"><div class="nexmoe-primary"><div class="nexmoe-post"><div class="nexmoe-post-cover"> <img src="https://www.github.com/OneJane/blog/raw/master/小书匠/v2-2593b7c137632e40287800575a1ebf34_hd.jpg"><h1>中文短文本分类（22）</h1></div><div class="nexmoe-post-meta"><a><i class="nexmoefont icon-calendar-fill"></i> 2019年11月22日</a><a><i class="nexmoefont icon-areachart"></i> 6.5k 字</a><a><i class="nexmoefont icon-time-circle-fill"></i> 大概 30 分钟</a> <a class="nexmoefont icon-appstore-fill -link" href="/categories/自然语言处理/">自然语言处理</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/cnn/">cnn</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/jieba/">jieba</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/lda/">lda</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/lstm/">lstm</a> <a class="nexmoefont icon-tag-fill -link" href="/tags/svm/">svm</a></div><article><p>目前，随着大数据、云计算对关系型数据处理技术趋向稳定成熟，各大互联网公司对关系数据的整合也已经落地成熟，笔者预测未来数据领域的挑战将主要集中在半结构化和非结构化数据的整合，NLP 技术对个人发展越来越重要，尤其在中文文本上挑战更大。</p><a id="more"></a><p>由于是第一讲，笔者在本次 Chat 并没有提及较深入的 NLP 处理技术，通过 WordCloud 制作词云、用 LDA 主题模型获取文本关键词、以及用朴素贝叶斯算法和 SVM 分别对文本分类，目的是让大家对中文文本处理有一个直观了解，为后续实战提供基础保障。</p><h1 id="WordCloud-制作词云"><a href="#WordCloud-制作词云" class="headerlink" title="WordCloud 制作词云"></a>WordCloud 制作词云</h1><p>最近中美贸易战炒的沸沸扬扬，笔者用网上摘取了一些文本（自己线下可以继续添加语料），下面来制作一个中美贸易战相关的词云。</p><h2 id="jieba-分词安装"><a href="#jieba-分词安装" class="headerlink" title="jieba 分词安装"></a>jieba 分词安装</h2><p>jieba 俗称中文分词利器，作用是来对文本语料进行分词。</p><ul><li>全自动安装：easy_install jieba 或者 pip install jieba / pip3 install jieba</li><li>半自动安装：先下载 <a href="https://pypi.python.org/pypi/jieba/" target="_blank" rel="noopener">https://pypi.python.org/pypi/jieba/</a> ，解压后运行 python setup.py install</li><li>手动安装：将 jieba 目录放置于当前目录或者 site-packages 目录。</li><li>安装完通过 import jieba 验证安装成功与否。</li></ul><h2 id="WordCloud-安装"><a href="#WordCloud-安装" class="headerlink" title="WordCloud 安装"></a>WordCloud 安装</h2><ul><li>下载：<a href="https://www.lfd.uci.edu/~gohlke/pythonlibs/#wordcloud" target="_blank" rel="noopener">https://www.lfd.uci.edu/~gohlke/pythonlibs/#wordcloud</a></li><li>安装（window 环境安装）找的下载文件的路径：pip install wordcloud-1.3.2-cp36-cp36m-win_amd64.whl</li><li>安装完通过 from wordcloud import WordCloud 验证安装成功与否。</li></ul><h2 id="开始编码实现"><a href="#开始编码实现" class="headerlink" title="开始编码实现"></a>开始编码实现</h2><p>整个过程分为几个步骤：</p><ul><li>文件加载</li><li>分词</li><li>统计词频</li><li>去停用词</li><li>构建词云</li></ul><pre><code class="python">#引入所需要的包
+import jieba
+import pandas as pd 
+import numpy as np
+from scipy.misc import imread 
+from wordcloud import WordCloud,ImageColorGenerator
+import matplotlib.pyplot as plt
+#定义文件路径
+dir =  &quot;D://ProgramData//PythonWorkSpace//study//&quot;
+#定义语料文件路径
+file = &quot;&quot;.join([dir,&quot;z_m.csv&quot;])
+#定义停用词文件路径
+stop_words = &quot;&quot;.join([dir,&quot;stopwords.txt&quot;])
+#定义wordcloud中字体文件的路径
+simhei = &quot;&quot;.join([dir,&quot;simhei.ttf&quot;])
+#读取语料
+df = pd.read_csv(file, encoding=&#39;utf-8&#39;)
+df.head()
+#如果存在nan，删除
+df.dropna(inplace=True)
+#将content一列转为list
+content=df.content.values.tolist()
+#用jieba进行分词操作
+segment=[]
+for line in content:
+    try:
+        segs=jieba.cut_for_search(line)
+        segs = [v for v in segs if not str(v).isdigit()]#去数字
+        segs = list(filter(lambda x:x.strip(), segs))   #去左右空格
+        #segs = list(filter(lambda x:len(x)&gt;1, segs)) #长度为1的字符
+        for seg in segs:
+            if len(seg)&gt;1 and seg!=&#39;\r\n&#39;:
+                segment.append(seg)
+    except:
+        print(line)
+        continue
+#分词后加入一个新的DataFrame
+words_df=pd.DataFrame({&#39;segment&#39;:segment})
+#加载停用词
+stopwords=pd.read_csv(stop_words,index_col=False,quoting=3,sep=&quot;\t&quot;,names=[&#39;stopword&#39;], encoding=&#39;utf-8&#39;)               
+#安装关键字groupby分组统计词频，并按照计数降序排序
+words_stat=words_df.groupby(by=[&#39;segment&#39;])[&#39;segment&#39;].agg({&quot;计数&quot;:np.size})
+words_stat=words_stat.reset_index().sort_values(by=[&quot;计数&quot;],ascending=False)
+#分组之后去掉停用词
+words_stat=words_stat[~words_stat.segment.isin(stopwords.stopword)]
+#下面是重点，绘制wordcloud词云，这一提供2种方式
+#第一种是默认的样式
+wordcloud=WordCloud(font_path=simhei,background_color=&quot;white&quot;,max_font_size=80)
+word_frequence = {x[0]:x[1] for x in words_stat.head(1000).values}
+wordcloud=wordcloud.fit_words(word_frequence)
+plt.imshow(wordcloud)
+wordcloud.to_file(r&#39;wordcloud_1.jpg&#39;)  #保存结果
+#第二种是自定义图片
+text = &quot; &quot;.join(words_stat[&#39;segment&#39;].head(100).astype(str))
+abel_mask = imread(r&quot;china.jpg&quot;)  #这里设置了一张中国地图
+wordcloud2 = WordCloud(background_color=&#39;white&#39;,  # 设置背景颜色 
+                     mask = abel_mask,  # 设置背景图片
+                     max_words = 3000,  # 设置最大现实的字数
+                     font_path = simhei,  # 设置字体格式
+                     width=2048,
+                     height=1024,
+                     scale=4.0,
+                     max_font_size= 300,  # 字体最大值
+                     random_state=42).generate(text)
+
+# 根据图片生成词云颜色
+image_colors = ImageColorGenerator(abel_mask)
+wordcloud2.recolor(color_func=image_colors)
+# 以下代码显示图片
+plt.imshow(wordcloud2)
+plt.axis(&quot;off&quot;)
+plt.show()
+wordcloud2.to_file(r&#39;wordcloud_2.jpg&#39;) #保存结果</code></pre><p>这里只给出默认生产的图，自定义的图保存在 wordcloud_2.jpg，回头自己看。<br><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574427671692.png" alt="enter description here"></p><h1 id="LDA-提取关键字"><a href="#LDA-提取关键字" class="headerlink" title="LDA 提取关键字"></a>LDA 提取关键字</h1><h2 id="Gensim-安装"><a href="#Gensim-安装" class="headerlink" title="Gensim 安装"></a>Gensim 安装</h2><p>Gensim 除了具备基本的语料处理功能外，Gensim 还提供了 LSI、LDA、HDP、DTM、DIM 等主题模型、TF-IDF 计算以及当前流行的深度神经网络语言模型 word2vec、paragraph2vec 等算法，可谓是方便之至。</p><ul><li>Gensim 安装：pip install gensim</li><li>安装完通过 import gensim 验证安装成功与否。</li></ul><h2 id="LDA-提取关键字编码实现"><a href="#LDA-提取关键字编码实现" class="headerlink" title="LDA 提取关键字编码实现"></a>LDA 提取关键字编码实现</h2><p>语料是一个关于汽车的短文本，传统的关键字提取有基于 TF-IDF 算法的关键词抽取；基于 TextRank 算法的关键词抽取等方式。下面通过 Gensim 库完成基于 LDA 的关键字提取。</p><p>整个过程步骤：</p><ul><li>文件加载</li><li>分词</li><li>去停用词</li><li>构建词袋模型</li><li>LDA 模型训练</li><li>结果可视化</li></ul><pre><code class="python">#引入库文件
+import jieba.analyse as analyse
+import jieba
+import pandas as pd
+from gensim import corpora, models, similarities
+import gensim
+import numpy as np
+import matplotlib.pyplot as plt
+%matplotlib inline
+#设置文件路径
+dir = &quot;D://ProgramData//PythonWorkSpace//study//&quot;
+file_desc = &quot;&quot;.join([dir,&#39;car.csv&#39;])
+stop_words = &quot;&quot;.join([dir,&#39;stopwords.txt&#39;])
+#定义停用词
+stopwords=pd.read_csv(stop_words,index_col=False,quoting=3,sep=&quot;\t&quot;,names=[&#39;stopword&#39;], encoding=&#39;utf-8&#39;)
+stopwords=stopwords[&#39;stopword&#39;].values
+#加载语料
+df = pd.read_csv(file_desc, encoding=&#39;gbk&#39;)
+#删除nan行
+df.dropna(inplace=True)
+lines=df.content.values.tolist()
+#开始分词
+sentences=[]
+for line in lines:
+    try:
+        segs=jieba.lcut(line)
+        segs = [v for v in segs if not str(v).isdigit()]#去数字
+        segs = list(filter(lambda x:x.strip(), segs))   #去左右空格
+        segs = list(filter(lambda x:x not in stopwords, segs)) #去掉停用词
+        sentences.append(segs)
+    except Exception:
+        print(line)
+        continue
+#构建词袋模型
+dictionary = corpora.Dictionary(sentences)
+corpus = [dictionary.doc2bow(sentence) for sentence in sentences]
+#lda模型，num_topics是主题的个数，这里定义了5个
+lda = gensim.models.ldamodel.LdaModel(corpus=corpus, id2word=dictionary, num_topics=10)
+#我们查一下第1号分类，其中最常出现的5个词是：
+print(lda.print_topic(1, topn=5))
+#我们打印所有5个主题，每个主题显示8个词
+for topic in lda.print_topics(num_topics=10, num_words=8):
+    print(topic[1])</code></pre><p><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574427751979.png" alt="enter description here"></p><pre><code class="python">#显示中文matplotlib
+plt.rcParams[&#39;font.sans-serif&#39;] = [u&#39;SimHei&#39;]
+plt.rcParams[&#39;axes.unicode_minus&#39;] = False
+# 在可视化部分，我们首先画出了九个主题的7个词的概率分布图
+num_show_term = 8 # 每个主题下显示几个词
+num_topics  = 10  
+for i, k in enumerate(range(num_topics)):
+    ax = plt.subplot(2, 5, i+1)
+    item_dis_all = lda.get_topic_terms(topicid=k)
+    item_dis = np.array(item_dis_all[:num_show_term])
+    ax.plot(range(num_show_term), item_dis[:, 1], &#39;b*&#39;)
+    item_word_id = item_dis[:, 0].astype(np.int)
+    word = [dictionary.id2token[i] for i in item_word_id]
+    ax.set_ylabel(u&quot;概率&quot;)
+    for j in range(num_show_term):
+        ax.text(j, item_dis[j, 1], word[j], bbox=dict(facecolor=&#39;green&#39;,alpha=0.1))
+plt.suptitle(u&#39;9个主题及其7个主要词的概率&#39;, fontsize=18)
+plt.show()</code></pre><p><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574427765669.png" alt="enter description here"></p><h1 id="朴素贝叶斯和-SVM-文本分类"><a href="#朴素贝叶斯和-SVM-文本分类" class="headerlink" title="朴素贝叶斯和 SVM 文本分类"></a>朴素贝叶斯和 SVM 文本分类</h1><p>最后一部分，我们通过带标签的数据：</p><p>数据是笔者曾经做过的一份司法数据，其中需求是对每一条输入数据，判断事情的主体是谁，比如报警人被老公打，报警人被老婆打，报警人被儿子打，报警人被女儿打等来进行文本有监督的分类操作。</p><p>本次主要选这 4 类标签，基本操作过程步骤：</p><ul><li>文件加载</li><li>分词</li><li>去停用词</li><li>抽取词向量特征</li><li>分别进行朴素贝叶斯和 SVM 分类算法建模</li><li>评估打分</li></ul><pre><code class="livecodeserver">#引入包
+import random
+import jieba
+import pandas as pd
+#指定文件目录
+dir = &quot;D://ProgramData//PythonWorkSpace//chat//chat1//NB_SVM//&quot;
+#指定语料
+stop_words = &quot;&quot;.join([dir,&#39;stopwords.txt&#39;])
+laogong = &quot;&quot;.join([dir,&#39;beilaogongda.csv&#39;])  #被老公打
+laopo = &quot;&quot;.join([dir,&#39;beilaopoda.csv&#39;])  #被老婆打
+erzi = &quot;&quot;.join([dir,&#39;beierzida.csv&#39;])   #被儿子打
+nver = &quot;&quot;.join([dir,&#39;beinverda.csv&#39;])    #被女儿打
+#加载停用词
+stopwords=pd.read_csv(stop_words,index_col=False,quoting=3,sep=&quot;\t&quot;,names=[&#39;stopword&#39;], encoding=&#39;utf-8&#39;)
+stopwords=stopwords[&#39;stopword&#39;].values
+#加载语料
+laogong_df = pd.read_csv(laogong, encoding=&#39;utf-8&#39;, sep=&#39;,&#39;)
+laopo_df = pd.read_csv(laopo, encoding=&#39;utf-8&#39;, sep=&#39;,&#39;)
+erzi_df = pd.read_csv(erzi, encoding=&#39;utf-8&#39;, sep=&#39;,&#39;)
+nver_df = pd.read_csv(nver, encoding=&#39;utf-8&#39;, sep=&#39;,&#39;)
+#删除语料的nan行
+laogong_df.dropna(inplace=True)
+laopo_df.dropna(inplace=True)
+erzi_df.dropna(inplace=True)
+nver_df.dropna(inplace=True)
+#转换
+laogong = laogong_df.segment.values.tolist()
+laopo = laopo_df.segment.values.tolist()
+erzi = erzi_df.segment.values.tolist()
+nver = nver_df.segment.values.tolist()
+#定义分词和打标签函数preprocess_text
+#参数content_lines即为上面转换的list
+#参数sentences是定义的空list，用来储存打标签之后的数据
+#参数category 是类型标签
+def preprocess_text(content_lines, sentences, category):
+    for line in content_lines:
+        try:
+            segs=jieba.lcut(line)
+            segs = [v for v in segs if not str(v).isdigit()]#去数字
+            segs = list(filter(lambda x:x.strip(), segs))   #去左右空格
+            segs = list(filter(lambda x:len(x)&gt;1, segs)) #长度为1的字符
+            segs = list(filter(lambda x:x not in stopwords, segs)) #去掉停用词
+            sentences.append((&quot; &quot;.join(segs), category))# 打标签
+        except Exception:
+            print(line)
+            continue 
+#调用函数、生成训练数据
+sentences = []
+preprocess_text(laogong, sentences, &#39;laogong&#39;)
+preprocess_text(laopo, sentences, &#39;laopo&#39;)
+preprocess_text(erzi, sentences, &#39;erzi&#39;)
+preprocess_text(nver, sentences, &#39;nver&#39;)
+
+#打散数据，生成更可靠的训练集
+random.shuffle(sentences)
+
+#控制台输出前10条数据，观察一下
+for sentence in sentences[:10]:
+    print(sentence[0], sentence[1])
+#用sk-learn对数据切分，分成训练集和测试集
+from sklearn.model_selection import train_test_split
+x, y = zip(*sentences)
+x_train, x_test, y_train, y_test = train_test_split(x, y, random_state=1234)
+
+#抽取特征，我们对文本抽取词袋模型特征
+from sklearn.feature_extraction.text import CountVectorizer
+vec = CountVectorizer(
+    analyzer=&#39;word&#39;, # tokenise by character ngrams
+    max_features=4000,  # keep the most common 1000 ngrams
+)
+vec.fit(x_train)
+#用朴素贝叶斯算法进行模型训练
+from sklearn.naive_bayes import MultinomialNB
+classifier = MultinomialNB()
+classifier.fit(vec.transform(x_train), y_train)
+#对结果进行评分
+print(classifier.score(vec.transform(x_test), y_test))</code></pre><p>这时输出结果为：0.99284009546539376。</p><p>我们看到，这个时候的结果评分已经很高了，当然我们的训练数据集中，噪声都已经提前处理完了，使得数据集在很少数据量下，模型得分就可以很高。</p><p>下面我们继续进行优化：</p><pre><code class="nix">#可以把特征做得更棒一点，试试加入抽取2-gram和3-gram的统计特征，比如可以把词库的量放大一点。
+from sklearn.feature_extraction.text import CountVectorizer
+vec = CountVectorizer(
+    analyzer=&#39;word&#39;, # tokenise by character ngrams
+    ngram_range=(1,4),  # use ngrams of size 1 and 2
+    max_features=20000,  # keep the most common 1000 ngrams
+)
+vec.fit(x_train)
+#用朴素贝叶斯算法进行模型训练
+from sklearn.naive_bayes import MultinomialNB
+classifier = MultinomialNB()
+classifier.fit(vec.transform(x_train), y_train)
+#对结果进行评分
+print(classifier.score(vec.transform(x_test), y_test))</code></pre><p>这时输出结果为：0.97852028639618138。</p><p>我们看到，这个时候的结果稍微有点下降，这与我们语料本身有关系，但是如果随着数据量更多，语料文本长点，我认为或许第二种方式应该比第一种方式效果更好。</p><p>可见使用 scikit-learn 包，算法模型开发非常简单，下面看看 SVM 的应用：</p><pre><code class="stylus">from sklearn.svm import SVC
+svm = SVC(kernel=&#39;linear&#39;)
+svm.fit(vec.transform(x_train), y_train)
+print(svm.score(vec.transform(x_test), y_test))
+这时输出结果为：0.997613365155，比朴素贝叶斯效果更好。</code></pre><p>语料数据下载地址：<a href="https://github.com/sujeek/chat_list" target="_blank" rel="noopener">https://github.com/sujeek/chat_list</a></p><h1 id="数据科学比赛大杀器-XGBoost-实战文本分类"><a href="#数据科学比赛大杀器-XGBoost-实战文本分类" class="headerlink" title="数据科学比赛大杀器 XGBoost 实战文本分类"></a>数据科学比赛大杀器 XGBoost 实战文本分类</h1><p>在说 XGBoost 之前，我们先简单从树模型说起，典型的决策树模型。决策树的学习过程主要包括：</p><ul><li><p>特征选择： 从训练数据的特征中选择一个特征作为当前节点的分裂标准（特征选择的标准不同产生了不同的特征决策树算法，如根据信息增益、信息增益率和gini等）。</p></li><li><p>决策树生成： 根据所选特征评估标准，从上至下递归地生成子节点，直到数据集不可分则停止决策树生长。</p></li><li><p>剪枝： 决策树容易过拟合，需通过剪枝来预防过拟合（包括预剪枝和后剪枝）。</p></li></ul><p>常见的决策树算法有 ID3、C4.5、CART 等。</p><p>在 sklearn 中决策树分类模型如下，可以看到默认通过 gini 计算实现。</p><pre><code class="nix">sklearn.tree.DecisionTreeClassifier(criterion=’gini’, splitter=’best’, max_depth=None, min_samples_split=2, min_samples_leaf=1, min_weight_fraction_leaf=0.0, max_features=None, random_state=None, max_leaf_nodes=None, min_impurity_decrease=0.0, min_impurity_split=None, class_weight=None, presort=False)</code></pre><p>尽管决策树分类算法模型在应用中能够得到很好的结果，并通过剪枝操作提高模型泛化能力，但一棵树的生成肯定不如多棵树，因此就有了随机森林，并成功解决了决策树泛化能力弱的缺点，随机森林就是集成学习的一种方式。</p><p>在西瓜书中对集成学习的描述：集成学习通过将多个学习器进行结合，可获得比单一学习器显著优越的泛化性能，对“弱学习器” 尤为明显。弱学习器常指泛化性能略优于随机猜测的学习器。集成学习的结果通过投票法产生，即“少数服从多数”。个体学习不能太坏，并且要有“多样性”，即学习器间具有差异，即集成个体应“好而不同”。</p><p>假设基分类器的错误率相互独立，则由 Hoeffding 不等式可知，随着集成中个体分类器数目 T 的增大，集成的错误率将指数级下降，最终趋向于零。</p><p>但是这里有一个关键假设：基学习器的误差相互独立，而现实中个体学习器是为解决同一个问题训练出来的，所以不可能相互独立。因此，如何产生并结合“好而不同”的个体学习器是集成学习研究的核心。</p><p>集成学习大致分为两大类：</p><ul><li><p>Boosting：个体学习器间存在强依赖关系，必须串行生成的序列化方法。代表：AdaBoost、GBDT、XGBoost</p></li><li><p>Bagging：个体学习器间不存在强依赖关系，可同时生成的并行化方法。代表：随机森林（Random Forest）</p></li></ul><p>在 sklearn 中，对于 Random Forest、AdaBoost、GBDT 都有实现，下面我们重点说说在 kaggle、阿里天池等数据科学比赛经常会用到的大杀器 XGBoost，来实战文本分类 。</p><p>关于分类数据，还是延用《NLP 中文短文本分类项目实践（上）》中朴素贝叶斯算法的数据，这里对数据的标签做个修改，标签由 str 换成 int 类型，并从 0 开始，0、1、2、3 代表四类，所以是一个多分类问题：</p><pre><code class="stylus">preprocess_text(laogong, sentences,0)       #laogong   分类0
+preprocess_text(laopo, sentences, 1)        #laopo   分类1
+preprocess_text(erzi, sentences, 2)          #erzi   分类2
+preprocess_text(nver, sentences,3)          #nver   分类3</code></pre><p>接着我们引入 XGBoost 的库（默认你已经安装好 XGBoost），整个代码加了注释，可以当做模板来用，每次使用只需微调即可使用。</p><pre><code class="haskell">import xgboost as xgb  
+from sklearn.model_selection import StratifiedKFold  
+import numpy as np
+# xgb矩阵赋值  
+xgb_train = xgb.DMatrix(vec.transform(x_train), label=y_train)  
+xgb_test = xgb.DMatrix(vec.transform(x_test))  </code></pre><p>上面在引入库和构建完 DMatrix 矩阵之后，下面主要是调参指标，可以根据参数进行调参：</p><pre><code class="clean">params = {  
+    &#39;booster&#39;: &#39;gbtree&#39;,     #使用gbtree
+    &#39;objective&#39;: &#39;multi:softmax&#39;,  # 多分类的问题、  
+    # &#39;objective&#39;: &#39;multi:softprob&#39;,   # 多分类概率  
+    #&#39;objective&#39;: &#39;binary:logistic&#39;,  #二分类
+    &#39;eval_metric&#39;: &#39;merror&#39;,   #logloss
+    &#39;num_class&#39;: 4,  # 类别数，与 multisoftmax 并用  
+    &#39;gamma&#39;: 0.1,  # 用于控制是否后剪枝的参数,越大越保守，一般0.1、0.2这样子。  
+    &#39;max_depth&#39;: 8,  # 构建树的深度，越大越容易过拟合  
+    &#39;alpha&#39;: 0,   # L1正则化系数  
+    &#39;lambda&#39;: 10,  # 控制模型复杂度的权重值的L2正则化项参数，参数越大，模型越不容易过拟合。  
+    &#39;subsample&#39;: 0.7,  # 随机采样训练样本  
+    &#39;colsample_bytree&#39;: 0.5,  # 生成树时进行的列采样  
+    &#39;min_child_weight&#39;: 3,  
+    # 这个参数默认是 1，是每个叶子里面 h 的和至少是多少，对正负样本不均衡时的 0-1 分类而言  
+    # 假设 h 在 0.01 附近，min_child_weight 为 1 意味着叶子节点中最少需要包含 100 个样本。  
+    # 这个参数非常影响结果，控制叶子节点中二阶导的和的最小值，该参数值越小，越容易 overfitting。  
+    &#39;silent&#39;: 0,  # 设置成1则没有运行信息输出，最好是设置为0.  
+    &#39;eta&#39;: 0.03,  # 如同学习率  
+    &#39;seed&#39;: 1000,  
+    &#39;nthread&#39;: -1,  # cpu 线程数  
+    &#39;missing&#39;: 1
+    #&#39;scale_pos_weight&#39;: (np.sum(y==0)/np.sum(y==1))  # 用来处理正负样本不均衡的问题,通常取：sum(negative cases) / sum(positive cases)  
+}  </code></pre><p>这里进行迭代次数设置和 k 折交叉验证，训练模型，并进行模型保存和预测结果。</p><pre><code class="nix">plst = list(params.items())  
+num_rounds = 200  # 迭代次数  
+watchlist = [(xgb_train, &#39;train&#39;)]    
+# 交叉验证  
+result = xgb.cv(plst, xgb_train, num_boost_round=200, nfold=4, early_stopping_rounds=200, verbose_eval=True, folds=StratifiedKFold(n_splits=4).split(vec.transform(x_train), y_train))  
+# 训练模型并保存  
+# early_stopping_rounds 当设置的迭代次数较大时，early_stopping_rounds 可在一定的迭代次数内准确率没有提升就停止训练  
+model = xgb.train(plst, xgb_train, num_rounds, watchlist, early_stopping_rounds=200)  
+#model.save_model(&#39;../data/model/xgb.model&#39;)  # 用于存储训练出的模型    
+#predicts = model.predict(xgb_test)   #预测</code></pre><h1 id="词向量-Word2Vec-和-FastText-实战"><a href="#词向量-Word2Vec-和-FastText-实战" class="headerlink" title="词向量 Word2Vec 和 FastText 实战"></a>词向量 Word2Vec 和 FastText 实战</h1><p>深度学习带给自然语言处理最令人兴奋的突破是词向量（Word Embedding）技术。词向量技术是将词语转化成为稠密向量。在自然语言处理应用中，词向量作为机器学习、深度学习模型的特征进行输入。因此，最终模型的效果很大程度上取决于词向量的效果。</p><h2 id="Word2Vec-词向量"><a href="#Word2Vec-词向量" class="headerlink" title="Word2Vec 词向量"></a>Word2Vec 词向量</h2><p>在 Word2Vec 出现之前，自然语言处理经常把字词进行独热编码，也就是 One-Hot Encoder。</p><pre><code class="lsl">大数据 [0,0,0,0,0,0,0,1,0,……，0,0,0,0,0,0,0]
+云计算[0,0,0,0,1,0,0,0,0,……，0,0,0,0,0,0,0]
+机器学习[0,0,0,1,0,0,0,0,0,……，0,0,0,0,0,0,0]
+人工智能[0,0,0,0,0,0,0,0,0,……，1,0,0,0,0,0,0]</code></pre><p>比如上面的例子中，大数据 、云计算、机器学习和人工智能各对应一个向量，向量中只有一个值为 1，其余都为 0。所以使用 One-Hot Encoder 有以下问题：第一，词语编码是随机的，向量之间相互独立，看不出词语之间可能存在的关联关系。第二，向量维度的大小取决于语料库中词语的多少，如果语料包含的所有词语对应的向量合为一个矩阵的话，那这个矩阵过于稀疏，并且会造成维度灾难。</p><p>而解决这个问题的手段，就是使用向量表示（Vector Representations）。</p><p>Word2Vec 是 Google 团队 2013 年推出的，自提出后被广泛应用在自然语言处理任务中，并且受到它的启发，后续出现了更多形式的词向量模型。Word2Vec 主要包含两种模型：Skip-Gram 和 CBOW，值得一提的是，Word2Vec 词向量可以较好地表达不同词之间的相似和类比关系。</p><p>下面我们通过代码实战来体验一下 Word2Vec，pip install gensim 安装好库后，即可导入使用：</p><p>训练模型定义</p><pre><code class="nix">from gensim.models import Word2Vec  
+model = Word2Vec(sentences, sg=1, size=100,  window=5,  min_count=5,  negative=3, sample=0.001, hs=1, workers=4)  </code></pre><p>参数解释：</p><ul><li>sg=1 是 skip-gram 算法，对低频词敏感；默认 sg=0 为 CBOW 算法。</li><li>size 是输出词向量的维数，值太小会导致词映射因为冲突而影响结果，值太大则会耗内存并使算法计算变慢，一般值取为 100 到 200 之间。</li><li>window 是句子中当前词与目标词之间的最大距离，3 表示在目标词前看 3-b 个词，后面看 b 个词（b 在 0-3 之间随机）。</li><li>min_count 是对词进行过滤，频率小于 min-count 的单词则会被忽视，默认值为 5。</li><li>negative 和 sample 可根据训练结果进行微调，sample 表示更高频率的词被随机下采样到所设置的阈值，默认值为 1e-3。</li><li>hs=1 表示层级 softmax 将会被使用，默认 hs=0 且 negative 不为 0，则负采样将会被选择使用。</li><li>详细参数说明可查看 Word2Vec 源代码。<br>训练后的模型保存与加载，可以用来计算相似性，最大匹配程度等。</li></ul><pre><code class="gams">model.save(model)  #保存模型
+model = Word2Vec.load(model)   #加载模型
+model.most_similar(positive=[&#39;女人&#39;, &#39;女王&#39;], negative=[&#39;男人&#39;])  
+#输出[(&#39;女王&#39;, 0.50882536), ...]  
+model.similarity(&#39;女人&#39;, &#39;男人&#39;)  
+#输出0.73723527 </code></pre><h2 id="FastText词向量"><a href="#FastText词向量" class="headerlink" title="FastText词向量"></a>FastText词向量</h2><p>FastText 是 facebook 开源的一个词向量与文本分类工具，模型简单，训练速度非常快。FastText 做的事情，就是把文档中所有词通过 lookup table 变成向量，取平均后直接用线性分类器得到分类结果。</p><p>FastText python 包的安装：</p><pre><code class="ebnf">pip install fasttext</code></pre><p>FastText 做文本分类要求文本是如下的存储形式：</p><pre><code class="sqf">__label__1 ，内容。 
+__label__2，内容。
+__label__3 ，内容。
+__label__4，内容。</code></pre><p>其中前面的 <strong>label</strong> 是前缀，也可以自己定义，<strong>label</strong> 后接的为类别，之后接的就是我是我们的文本内容。</p><p>调用 fastText 训练生成模型，对模型效果进行评估。</p><pre><code class="stylus">import fasttext
+classifier = fasttext.supervised(&#39;train_data.txt&#39;, &#39;classifier.model&#39;, label_prefix=&#39;__label__&#39;)
+result = classifier.test(&#39;train_data.txt&#39;)
+print(result.precision)
+print(result.recall)</code></pre><p>实际预测过程：</p><pre><code class="stylus">label_to_cate = {1:&#39;科技&#39;, 2:&#39;财经&#39;, 3:&#39;体育&#39;, 4:&#39;生活&#39;, 5:&#39;美食&#39;}
+texts = [&#39;现如今 机器 学习 和 深度 学习 带动 人工智能 飞速 的 发展 并 在 图片 处理 语音 识别 领域 取得 巨大成功&#39;]
+labels = classifier.predict(texts)
+print(labels)
+print(label_to_cate[int(labels[0][0])])
+
+[[u&#39;1&#39;]]
+科技</code></pre><h1 id="文本分类之神经网络-CNN-和-LSTM-实战"><a href="#文本分类之神经网络-CNN-和-LSTM-实战" class="headerlink" title="文本分类之神经网络 CNN 和 LSTM 实战"></a>文本分类之神经网络 CNN 和 LSTM 实战</h1><h2 id="CNN-做文本分类实战"><a href="#CNN-做文本分类实战" class="headerlink" title="CNN 做文本分类实战"></a>CNN 做文本分类实战</h2><p>CNN 在图像上的巨大成功，使得大家都有在文本上试一把的冲动。CNN 的原理这里就不赘述了，关键看看怎样用于文本分类的，下图是一个 TextCNN 的结构（来源：网络）：</p><p><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574428093063.png" alt="enter description here"></p><p>具体结构介绍：</p><h3 id="输入层"><a href="#输入层" class="headerlink" title="输入层"></a>输入层</h3><p>可以把输入层理解成把一句话转化成了一个二维的图像：每一排是一个词的 Word2Vec 向量，纵向是这句话的每个词按序排列。输入数据的 size，也就是图像的 size，n×k，n 代表训练数据中最长的句子的词个数，k 是 embbeding 的维度。从输入层还可以看出 kernel 的 size。很明显 kernel 的高 (h) 会有不同的值，有的是 2，有的是 3。这很容易理解，不同的 kernel 想获取不同范围内词的关系；和图像不同的是，NLP 中的 CNN 的 kernel 的宽 (w) 一般都是图像的宽，也就是 Word2Vec 的维度，这也可以理解，因为我们需要获得的是纵向的差异信息，也就是不同范围的词出现会带来什么信息。</p><h3 id="卷积层"><a href="#卷积层" class="headerlink" title="卷积层"></a>卷积层</h3><p>由于 kernel 的特殊形状，因此卷积后的 feature map 是一个宽度是 1 的长条。</p><h3 id="池化层"><a href="#池化层" class="headerlink" title="池化层"></a>池化层</h3><p>这里使用 MaxPooling，并且一个 feature map 只选一个最大值留下。这被认为是按照这个 kernel 卷积后的最重要的特征。</p><h3 id="全连接层"><a href="#全连接层" class="headerlink" title="全连接层"></a>全连接层</h3><p>这里的全连接层是带 dropout 的全连接层和 softmax。</p><p>下面我们看看自己用 Tensorflow 如何实现一个文本分类器：</p><p>超参数定义：</p><pre><code class="makefile">#文档最长长度
+MAX_DOCUMENT_LENGTH = 100
+#最小词频数
+MIN_WORD_FREQUENCE = 2
+#词嵌入的维度
+EMBEDDING_SIZE = 20
+#filter个数
+N_FILTERS = 10
+#感知野大小
+WINDOW_SIZE = 20
+#filter的形状
+FILTER_SHAPE1 = [WINDOW_SIZE, EMBEDDING_SIZE]
+FILTER_SHAPE2 = [WINDOW_SIZE, N_FILTERS]
+#池化
+POOLING_WINDOW = 4
+POOLING_STRIDE = 2
+n_words = 0</code></pre><p>网络结构定义，2 层的卷积神经网络，用于短文本分类：</p><pre><code class="nix">def cnn_model(features, target):
+    # 先把词转成词嵌入
+    # 我们得到一个形状为[n_words, EMBEDDING_SIZE]的词表映射矩阵
+    # 接着我们可以把一批文本映射成[batch_size, sequence_length, EMBEDDING_SIZE]的矩阵形式
+    target = tf.one_hot(target, 15, 1, 0)
+    word_vectors = tf.contrib.layers.embed_sequence(
+            features, vocab_size=n_words, embed_dim=EMBEDDING_SIZE, scope=&#39;words&#39;)
+    word_vectors = tf.expand_dims(word_vectors, 3)
+    with tf.variable_scope(&#39;CNN_Layer1&#39;):
+        # 添加卷积层做滤波
+        conv1 = tf.contrib.layers.convolution2d(
+                word_vectors, N_FILTERS, FILTER_SHAPE1, padding=&#39;VALID&#39;)
+        # 添加RELU非线性
+        conv1 = tf.nn.relu(conv1)
+        # 最大池化
+        pool1 = tf.nn.max_pool(
+                conv1,
+                ksize=[1, POOLING_WINDOW, 1, 1],
+                strides=[1, POOLING_STRIDE, 1, 1],
+                padding=&#39;SAME&#39;)
+        # 对矩阵进行转置，以满足形状
+        pool1 = tf.transpose(pool1, [0, 1, 3, 2])
+    with tf.variable_scope(&#39;CNN_Layer2&#39;):
+        # 第2个卷积层
+        conv2 = tf.contrib.layers.convolution2d(
+                pool1, N_FILTERS, FILTER_SHAPE2, padding=&#39;VALID&#39;)
+        # 抽取特征
+        pool2 = tf.squeeze(tf.reduce_max(conv2, 1), squeeze_dims=[1])
+
+    # 全连接层
+    logits = tf.contrib.layers.fully_connected(pool2, 15, activation_fn=None)
+    loss = tf.losses.softmax_cross_entropy(target, logits)
+
+    train_op = tf.contrib.layers.optimize_loss(
+            loss,
+            tf.contrib.framework.get_global_step(),
+            optimizer=&#39;Adam&#39;,
+            learning_rate=0.01)
+
+    return ({
+            &#39;class&#39;: tf.argmax(logits, 1),
+            &#39;prob&#39;: tf.nn.softmax(logits)
+    }, loss, train_op)</code></pre><h2 id="LSTM-做文本分类实战"><a href="#LSTM-做文本分类实战" class="headerlink" title="LSTM 做文本分类实战"></a>LSTM 做文本分类实战</h2><p>上面实现了基于 CNN 的文本分类器之后，再来做一个基于 LSTM 分类器，会觉得非常容易，因为变化的部分只偶遇中间把 CNN 换成了 LSTM 模型。关于 RNN 和 LSTM 的理论知识，请自行解决，这里主要给出思路和代码实现。</p><p>具体结构，参照下面这幅图（来源：网络）：</p><p><img src="https://www.github.com/OneJane/blog/raw/master/%E5%B0%8F%E4%B9%A6%E5%8C%A0/1574428147772.png" alt="enter description here"></p><p>上面我们用的 Tensorflow 实现的，这次我们用 Keras 更简单方便的实现其核心代码：</p><pre><code class="makefile">#超参数定义
+MAX_SEQUENCE_LENGTH = 100
+EMBEDDING_DIM = 200
+VALIDATION_SPLIT = 0.16
+TEST_SPLIT = 0.2
+epochs =  10
+batch_size = 128
+#模型网络定义
+model = Sequential()
+model.add(Embedding(len(word_index) + 1, EMBEDDING_DIM, input_length=MAX_SEQUENCE_LENGTH))
+model.add(LSTM(200, dropout=0.2, recurrent_dropout=0.2))
+model.add(Dropout(0.2))
+model.add(Dense(labels.shape[1], activation=&#39;softmax&#39;))
+model.summary()</code></pre><p>可见，基于 Keras 实现神经网络比 Tensorflow 要简单和容易很多，Keras 搭建神经网络俗称“堆积木”，这里有所体现。所以笔者也推荐，如果想快速实现一个神经网络，建议先用 Keras 快速搭建验证，之后再尝试用 Tensorflow 去实现。</p><p>总结，本次 Chat 就将分享到这里，从 XGBoost 到词向量以及神经网络，内容非常多也非常重要，笔者并没有过多的讲述理论并不代表不重要，相反理论很重要，但笔者希望能够先通过代码实战进行体验，然后静下心来完成理论部分的学习，最后代码和理论相结合，效率更高。</p></article><div class="post-donate"><div id="donate_board" class="donate_bar center"><a id="btn_donate" class="btn_donate" href="javascript:;" title="打赏"></a> <span class="donate_txt">↑<br> 欢迎投食,求鼓励，求支持！</span><br></div><div id="donate_guide" class="donate_bar center hidden"> <img src="/images/alipay.png" alt="支付宝打赏"> <img src="/images/wechatpay.png" alt="微信打赏"></div><script type="text/javascript">document.getElementById("btn_donate").onclick=function(){$("#donate_board").addClass("hidden"),$("#donate_guide").removeClass("hidden")}</script></div><div class="nexmoe-post-copyright"><i class="mdui-list-item-icon nexmoefont icon-info-circle"></i> <strong>本文作者：</strong>OneJane<br> <strong>本文链接：</strong><a href="https://onejane.github.io/2019/11/22/22.中文短文本分类/" title="https://onejane.github.io/2019/11/22/22.中文短文本分类/" target="_blank" rel="noopener">https://onejane.github.io/2019/11/22/22.中文短文本分类/</a><br> <strong>版权声明：</strong>本文采用 <a href="https://creativecommons.org/licenses/by-nc-sa/3.0/cn/deed.zh" target="_blank">CC BY-NC-SA 3.0 CN</a> 协议进行许可</div><section class="nexmoe-comment"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.css"><div id="gitalk"></div><script src="https://cdn.jsdelivr.net/npm/gitalk@1.5.0/dist/gitalk.min.js"></script><script type="text/javascript">var gitalk=new Gitalk({clientID:"e677e59382e1c7a468fd",clientSecret:"717d041bc4ab749f069314862232cfb6ec8adc15",id:decodeURI(window.location.pathname),repo:"onejane.github.io",owner:"onejane",admin:"onejane"});gitalk.render("gitalk")</script></section></div></div></div><script src="https://cdn.jsdelivr.net/npm/mdui@0.4.3/dist/js/mdui.min.js"></script><script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/smoothscroll-for-websites@1.4.9/SmoothScroll.min.js"></script><script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.15.8/build/highlight.min.js"></script><script>hljs.initHighlightingOnLoad()</script><script src="/js/app.js?v=1575508134929"></script><script src="https://cdn.jsdelivr.net/npm/lazysizes@5.1.0/lazysizes.min.js"></script><div hidden><script type="text/javascript" src="https://js.users.51.la/20279757.js"></script></div></body><script src="https://cdn.jsdelivr.net/npm/meting@1.1.0/dist/Meting.min.js"></script></html>
